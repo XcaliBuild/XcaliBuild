@@ -3,46 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Writer. · Studio V2</title>
+<title>Writer. · Studio V2 (PC Edition)</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 :root{--bg-dark:#090a0f;--bg-panel:#13151c;--bg-input:#1a1d27;--text-main:#fff;--text-muted:#888;--accent:#4f46e5;--border:#222530;--sheet-dark:#121212;--sheet-light:#fff;}
-*{margin:0;padding:0;box-sizing:border-box;} body{font-family:'Inter',sans-serif;background:var(--bg-dark);color:var(--text-main);display:flex;height:100vh;overflow:hidden;}
-.sidebar{width:280px;background:var(--bg-panel);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;}
-.logo-area{padding:22px 24px;font-family:'Newsreader',serif;font-size:26px;font-weight:700;font-style:italic;border-bottom:1px solid var(--border);}
-.logo-area span{font-family:'Inter',sans-serif;font-size:10px;color:var(--accent);display:block;letter-spacing:2px;text-transform:uppercase;margin-top:2px;font-style:normal;}
-.menu-list{flex:1;overflow-y:auto;padding:10px 0;}
-.menu-cat{font-size:10px;text-transform:uppercase;color:var(--text-muted);padding:14px 24px 6px;letter-spacing:1.2px;}
-.menu-item{padding:11px 24px;display:flex;align-items:center;gap:12px;color:var(--text-muted);cursor:pointer;transition:.2s;font-size:13.5px;font-weight:500;border-right:3px solid transparent;}
-.menu-item:hover{color:#fff;background:rgba(255,255,255,.03);} .menu-item.active{color:#fff;background:rgba(79,70,229,.14);border-right-color:var(--accent);}
-.menu-item i{width:18px;text-align:center;}
+*{margin:0;padding:0;box-sizing:border-box;} 
+body{font-family:'Inter',sans-serif;background:var(--bg-dark);color:var(--text-main);display:flex;height:100vh;overflow:hidden;}
+
+/* Sidebar optimisée pour Desktop */
+.sidebar{width:300px;background:var(--bg-panel);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;z-index:20;}
+.logo-area{padding:30px 24px;font-family:'Newsreader',serif;font-size:32px;font-weight:700;font-style:italic;border-bottom:1px solid var(--border);}
+.logo-area span{font-family:'Inter',sans-serif;font-size:11px;color:var(--accent);display:block;letter-spacing:2px;text-transform:uppercase;margin-top:4px;font-style:normal;}
+.menu-list{flex:1;overflow-y:auto;padding:15px 0;}
+.menu-cat{font-size:11px;text-transform:uppercase;color:var(--text-muted);padding:20px 24px 8px;letter-spacing:1.5px;}
+.menu-item{padding:14px 24px;display:flex;align-items:center;gap:15px;color:var(--text-muted);cursor:pointer;transition:.2s;font-size:15px;font-weight:500;border-right:4px solid transparent;}
+.menu-item:hover{color:#fff;background:rgba(255,255,255,.03);} 
+.menu-item.active{color:#fff;background:rgba(79,70,229,.14);border-right-color:var(--accent);}
+.menu-item i{width:20px;text-align:center;font-size:16px;}
+
 .main{flex:1;display:flex;flex-direction:column;min-width:0;}
-.topbar{height:68px;padding:0 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:var(--bg-dark);gap:12px;}
-.group{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-select,.btn{background:var(--bg-panel);color:var(--text-main);border:1px solid var(--border);padding:9px 14px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;outline:none;transition:.2s;}
-.btn:hover{background:#1e212b;} .btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;} .btn-primary:hover{background:#4338ca;}
-.btn-ghost{background:transparent;} .btn-danger{color:#ef4444;border-color:#3a1f1f;} .btn-danger:hover{background:#2a1515;}
-.editor-wrap{flex:1;overflow-y:auto;padding:28px;display:flex;justify-content:center;background:radial-gradient(1200px 600px at 50% -100px, #1a1d2e 0%, var(--bg-dark) 60%);}
-.sheet{width:100%;max-width:760px;background:var(--sheet-dark);color:#e6e6e6;border-radius:14px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:20px;border:1px solid rgba(255,255,255,.06);transition:.3s;}
-.input-group{display:flex;flex-direction:column;gap:7px;} .input-group label{font-size:10.5px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);font-weight:700;}
-.text-input{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);color:inherit;font-size:22px;font-weight:700;font-family:'Newsreader',serif;padding:8px 0;outline:none;width:100%;}
-.meta-input{background:var(--bg-input);border:1px solid var(--border);color:inherit;font-family:'Inter',sans-serif;font-size:13.5px;padding:12px 14px;border-radius:9px;outline:none;width:100%;}
-.meta-input:focus{border-color:var(--accent);} .main-textarea{width:100%;min-height:380px;background:transparent;border:none;color:inherit;font-family:'Newsreader',serif;font-size:17px;line-height:1.7;resize:vertical;outline:none;}
-.meta-row{display:flex;gap:14px;} .meta-row .input-group{flex:1;}
-.settings-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:14px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.08);border-radius:10px;}
-.badge{font-size:11px;padding:4px 8px;border-radius:20px;background:rgba(79,70,229,.15);color:#a5a0ff;border:1px solid rgba(79,70,229,.25);}
-@media(max-width:900px){.sidebar{position:absolute;z-index:10;transform:translateX(-100%);transition:.3s;height:100%;} .sidebar.open{transform:translateX(0);} }
+
+/* Topbar plus aérée */
+.topbar{height:80px;padding:0 30px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);background:var(--bg-dark);gap:15px;}
+.group{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+select,.btn{background:var(--bg-panel);color:var(--text-main);border:1px solid var(--border);padding:10px 18px;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;outline:none;transition:.2s;}
+.btn:hover{background:#1e212b;} 
+.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff;} 
+.btn-primary:hover{background:#4338ca;}
+.btn-ghost{background:transparent;} 
+.btn-danger{color:#ef4444;border-color:#3a1f1f;} 
+.btn-danger:hover{background:#2a1515;}
+
+/* Zone d'édition format PC */
+.editor-wrap{flex:1;overflow-y:auto;padding:40px;display:flex;justify-content:center;background:radial-gradient(1200px 600px at 50% -100px, #1a1d2e 0%, var(--bg-dark) 60%);}
+.sheet{width:100%;max-width:960px;background:var(--sheet-dark);color:#e6e6e6;border-radius:16px;padding:50px;box-shadow:0 20px 60px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:24px;border:1px solid rgba(255,255,255,.06);transition:.3s;}
+.input-group{display:flex;flex-direction:column;gap:8px;} 
+.input-group label{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);font-weight:700;}
+
+.text-input{background:transparent;border:none;border-bottom:1px solid rgba(255,255,255,.12);color:inherit;font-size:28px;font-weight:700;font-family:'Newsreader',serif;padding:10px 0;outline:none;width:100%;}
+.meta-input{background:var(--bg-input);border:1px solid var(--border);color:inherit;font-family:'Inter',sans-serif;font-size:15px;padding:14px 16px;border-radius:9px;outline:none;width:100%;}
+.meta-input:focus{border-color:var(--accent);} 
+
+/* Textarea agrandi pour le confort d'écriture */
+.main-textarea{width:100%;min-height:60vh;background:transparent;border:none;color:inherit;font-family:'Newsreader',serif;font-size:18px;line-height:1.8;resize:vertical;outline:none;}
+
+.meta-row{display:flex;gap:20px;} 
+.meta-row .input-group{flex:1;}
+.settings-row{display:flex;gap:15px;align-items:center;flex-wrap:wrap;padding:16px;background:rgba(255,255,255,.03);border:1px dashed rgba(255,255,255,.08);border-radius:10px;}
+.badge{font-size:12px;padding:6px 12px;border-radius:20px;background:rgba(79,70,229,.15);color:#a5a0ff;border:1px solid rgba(79,70,229,.25);}
+
+/* Comportement mobile/tablette si fenêtre réduite */
+@media(max-width:1024px){
+  .sidebar{position:absolute;z-index:100;transform:translateX(-100%);transition:.3s;height:100%; box-shadow: 5px 0 25px rgba(0,0,0,0.5);} 
+  .sidebar.open{transform:translateX(0);} 
+  .editor-wrap{padding:20px;}
+  .sheet{padding:30px;}
+}
 </style>
 </head>
 <body>
 <div class="sidebar" id="sidebar">
-  <div class="logo-area">Writer.<span>Studio V2 · data.json</span></div>
+  <div class="logo-area">Writer.<span>Studio V2 · PC Edition</span></div>
   <div class="menu-list">
     <div class="menu-cat">Livres</div>
     <div class="menu-item active" id="tab-book" onclick="setMode('book')"><i class="fas fa-book"></i> Livre</div>
-    <div class="menu-item" id="tab-enfant" onclick="setMode('enfant')"><i class="fas fa-child"></i> Livre Enfant / BD Jeunesse</div>
+    <div class="menu-item" id="tab-enfant" onclick="setMode('enfant')"><i class="fas fa-child"></i> Livre Enfant / BD</div>
     <div class="menu-item" id="tab-bd" onclick="setMode('bd')"><i class="fas fa-mask"></i> Bande Dessinée</div>
     <div class="menu-cat">Éditions</div>
     <div class="menu-item" id="tab-magazine" onclick="setMode('magazine')"><i class="fas fa-th-large"></i> Magazine</div>
@@ -51,7 +78,7 @@ select,.btn{background:var(--bg-panel);color:var(--text-main);border:1px solid v
     <div class="menu-cat">Réseaux</div>
     <div class="menu-item" id="tab-post" onclick="setMode('post')"><i class="fas fa-layer-group"></i> Fil d'actu / Post</div>
   </div>
-  <div style="padding:14px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);">Auto-sauvegarde locale active</div>
+  <div style="padding:16px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--text-muted);">Auto-sauvegarde locale active</div>
 </div>
 
 <div class="main">
@@ -59,7 +86,7 @@ select,.btn{background:var(--bg-panel);color:var(--text-main);border:1px solid v
     <div class="group">
       <button class="btn btn-ghost" onclick="toggleSidebar()" style="display:none;" id="btnMenu"><i class="fas fa-bars"></i></button>
       <select id="pageSelector" onchange="loadPage()"></select>
-      <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i> Page</button>
+      <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i> Nouvelle Page</button>
       <button class="btn btn-danger" onclick="deletePage()"><i class="fas fa-trash"></i></button>
     </div>
     <div class="group">
@@ -73,27 +100,27 @@ select,.btn{background:var(--bg-panel);color:var(--text-main);border:1px solid v
 
   <div class="editor-wrap">
     <div class="sheet" id="sheet">
-      <div class="input-group" style="padding-bottom:16px;border-bottom:1px dashed rgba(255,255,255,.1);">
-        <label>Titre global de l'app</label>
+      <div class="input-group" style="padding-bottom:20px;border-bottom:1px dashed rgba(255,255,255,.1);">
+        <label>Titre global de l'application</label>
         <input id="globalTitle" class="text-input" placeholder="Ex: Mon Livre Magique" oninput="autoSave()">
-        <div class="settings-row" style="margin-top:12px;">
+        <div class="settings-row" style="margin-top:15px;">
           <span class="badge" id="badgeFormat">book</span>
-          <label style="display:flex;align-items:center;gap:6px;font-size:12px;text-transform:none;letter-spacing:0;color:#bbb;font-weight:500;"><input type="checkbox" id="optPageNum" checked onchange="autoSave()"> Afficher n° de page</label>
-          <label style="display:flex;align-items:center;gap:6px;font-size:12px;text-transform:none;letter-spacing:0;color:#bbb;font-weight:500;"><input type="checkbox" id="optDark" onchange="toggleSheetTheme()"> Mode sombre écriture</label>
-          <select id="optLang" onchange="autoSave()" style="padding:6px 10px;font-size:12px;"><option value="fr">FR</option><option value="en">EN</option><option value="es">ES</option></select>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;text-transform:none;letter-spacing:0;color:#bbb;font-weight:500;cursor:pointer;"><input type="checkbox" id="optPageNum" checked onchange="autoSave()" style="width:16px;height:16px;"> Afficher n° de page</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:14px;text-transform:none;letter-spacing:0;color:#bbb;font-weight:500;cursor:pointer;"><input type="checkbox" id="optDark" onchange="toggleSheetTheme()" style="width:16px;height:16px;"> Mode sombre écriture</label>
+          <select id="optLang" onchange="autoSave()" style="padding:8px 12px;font-size:14px;"><option value="fr">FR</option><option value="en">EN</option><option value="es">ES</option></select>
         </div>
       </div>
 
       <div class="meta-row">
-        <div class="input-group"><label id="lblTitle">Titre de la page</label><input id="itemTitle" class="meta-input" placeholder="Chapitre 1..." oninput="autoSave()"></div>
+        <div class="input-group"><label id="lblTitle">Titre de la page / chapitre</label><input id="itemTitle" class="meta-input" placeholder="Chapitre 1..." oninput="autoSave()"></div>
         <div class="input-group" id="grpCat"><label>Catégorie</label><input id="itemCategory" class="meta-input" placeholder="Ex: Dessert, News..." oninput="autoSave()"></div>
       </div>
 
       <div class="input-group"><label id="lblImage">Image URL</label><input id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()"></div>
 
-      <div class="input-group" style="flex:1;"><label id="lblText">Contenu</label><textarea id="itemText" class="main-textarea" placeholder="Écris ici..." oninput="autoSave()"></textarea></div>
+      <div class="input-group" style="flex:1;"><label id="lblText">Contenu principal</label><textarea id="itemText" class="main-textarea" placeholder="Écris ici ton contenu..." oninput="autoSave()"></textarea></div>
 
-      <div style="font-size:11px;color:#666;line-height:1.5;">Astuce : ce studio sauvegarde tout seul dans ton navigateur. Tu peux fermer et revenir. Pour publier : 1) Exporte ZIP 2) Dézippe sur GitHub Pages. Le fichier s'appellera toujours <b>data.json</b> + <b>index.html</b>.</div>
+      <div style="font-size:13px;color:#777;line-height:1.6;">Astuce : Ce studio sauvegarde tout seul dans ton navigateur. Tu peux fermer et revenir. Pour publier : 1) Exporte ZIP 2) Dézippe sur GitHub Pages. Le fichier s'appellera toujours <b>data.json</b> + <b>index.html</b>.</div>
     </div>
   </div>
 </div>
@@ -124,7 +151,7 @@ function setMode(m){
   document.getElementById('optPageNum').checked = appData[m].settings?.showPageNumber!==false;
   document.getElementById('optLang').value = appData[m].settings?.lang||'fr';
   refreshSelector();
-  if(window.innerWidth<900) document.getElementById('sidebar').classList.remove('open');
+  if(window.innerWidth<1024) document.getElementById('sidebar').classList.remove('open');
 }
 function refreshSelector(){
   const sel=document.getElementById('pageSelector'); sel.innerHTML='';
@@ -197,8 +224,7 @@ function exportStandalone(){
 }
 function buildStandaloneHTML(data){
   const jsonStr = JSON.stringify(data).replace(/</g,'\\u003c');
-  // On réutilise le template Pages V2 mais on injecte le json dans #__DATA__
-  return `<!DOCTYPE html><html lang="${data.langue||'fr'}" data-theme="${(data.settings?.theme)||'creme'}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>${escapeHtml(data.titre)} · Pages.</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>/* CSS Pages V2 minimal */:root[data-theme="creme"]{--bg-page:#faf8f5;--text-primary:#1a1a1a;--text-secondary:#333;--text-tertiary:#8a8a8a;--border-subtle:#eae5df;--accent-soft:rgba(0,0,0,.04);--overlay-bg:rgba(250,248,245,.85);} :root[data-theme="nuit"]{--bg-page:#121212;--text-primary:#f0f0f0;--text-secondary:#c4c4c4;--text-tertiary:#888;--border-subtle:#2a2a2a;--accent-soft:#1e1e1e;--overlay-bg:rgba(18,18,18,.85);}*{margin:0;padding:0;box-sizing:border-box;}html,body{width:100vw;height:100vh;overflow:hidden;background:var(--bg-page);font-family:'Newsreader',serif;position:fixed;top:0;left:0} .app-frame{width:100%;height:100%;display:flex;flex-direction:column;position:relative} .overlay-header{position:absolute;top:0;left:0;width:100%;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:50;background:var(--overlay-bg);backdrop-filter:blur(15px);border-bottom:1px solid var(--border-subtle)} .logo-text{font-weight:700;font-size:1.6rem;font-style:italic;color:var(--text-primary)} .tool-btn{background:var(--accent-soft);border:1px solid var(--border-subtle);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-primary)} .reader-stage{flex:1;position:relative;padding-top:65px;padding-bottom:70px} .page-card{position:absolute;top:65px;left:0;width:100%;height:100%;padding:24px 24px 100px;overflow-y:auto;transition:transform .35s,opacity .35s;background:var(--bg-page);display:flex;flex-direction:column} .page-active{transform:translateX(0);opacity:1;z-index:5} .page-before{transform:translateX(-100%);opacity:0} .page-after{transform:translateX(100%);opacity:0} .page-slide-out-left{transform:translateX(-100%);opacity:0;z-index:10} .page-slide-out-right{transform:translateX(100%);opacity:0;z-index:10} .fmt-text h3{font-family:Inter,sans-serif;font-size:.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-tertiary);margin-bottom:10px} .fmt-text h2{font-size:2.1rem;margin-bottom:18px;color:var(--text-primary)} .fmt-text p{font-size:1.1rem;line-height:1.7;color:var(--text-secondary);white-space:pre-wrap} .fmt-text img{width:100%;max-height:36vh;object-fit:cover;border-radius:12px;margin-bottom:16px} .fmt-bd{padding:0!important;background:#000;justify-content:center;align-items:center} .fmt-bd img{width:100%;height:100%;object-fit:contain} .bd-text{position:absolute;bottom:18px;left:18px;right:18px;background:rgba(0,0,0,.72);color:#fff;padding:12px;border-radius:10px;font-family:Inter;font-size:.9rem;text-align:center} .post-feed{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:18px;width:100%} .post-card{background:var(--accent-soft);border:1px solid var(--border-subtle);border-radius:16px;padding:18px} .page-indicator{position:absolute;bottom:85px;left:50%;transform:translateX(-50%);padding:6px 14px;border-radius:20px;font-family:Inter;font-size:.75rem;font-weight:600;background:var(--overlay-bg);border:1px solid var(--border-subtle);z-index:20} .splash{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:var(--bg-page);z-index:999;font-size:2.2rem;font-style:italic;font-weight:700;color:var(--text-primary);transition:.4s}</style></head><body><div class="app-frame"><div class="splash" id="splash">Pages.</div><header class="overlay-header"><span class="logo-text" id="appTitle"></span><div style="display:flex;gap:8px"><button class="tool-btn" onclick="go('prev')"><i class="fa-solid fa-chevron-left"></i></button><button class="tool-btn" onclick="go('next')"><i class="fa-solid fa-chevron-right"></i></button><button class="tool-btn" onclick="cycle()"><i class="fa-solid fa-circle-half-stroke"></i></button></div></header><div class="reader-stage" id="stage"><div class="page-card page-active" id="A"></div><div class="page-card" id="B" style="display:none"></div></div><div class="page-indicator" id="counter"></div></div><script id="__DATA__" type="application/json">${jsonStr}<\/script><script>
+  return `<!DOCTYPE html><html lang="${data.langue||'fr'}" data-theme="${(data.settings?.theme)||'creme'}"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"><title>${escapeHtml(data.titre)} · Pages.</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Newsreader:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><style>:root[data-theme="creme"]{--bg-page:#faf8f5;--text-primary:#1a1a1a;--text-secondary:#333;--text-tertiary:#8a8a8a;--border-subtle:#eae5df;--accent-soft:rgba(0,0,0,.04);--overlay-bg:rgba(250,248,245,.85);} :root[data-theme="nuit"]{--bg-page:#121212;--text-primary:#f0f0f0;--text-secondary:#c4c4c4;--text-tertiary:#888;--border-subtle:#2a2a2a;--accent-soft:#1e1e1e;--overlay-bg:rgba(18,18,18,.85);}*{margin:0;padding:0;box-sizing:border-box;}html,body{width:100vw;height:100vh;overflow:hidden;background:var(--bg-page);font-family:'Newsreader',serif;position:fixed;top:0;left:0} .app-frame{width:100%;height:100%;display:flex;flex-direction:column;position:relative} .overlay-header{position:absolute;top:0;left:0;width:100%;padding:12px 20px;display:flex;justify-content:space-between;align-items:center;z-index:50;background:var(--overlay-bg);backdrop-filter:blur(15px);border-bottom:1px solid var(--border-subtle)} .logo-text{font-weight:700;font-size:1.6rem;font-style:italic;color:var(--text-primary)} .tool-btn{background:var(--accent-soft);border:1px solid var(--border-subtle);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text-primary)} .reader-stage{flex:1;position:relative;padding-top:65px;padding-bottom:70px} .page-card{position:absolute;top:65px;left:0;width:100%;height:100%;padding:24px 24px 100px;overflow-y:auto;transition:transform .35s,opacity .35s;background:var(--bg-page);display:flex;flex-direction:column} .page-active{transform:translateX(0);opacity:1;z-index:5} .page-before{transform:translateX(-100%);opacity:0} .page-after{transform:translateX(100%);opacity:0} .page-slide-out-left{transform:translateX(-100%);opacity:0;z-index:10} .page-slide-out-right{transform:translateX(100%);opacity:0;z-index:10} .fmt-text h3{font-family:Inter,sans-serif;font-size:.75rem;text-transform:uppercase;letter-spacing:2px;color:var(--text-tertiary);margin-bottom:10px} .fmt-text h2{font-size:2.1rem;margin-bottom:18px;color:var(--text-primary)} .fmt-text p{font-size:1.1rem;line-height:1.7;color:var(--text-secondary);white-space:pre-wrap} .fmt-text img{width:100%;max-height:36vh;object-fit:cover;border-radius:12px;margin-bottom:16px} .fmt-bd{padding:0!important;background:#000;justify-content:center;align-items:center} .fmt-bd img{width:100%;height:100%;object-fit:contain} .bd-text{position:absolute;bottom:18px;left:18px;right:18px;background:rgba(0,0,0,.72);color:#fff;padding:12px;border-radius:10px;font-family:Inter;font-size:.9rem;text-align:center} .post-feed{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:18px;width:100%} .post-card{background:var(--accent-soft);border:1px solid var(--border-subtle);border-radius:16px;padding:18px} .page-indicator{position:absolute;bottom:85px;left:50%;transform:translateX(-50%);padding:6px 14px;border-radius:20px;font-family:Inter;font-size:.75rem;font-weight:600;background:var(--overlay-bg);border:1px solid var(--border-subtle);z-index:20} .splash{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:var(--bg-page);z-index:999;font-size:2.2rem;font-style:italic;font-weight:700;color:var(--text-primary);transition:.4s}</style></head><body><div class="app-frame"><div class="splash" id="splash">Pages.</div><header class="overlay-header"><span class="logo-text" id="appTitle"></span><div style="display:flex;gap:8px"><button class="tool-btn" onclick="go('prev')"><i class="fa-solid fa-chevron-left"></i></button><button class="tool-btn" onclick="go('next')"><i class="fa-solid fa-chevron-right"></i></button><button class="tool-btn" onclick="cycle()"><i class="fa-solid fa-circle-half-stroke"></i></button></div></header><div class="reader-stage" id="stage"><div class="page-card page-active" id="A"></div><div class="page-card" id="B" style="display:none"></div></div><div class="page-indicator" id="counter"></div></div><script id="__DATA__" type="application/json">${jsonStr}<\/script><script>
 let pages=[],idx=0,act='A',anim=false;const A=document.getElementById('A'),B=document.getElementById('B'),counter=document.getElementById('counter');
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function init(d){document.getElementById('appTitle').textContent=d.titre||'Pages.';const f=d.format||'book';if(f==='post'||f==='journal'){pages=['<div class="post-feed">'+d.items.map(p=>'<div class="post-card"><div style="font-family:Inter;font-size:.7rem;opacity:.6;text-transform:uppercase;margin-bottom:6px">'+esc(p.category||f)+'</div><div style="font-weight:700;font-size:1.3rem;margin-bottom:8px;color:var(--text-primary)">'+esc(p.title||'')+'</div>'+(p.image?'<img src="'+p.image+'" style="width:100%;border-radius:10px;margin-bottom:10px">':'')+'<div style="font-family:Inter;line-height:1.6;color:var(--text-secondary);white-space:pre-wrap">'+esc(p.text||'')+'</div></div>').join('')+'</div>'];counter.style.display='none'}else if(f==='bd'||f==='enfant'){pages=d.items.map(i=>'<div class="fmt-bd" style="height:100%;position:relative;width:100%">'+(i.image?'<img src="'+i.image+'">':'')+(i.text?'<div class="bd-text">'+esc(i.text)+'</div>':'')+'</div>')}else{pages=d.items.map(i=>'<div class="fmt-text">'+(i.category?'<h3>'+esc(i.category)+'</h3>':'')+'<h2>'+esc(i.title||'')+'</h2>'+(i.image?'<img src="'+i.image+'">':'')+'<p>'+esc(i.text||'')+'</p></div>')}render();setTimeout(()=>{document.getElementById('splash').style.opacity='0';setTimeout(()=>document.getElementById('splash').style.display='none',300)},200)}
@@ -209,7 +235,6 @@ async function exportZip(){
   const data=getExportObject();
   const zip=new JSZip();
   const pagesHTML = await (await fetch('./Pages-v2-index.html').catch(()=>null))?.text() || '<!-- Remplace par Pages-v2-index.html -->';
-  // Si on est en local sans serveur, on utilise le template autonome comme index
   const indexContent = pagesHTML.includes('__DATA__') ? pagesHTML : buildStandaloneHTML(data);
   zip.file('index.html', indexContent);
   zip.file('data.json', JSON.stringify(data,null,2));
@@ -249,7 +274,7 @@ function toggleSheetTheme(){
 function toggleSidebar(){ document.getElementById('sidebar').classList.toggle('open'); }
 window.addEventListener('DOMContentLoaded',()=>{
   const ok=restore(); if(ok){ document.getElementById('globalTitle').value=appData[currentMode]?.title||''; setMode(currentMode); if(currentId){ document.getElementById('pageSelector').value=currentId; loadPage(); } } else { setMode('book'); }
-  if(window.innerWidth<900) document.getElementById('btnMenu').style.display='flex';
+  if(window.innerWidth<1024) document.getElementById('btnMenu').style.display='flex';
 });
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 </script>
