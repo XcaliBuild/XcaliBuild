@@ -3,30 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Writer. · Studio Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Courier+Prime&family=Lora&display=swap" rel="stylesheet">
+<title>Writer. · Studio Pro (Étape Livre)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Courier+Prime&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 :root {
-  --bg-dark: #090a0f; --bg-panel: #13151c; --bg-input: #1a1d27; --text-main: #fff; --text-muted: #888;
-  --accent: #06b6d4; /* Cyan pour The Pages. Studio */ --border: #222530;
-  --sheet-nuit: #121212; --sheet-text-nuit: #e6e6e6;
-  --sheet-creme: #ffffff; --sheet-text-creme: #111111;
-  --sheet-papier: #f4ecd8; --sheet-text-papier: #433422;
+  --bg-dark: #090a0f; --bg-panel: #13151c; --text-main: #fff; --text-muted: #888;
+  --accent: #06b6d4; --border: #222530;
+  
+  /* Thèmes de la feuille */
+  --sheet-nuit: #121212; --sheet-text-nuit: #e6e6e6; --editor-bg-nuit: rgba(255,255,255,0.03);
+  --sheet-creme: #ffffff; --sheet-text-creme: #111111; --editor-bg-creme: rgba(0,0,0,0.03);
+  --sheet-papier: #f4ecd8; --sheet-text-papier: #433422; --editor-bg-papier: rgba(0,0,0,0.05);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; } 
 body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-/* Custom Scrollbars "Petit Cercle" */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(128,128,128,0.4); border-radius: 10px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(128,128,128,0.8); }
 
-/* Sidebar Glissante */
+/* Zone de détection pour l'auto-hide */
+.sidebar-hover-zone { position: absolute; left: 0; top: 0; width: 20px; height: 100%; z-index: 99; }
 .sidebar { position: absolute; z-index: 100; left: -300px; width: 300px; height: 100%; background: var(--bg-panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
-.sidebar.open { left: 0; }
+/* Le menu s'ouvre si on survole la zone invisible ou le menu lui-même */
+.sidebar-hover-zone:hover + .sidebar, .sidebar:hover, .sidebar.open { left: 0; }
+
 .logo-area { padding: 30px 24px; font-family: 'Newsreader', serif; font-size: 32px; font-weight: 700; font-style: italic; border-bottom: 1px solid var(--border); color: var(--accent); }
 .logo-area span { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--text-muted); display: block; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; font-style: normal; }
 .menu-list { flex: 1; overflow-y: auto; padding: 15px 0; }
@@ -36,35 +39,37 @@ body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(
 .menu-item.active { color: #fff; background: rgba(6, 182, 212, .1); border-right-color: var(--accent); }
 .menu-item i { width: 20px; text-align: center; font-size: 16px; }
 
-.main { flex: 1; display: flex; flex-direction: column; min-width: 0; position: relative; margin-left: 0; transition: margin-left 0.3s; }
+.main { flex: 1; display: flex; flex-direction: column; position: relative; margin-left: 0; width: 100%; }
 
-/* Topbar */
 .topbar { height: 80px; padding: 0 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: var(--bg-dark); gap: 15px; }
 .group { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.btn-menu { background: transparent; color: white; border: none; font-size: 24px; cursor: pointer; padding: 10px; transition: 0.2s; }
-.btn-menu:hover { color: var(--accent); }
-
+.btn-menu { background: transparent; color: white; border: none; font-size: 24px; cursor: pointer; padding: 10px; transition: 0.2s; } .btn-menu:hover { color: var(--accent); }
 select, .btn { background: var(--bg-panel); color: var(--text-main); border: 1px solid var(--border); padding: 10px 18px; border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; outline: none; transition: .2s; display: flex; align-items: center; gap: 8px;}
 .btn:hover { background: #1e212b; } 
-.btn-primary { background: #10b981; border-color: #10b981; color: #fff; } /* Vert Download */
+.btn-primary { background: #10b981; border-color: #10b981; color: #fff; } 
 .btn-primary:hover { background: #059669; }
-.btn-danger { color: #ef4444; border-color: rgba(239, 68, 68, 0.2); } .btn-danger:hover { background: rgba(239, 68, 68, 0.1); }
 
-/* Zone d'édition */
 .editor-wrap { flex: 1; overflow-y: auto; padding: 40px; display: flex; justify-content: center; background: radial-gradient(1200px 600px at 50% -100px, #1a1d2e 0%, var(--bg-dark) 60%); }
-.sheet { width: 100%; max-width: 960px; background: var(--sheet-nuit); color: var(--sheet-text-nuit); border-radius: 16px; padding: 50px; box-shadow: 0 20px 60px rgba(0,0,0,.5); display: flex; flex-direction: column; gap: 24px; border: 1px solid rgba(255,255,255,.06); transition: background 0.3s, color 0.3s; position: relative; }
+.sheet { width: 100%; max-width: 960px; background: var(--sheet-nuit); color: var(--sheet-text-nuit); border-radius: 16px; padding: 50px; box-shadow: 0 20px 60px rgba(0,0,0,.5); display: flex; flex-direction: column; gap: 24px; border: 1px solid rgba(255,255,255,.06); transition: background 0.3s, color 0.3s; }
 
 .input-group { display: flex; flex-direction: column; gap: 8px; } 
 .input-group label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: inherit; opacity: 0.7; font-weight: 700; }
 .text-input { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,.3); color: inherit; font-size: 28px; font-weight: 700; font-family: 'Newsreader', serif; padding: 10px 0; outline: none; width: 100%; }
-.meta-input { background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); color: inherit; font-family: 'Inter', sans-serif; font-size: 15px; padding: 14px 16px; border-radius: 9px; outline: none; width: 100%; }
+.meta-input { background: rgba(128,128,128,0.05); border: 1px solid rgba(128,128,128,0.2); color: inherit; font-family: 'Inter', sans-serif; font-size: 15px; padding: 14px 16px; border-radius: 9px; outline: none; width: 100%; transition: 0.2s; }
+.meta-input:focus { border-color: var(--accent); }
 
-/* Éditeur de texte riche (Font fixe) */
-.rich-toolbar { position: sticky; top: -50px; z-index: 50; background: inherit; padding: 15px 0; border-bottom: 1px solid rgba(128,128,128,0.2); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+/* Segments de boutons pour la taille d'image (Remplace le select moche) */
+.segment-group { display: flex; background: rgba(128,128,128,0.1); border-radius: 8px; padding: 4px; border: 1px solid rgba(128,128,128,0.2); }
+.segment-btn { flex: 1; background: transparent; color: inherit; border: none; padding: 8px 12px; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 6px; transition: 0.2s; opacity: 0.6; }
+.segment-btn.active { background: rgba(128,128,128,0.2); opacity: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+/* Nouveau Grand Conteneur d'Édition */
+.editor-box { background: var(--editor-bg-nuit); border-radius: 12px; border: 1px solid rgba(128,128,128,0.15); padding: 25px; min-height: 55vh; display: flex; flex-direction: column; transition: background 0.3s; }
+.rich-toolbar { padding-bottom: 15px; border-bottom: 1px solid rgba(128,128,128,0.2); display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 20px; }
 .rich-btn { background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); color: inherit; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-family: 'Inter'; display:flex; align-items:center; justify-content:center;}
 .rich-btn:hover { background: rgba(128,128,128,0.2); }
-.color-picker { width: 35px; height: 35px; border: none; border-radius: 5px; cursor: pointer; background: transparent; }
-.main-textarea { width: 100%; min-height: 50vh; background: transparent; border: none; color: inherit; font-family: 'Newsreader', serif; font-size: 18px; line-height: 1.8; outline: none; padding-bottom: 50px; }
+.color-picker { width: 35px; height: 35px; border: none; border-radius: 5px; cursor: pointer; background: transparent; padding:0; }
+.main-textarea { width: 100%; flex: 1; background: transparent; border: none; color: inherit; font-family: 'Newsreader', serif; font-size: 18px; line-height: 1.8; outline: none; }
 .main-textarea:empty:before { content: attr(data-placeholder); opacity: 0.5; }
 
 .meta-row { display: flex; gap: 20px; flex-wrap: wrap; } .meta-row .input-group { flex: 1; min-width: 200px; }
@@ -72,7 +77,9 @@ select, .btn { background: var(--bg-panel); color: var(--text-main); border: 1px
 </head>
 <body>
 
-<!-- Sidebar Hamburger -->
+<!-- Auto-hide Trigger -->
+<div class="sidebar-hover-zone"></div>
+
 <div class="sidebar" id="sidebar">
   <div class="logo-area" id="logoText">The Pages. Studio<span>Creator Engine</span></div>
   <div class="menu-list">
@@ -80,12 +87,7 @@ select, .btn { background: var(--bg-panel); color: var(--text-main); border: 1px
     <div class="menu-item active" id="tab-book" onclick="setMode('book')"><i class="fas fa-book"></i> <span data-i18n="menuBook">Livre</span></div>
     <div class="menu-item" id="tab-enfant" onclick="setMode('enfant')"><i class="fas fa-child"></i> <span data-i18n="menuChild">Livre Enfant</span></div>
     <div class="menu-item" id="tab-bd" onclick="setMode('bd')"><i class="fas fa-mask"></i> <span data-i18n="menuComic">Bande Dessinée</span></div>
-    <div class="menu-cat" data-i18n="catEditions">Éditions</div>
-    <div class="menu-item" id="tab-magazine" onclick="setMode('magazine')"><i class="fas fa-th-large"></i> <span data-i18n="menuMag">Magazine</span></div>
-    <div class="menu-item" id="tab-journal" onclick="setMode('journal')"><i class="far fa-newspaper"></i> <span data-i18n="menuNews">Journal</span></div>
-    <div class="menu-item" id="tab-recette" onclick="setMode('recette')"><i class="fas fa-utensils"></i> <span data-i18n="menuRecipe">Recettes</span></div>
-    <div class="menu-cat" data-i18n="catSocial">Réseaux</div>
-    <div class="menu-item" id="tab-post" onclick="setMode('post')"><i class="fas fa-layer-group"></i> <span data-i18n="menuPost">Fil d'actu / Post</span></div>
+    <!-- (Garde les autres menus grisés/cachés si on se focus sur le livre pour le moment, ou on les laisse) -->
   </div>
 </div>
 
@@ -95,121 +97,110 @@ select, .btn { background: var(--bg-panel); color: var(--text-main); border: 1px
       <button class="btn-menu" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
       <select id="pageSelector" onchange="loadPage()"></select>
       <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i> <span data-i18n="btnNew">Page</span></button>
-      <button class="btn btn-danger" onclick="deletePage()" title="Supprimer"><i class="fas fa-trash"></i></button>
     </div>
     <div class="group">
-      <!-- Bouton Langue -->
       <button class="btn" onclick="toggleLang()" id="btnLang"><i class="fas fa-globe"></i> EN</button>
-      <!-- Bouton Thème -->
       <button class="btn" onclick="cycleTheme()" title="Thème (Nuit, Crème, Papier)"><i class="fa-solid fa-circle-half-stroke"></i></button>
-      <button class="btn btn-primary" onclick="exportJSON()"><i class="fas fa-download"></i> <span data-i18n="btnExport">Générer App</span></button>
+      <button class="btn btn-primary" onclick="exportJSON()"><i class="fas fa-download"></i> <span data-i18n="btnExport">Générer data.json</span></button>
     </div>
   </div>
 
   <div class="editor-wrap">
     <div class="sheet" id="sheet">
       <div class="input-group" style="padding-bottom:20px; border-bottom:1px dashed rgba(128,128,128,0.3);">
-        <label data-i18n="lblAppTitle">Titre global de l'application</label>
+        <label data-i18n="lblAppTitle">Titre global du Livre</label>
         <input id="globalTitle" class="text-input" placeholder="..." oninput="autoSave()">
       </div>
 
-      <div class="meta-row">
-        <div class="input-group"><label data-i18n="lblPageTitle">Titre de la page</label><input id="itemTitle" class="meta-input" placeholder="..." oninput="autoSave()"></div>
-        <div class="input-group" id="grpCat"><label data-i18n="lblCat">Catégorie</label><input id="itemCategory" class="meta-input" placeholder="..." oninput="autoSave()"></div>
+      <div class="input-group">
+        <label data-i18n="lblPageTitle">Titre du chapitre / section</label>
+        <input id="itemTitle" class="meta-input" placeholder="..." style="font-size: 20px; font-weight: bold; font-family: 'Newsreader', serif;" oninput="autoSave()">
       </div>
 
       <!-- Paramètres de l'image -->
       <div class="meta-row">
         <div class="input-group" style="flex:2;">
-          <label id="lblImage" data-i18n="lblImg">Image URL</label>
+          <label id="lblImage" data-i18n="lblImg">Image URL (JPEG, PNG, GIF...)</label>
           <input id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()">
-          <small id="coverHint" style="display:none; color:var(--accent); font-size:11px;">* Format vertical recommandé pour la couverture</small>
+          <small id="coverHint" style="display:none; color:var(--accent); font-size:12px; margin-top:5px;">* Format vertical recommandé pour la couverture</small>
         </div>
-        <div class="input-group" id="grpImgOptions">
-          <label data-i18n="lblImgOpt">Taille & Position</label>
-          <div style="display:flex; gap:10px;">
-            <select id="imgSize" class="meta-input" onchange="autoSave()">
-              <option value="large" data-i18n="optLarge">Grand</option>
-              <option value="medium" data-i18n="optMed">Moyen</option>
-              <option value="small" data-i18n="optSmall">Petit</option>
-            </select>
-            <select id="imgAlign" class="meta-input" onchange="autoSave()">
-              <option value="center" data-i18n="optCenter">Centré</option>
-              <option value="left" data-i18n="optLeft">Gauche</option>
-              <option value="right" data-i18n="optRight">Droite</option>
-            </select>
+        
+        <!-- Options Images Refaites (Boutons segmentés) -->
+        <div class="input-group" id="grpImgOptions" style="flex:1;">
+          <label data-i18n="lblImgOpt">Taille de l'image</label>
+          <div class="segment-group">
+            <button class="segment-btn" id="sz-small" onclick="setImgOpt('size', 'small')">Petit</button>
+            <button class="segment-btn active" id="sz-medium" onclick="setImgOpt('size', 'medium')">Moyen</button>
+            <button class="segment-btn" id="sz-large" onclick="setImgOpt('size', 'large')">Grand</button>
+          </div>
+        </div>
+        <div class="input-group" id="grpImgAlign" style="flex:1;">
+          <label data-i18n="lblImgAlign">Alignement</label>
+          <div class="segment-group">
+            <button class="segment-btn" id="al-left" onclick="setImgOpt('align', 'left')"><i class="fas fa-align-left"></i></button>
+            <button class="segment-btn active" id="al-center" onclick="setImgOpt('align', 'center')"><i class="fas fa-align-center"></i></button>
+            <button class="segment-btn" id="al-right" onclick="setImgOpt('align', 'right')"><i class="fas fa-align-right"></i></button>
           </div>
         </div>
       </div>
 
-      <!-- Barre de texte riche fixe (Sticky) -->
-      <div class="rich-toolbar">
-        <div style="display:flex; align-items:center; gap:5px; background:rgba(128,128,128,0.1); padding:4px 8px; border-radius:6px;">
-          <span style="font-weight:900; font-family:serif; font-size:16px;">Tt</span>
-          <select class="meta-input" style="padding:6px; background:transparent; border:none;" onchange="document.execCommand('fontName', false, this.value)">
-            <option value="Newsreader">Newsreader (Serif)</option>
-            <option value="Inter">Inter (Moderne)</option>
-            <option value="Courier Prime">Typewriter</option>
-          </select>
-          <select class="meta-input" style="padding:6px; background:transparent; border:none;" onchange="document.execCommand('fontSize', false, this.value)">
-            <option value="3">Normal</option><option value="4">Moyen</option><option value="5">Grand</option><option value="6">Titre</option>
-          </select>
+      <!-- NOUVEAU CONTENEUR D'ÉDITION -->
+      <div class="editor-box" id="editorBox">
+        <div class="rich-toolbar">
+          <div style="display:flex; align-items:center; gap:5px; background:rgba(128,128,128,0.1); padding:4px 8px; border-radius:6px;">
+            <span style="font-weight:900; font-family:serif; font-size:16px;">Tt</span>
+            <select class="meta-input" style="padding:6px; background:transparent; border:none; width:auto;" onchange="document.execCommand('fontName', false, this.value)">
+              <option value="Newsreader">Classique (Serif)</option>
+              <option value="Inter">Moderne (Sans-Serif)</option>
+              <option value="Courier Prime">Machine à écrire</option>
+            </select>
+            <select class="meta-input" style="padding:6px; background:transparent; border:none; width:auto;" onchange="document.execCommand('fontSize', false, this.value)">
+              <option value="3">Normal</option><option value="4">Moyen</option><option value="5">Grand</option><option value="6">Titre</option>
+            </select>
+          </div>
+          <input type="color" class="color-picker" title="Couleur du texte" onchange="document.execCommand('foreColor', false, this.value)">
+          <button class="rich-btn" onclick="document.execCommand('bold', false, null)"><i class="fas fa-bold"></i></button>
+          <button class="rich-btn" onclick="document.execCommand('italic', false, null)"><i class="fas fa-italic"></i></button>
+          <button class="rich-btn" onclick="document.execCommand('underline', false, null)"><i class="fas fa-underline"></i></button>
+          <button class="rich-btn" onclick="transformCase()" title="Aa">Aa</button>
         </div>
-        <input type="color" class="color-picker" title="Couleur du texte" onchange="document.execCommand('foreColor', false, this.value)">
-        <button class="rich-btn" onclick="document.execCommand('bold', false, null)"><i class="fas fa-bold"></i></button>
-        <button class="rich-btn" onclick="document.execCommand('italic', false, null)"><i class="fas fa-italic"></i></button>
-        <button class="rich-btn" onclick="document.execCommand('underline', false, null)"><i class="fas fa-underline"></i></button>
-        <button class="rich-btn" onclick="transformCase()" title="Majuscule / Minuscule">Aa</button>
-      </div>
 
-      <!-- Éditeur de contenu -->
-      <div class="input-group" style="flex:1;">
-        <label data-i18n="lblText">Contenu</label>
-        <div id="itemText" contenteditable="true" class="main-textarea" data-placeholder="Écrivez votre texte ici..." oninput="autoSave()"></div>
+        <div id="itemText" contenteditable="true" class="main-textarea" data-placeholder="Écrivez le contenu de votre page ici..." oninput="autoSave()"></div>
       </div>
+      
     </div>
   </div>
 </div>
 
 <script>
-// --- DICTIONNAIRE MULTILINGUE ---
-let currentLang = 'en'; // Par défaut en anglais comme demandé
+// I18N
+let currentLang = 'fr';
 const i18n = {
   fr: {
     logo: "Le Studio Pages.<span>Moteur Créateur</span>",
     catBooks: "Livres", menuBook: "Livre", menuChild: "Livre Enfant", menuComic: "Bande Dessinée",
-    catEditions: "Éditions", menuMag: "Magazine", menuNews: "Journal", menuRecipe: "Recettes",
-    catSocial: "Réseaux", menuPost: "Fil d'actu / Post",
-    btnNew: "Page", btnExport: "Générer App",
-    lblAppTitle: "Titre global de l'application", lblPageTitle: "Titre de la page", lblCat: "Catégorie",
-    lblImg: "Image URL", lblImgOpt: "Taille & Position", lblText: "Contenu",
-    optLarge: "Grand", optMed: "Moyen", optSmall: "Petit", optCenter: "Centré", optLeft: "Gauche", optRight: "Droite",
+    btnNew: "Page", btnExport: "Générer data.json",
+    lblAppTitle: "Titre global du Livre", lblPageTitle: "Titre du chapitre / section",
+    lblImg: "Image URL (JPEG, PNG, GIF...)", lblImgOpt: "Taille", lblImgAlign: "Alignement", lblText: "Contenu principal",
     bookCover: "Couverture", bookSummary: "Sommaire", bookEnd: "Fin du livre"
   },
   en: {
     logo: "The Pages. Studio<span>Creator Engine</span>",
     catBooks: "Books", menuBook: "Book", menuChild: "Kids Book", menuComic: "Comic Book",
-    catEditions: "Publishing", menuMag: "Magazine", menuNews: "Newspaper", menuRecipe: "Recipes",
-    catSocial: "Social", menuPost: "Feed / Post",
-    btnNew: "Page", btnExport: "Generate App",
-    lblAppTitle: "Global App Title", lblPageTitle: "Page Title", lblCat: "Category",
-    lblImg: "Image URL", lblImgOpt: "Size & Position", lblText: "Content",
-    optLarge: "Large", optMed: "Medium", optSmall: "Small", optCenter: "Center", optLeft: "Left", optRight: "Right",
+    btnNew: "Page", btnExport: "Generate data.json",
+    lblAppTitle: "Global Book Title", lblPageTitle: "Chapter / Section Title",
+    lblImg: "Image URL (JPEG, PNG, GIF...)", lblImgOpt: "Size", lblImgAlign: "Alignment", lblText: "Main Content",
     bookCover: "Book Cover", bookSummary: "Summary", bookEnd: "Book End"
   }
 };
 
 let appData = {
-  book: { title: "My Book", items: [ {id:"cover"}, {id:"summary"}, {id:"1"}, {id:"end"} ] },
-  bd: { title: "Comic", items: [{id:"1"}] },
-  magazine: { title: "Magazine", items: [{id:"1"}] },
-  journal: { title: "News", items: [{id:"1"}] },
-  recette: { title: "Recipes", items: [{id:"1"}] },
-  enfant: { title: "Kids Book", items: [{id:"1"}] },
-  post: { title: "Feed", items: [{id:"1"}] }
+  book: { title: "Mon Livre", items: [ {id:"cover"}, {id:"summary"}, {id:"1"}, {id:"end"} ] },
+  enfant: { title: "Conte", items: [{id:"1"}] },
+  bd: { title: "Comic", items: [{id:"1"}] }
 };
 
-let currentMode = 'book', currentId = '1';
+let currentMode = 'book', currentId = 'cover';
 let themes = ['nuit', 'creme', 'papier'];
 let themeIdx = 0;
 
@@ -219,9 +210,7 @@ function toggleLang() {
   currentLang = currentLang === 'en' ? 'fr' : 'en';
   document.getElementById('btnLang').innerHTML = `<i class="fas fa-globe"></i> ${currentLang.toUpperCase()}`;
   document.getElementById('logoText').innerHTML = i18n[currentLang].logo;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    el.innerText = i18n[currentLang][el.getAttribute('data-i18n')];
-  });
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.innerText = i18n[currentLang][el.getAttribute('data-i18n')]; });
   refreshSelector();
 }
 
@@ -229,20 +218,13 @@ function setMode(m) {
   saveCurrent(); currentMode = m;
   document.querySelectorAll('.menu-item').forEach(e => e.classList.remove('active'));
   document.getElementById('tab-' + m).classList.add('active');
-  
-  const isDoc = ['magazine','journal','recette','post'].includes(m);
-  document.getElementById('grpCat').style.display = isDoc ? 'flex' : 'none';
   document.getElementById('globalTitle').value = appData[m].title || '';
-  
-  if(window.innerWidth < 1024) toggleSidebar();
   refreshSelector();
 }
 
-// Construction intelligente du menu des pages (Livre vs autres)
 function refreshSelector() {
   const sel = document.getElementById('pageSelector'); sel.innerHTML = '';
   const items = appData[currentMode].items;
-  
   items.forEach((it, i) => {
     const o = document.createElement('option'); o.value = it.id;
     if(currentMode === 'book') {
@@ -255,10 +237,20 @@ function refreshSelector() {
     }
     sel.appendChild(o);
   });
-  
   if(!items.find(x => x.id === currentId)) currentId = items[0]?.id;
   sel.value = currentId;
   loadPage();
+}
+
+function setImgOpt(type, val) {
+  if(type === 'size') {
+    document.querySelectorAll('[id^="sz-"]').forEach(el => el.classList.remove('active'));
+    document.getElementById('sz-'+val).classList.add('active');
+  } else {
+    document.querySelectorAll('[id^="al-"]').forEach(el => el.classList.remove('active'));
+    document.getElementById('al-'+val).classList.add('active');
+  }
+  autoSave();
 }
 
 function loadPage() {
@@ -267,19 +259,20 @@ function loadPage() {
   if(!it) return;
   
   document.getElementById('itemTitle').value = it.title || '';
-  document.getElementById('itemCategory').value = it.category || '';
   document.getElementById('itemImage').value = it.image || '';
-  document.getElementById('imgSize').value = it.imgSize || 'large';
-  document.getElementById('imgAlign').value = it.imgAlign || 'center';
-  document.getElementById('itemText').innerHTML = it.text || ''; // Rich text HTML
+  document.getElementById('itemText').innerHTML = it.text || ''; 
   
-  // Règle UI spéciale pour la couverture
+  setImgOpt('size', it.imgSize || 'medium');
+  setImgOpt('align', it.imgAlign || 'center');
+  
   if(currentMode === 'book' && currentId === 'cover') {
     document.getElementById('coverHint').style.display = 'block';
     document.getElementById('grpImgOptions').style.display = 'none';
+    document.getElementById('grpImgAlign').style.display = 'none';
   } else {
     document.getElementById('coverHint').style.display = 'none';
     document.getElementById('grpImgOptions').style.display = 'flex';
+    document.getElementById('grpImgAlign').style.display = 'flex';
   }
 }
 
@@ -287,11 +280,10 @@ function saveCurrent() {
   const it = appData[currentMode]?.items.find(x => x.id === currentId);
   if(it) {
     it.title = document.getElementById('itemTitle').value;
-    it.category = document.getElementById('itemCategory').value;
     it.image = document.getElementById('itemImage').value;
-    it.imgSize = document.getElementById('imgSize').value;
-    it.imgAlign = document.getElementById('imgAlign').value;
-    it.text = document.getElementById('itemText').innerHTML; // Sauvegarde le HTML
+    it.imgSize = document.querySelector('[id^="sz-"].active').id.replace('sz-','');
+    it.imgAlign = document.querySelector('[id^="al-"].active').id.replace('al-','');
+    it.text = document.getElementById('itemText').innerHTML;
   }
   if(appData[currentMode]) appData[currentMode].title = document.getElementById('globalTitle').value;
 }
@@ -302,33 +294,15 @@ function addPage() {
   saveCurrent();
   const items = appData[currentMode].items;
   let newId = '1';
-  
   if(currentMode === 'book') {
-    // Trouve le plus grand numéro de page avant 'end'
-    let max = 0;
-    items.forEach(x => { if(!isNaN(x.id)) max = Math.max(max, parseInt(x.id)); });
+    let max = 0; items.forEach(x => { if(!isNaN(x.id)) max = Math.max(max, parseInt(x.id)); });
     newId = String(max + 1);
-    // Insère avant 'end'
     const endIndex = items.findIndex(x => x.id === 'end');
-    items.splice(endIndex, 0, { id: newId, title: "", text: "" });
-  } else {
-    let max = 0; items.forEach(x => max = Math.max(max, parseInt(x.id)||0));
-    newId = String(max + 1);
-    items.push({ id: newId, title: "", text: "" });
+    items.splice(endIndex, 0, { id: newId, title: "", text: "", imgSize:"medium", imgAlign:"center" });
   }
-  
   currentId = newId; refreshSelector();
 }
 
-function deletePage() {
-  if(['cover','summary','end'].includes(currentId)) return alert("Impossible de supprimer cette structure de base.");
-  if(appData[currentMode].items.length <= 1) return;
-  if(!confirm(i18n[currentLang].fr ? "Supprimer ?" : "Delete?")) return;
-  appData[currentMode].items = appData[currentMode].items.filter(x => x.id !== currentId);
-  currentId = appData[currentMode].items[0].id; refreshSelector();
-}
-
-// Majuscule/Minuscule sur le texte sélectionné
 function transformCase() {
   const sel = window.getSelection();
   if (!sel.rangeCount || sel.toString().length === 0) return;
@@ -341,24 +315,27 @@ function cycleTheme() {
   themeIdx = (themeIdx + 1) % themes.length;
   const th = themes[themeIdx];
   const sheet = document.getElementById('sheet');
+  const edBox = document.getElementById('editorBox');
+  
   sheet.style.background = `var(--sheet-${th})`;
   sheet.style.color = `var(--sheet-text-${th})`;
+  edBox.style.background = `var(--editor-bg-${th})`;
 }
 
 function exportJSON() {
   autoSave();
   const data = appData[currentMode];
-  // Structure finale pour Pages.
   const exportObj = {
     format: currentMode,
     titre: data.title || 'App',
+    config: { lang: currentLang, theme: themes[themeIdx] },
     items: data.items
   };
   
   const blob = new Blob([JSON.stringify(exportObj, null, 2)], {type: 'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href = url;
-  a.download = `${currentMode === 'book' ? 'livre' : currentMode}.json`;
+  a.download = `data.json`;
   a.click(); URL.revokeObjectURL(url);
 }
 
