@@ -9,15 +9,12 @@
     
     <style>
         :root {
-            /* Couleurs de l'interface du logiciel */
             --bg-app: #1e1e24; 
             --bg-ribbon: #2b2b36;
             --bg-sidebar: #25252f;
             --text-ui: #ffffff;
             --text-muted: #9ca3af;
             --border-color: #3f3f4e;
-            
-            /* Couleurs de la feuille d'écriture */
             --sheet-bg-clair: #ffffff; --sheet-text-clair: #111111;
             --sheet-bg-sombre: #121212; --sheet-text-sombre: #e0e0e0;
             --sheet-bg-papier: #f4ecd8; --sheet-text-papier: #433422;
@@ -26,11 +23,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-app); color: var(--text-ui); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        /* --- RUBAN TYPE MICROSOFT OFFICE --- */
         .ribbon { width: 100%; height: 70px; background-color: var(--bg-ribbon); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
-        
         .ribbon-left { display: flex; align-items: center; gap: 30px; }
-        .logo-container { display: flex; flex-direction: column; line-height: 1.1; }
+        .logo-container { display: flex; flex-direction: column; line-height: 1.1; cursor: pointer; position: relative; }
+        .logo-container:hover .logo-edit-hint { opacity: 1; }
+        .logo-edit-hint { position: absolute; bottom: -15px; left: 0; font-size: 9px; color: cyan; opacity: 0; transition: 0.2s; white-space: nowrap; }
         .logo-text { font-family: 'Newsreader', serif; font-size: 26px; font-weight: 700; font-style: italic; color: #ffffff; letter-spacing: -0.5px; }
         .logo-sub { font-size: 10px; color: cyan; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
         
@@ -43,6 +40,8 @@
         
         .btn-green { background: #10b981; color: white; border: none; }
         .btn-green:hover { background: #059669; }
+        .btn-save { background: #3b82f6; color: white; border: none; }
+        .btn-save:hover { background: #2563eb; }
         .btn-danger { color: #ef4444; }
         .btn-danger:hover { background: rgba(239, 68, 68, 0.1); }
         
@@ -50,10 +49,7 @@
         .font-tool i { font-family: 'Newsreader', serif; font-weight: 700; font-size: 16px; font-style: normal; }
         .font-tool select { border: none; background: transparent; padding: 6px; color: white; outline: none;}
 
-        /* --- CORPS DE L'APPLICATION --- */
         .main-body { display: flex; flex: 1; overflow: hidden; }
-        
-        /* --- SIDEBAR FIXE --- */
         .sidebar { width: 220px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
         .menu-category { font-size: 11px; text-transform: uppercase; color: var(--text-muted); padding: 15px 20px 5px 20px; letter-spacing: 1px; font-weight: 700; }
         .menu-item { padding: 10px 20px; display: flex; align-items: center; gap: 12px; color: var(--text-muted); cursor: pointer; transition: 0.2s; font-size: 13px; font-weight: 500; border-left: 3px solid transparent; }
@@ -61,7 +57,6 @@
         .menu-item.active { color: cyan; background: rgba(0, 255, 255, 0.05); border-left: 3px solid cyan; }
         .menu-item i { width: 16px; text-align: center; }
 
-        /* --- ZONE D'ÉDITION CENTRALE --- */
         .editor-workspace { flex: 1; background-color: #17171c; padding: 40px 20px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; }
         
         .writing-sheet { width: 100%; max-width: 780px; background: var(--sheet-bg-clair); color: var(--sheet-text-clair); border-radius: 4px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 24px; transition: background 0.3s, color 0.3s; }
@@ -80,27 +75,56 @@
         .toolbar-text { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: -15px; z-index: 10;}
         .link-btn { background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); color: inherit; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-weight: 600;}
         .link-btn:hover { background: rgba(0, 255, 255, 0.2); color: cyan; border-color: cyan;}
+        
+        /* Modal pour logo */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: var(--bg-ribbon); border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; width: 90%; max-width: 500px; display: flex; flex-direction: column; gap: 20px; }
+        .modal-box h3 { font-family: 'Newsreader', serif; font-size: 20px; }
+        .modal-box input { background: var(--bg-app); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 6px; font-family: 'Inter', sans-serif; }
+        .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; }
+        
+        .save-indicator { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; }
+        .save-indicator.show { opacity: 1; }
     </style>
 </head>
 <body>
 
-    <!-- RUBAN DU HAUT (OFFICE STYLE) -->
+    <!-- INDICATEUR DE SAUVEGARDE -->
+    <div class="save-indicator" id="saveIndicator">✓ Session sauvegardée</div>
+
+    <!-- MODAL LOGO -->
+    <div class="modal-overlay" id="logoModal">
+        <div class="modal-box">
+            <h3>Personnaliser le logo de Pages</h3>
+            <p style="font-size:13px; color: var(--text-muted);">Entrez l'URL de votre logo (image). Il sera affiché dans l'application Pages.</p>
+            <input type="text" id="logoUrlInput" placeholder="https://monsite.com/logo.png">
+            <div style="display:flex; gap:10px; align-items:center;">
+                <input type="text" id="logoAltInput" placeholder="Texte alternatif (optionnel)" style="flex:1;">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn" onclick="closeLogoModal()">Annuler</button>
+                <button class="btn btn-green" onclick="saveLogo()">Appliquer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RUBAN DU HAUT -->
     <div class="ribbon">
         <div class="ribbon-left">
-            <div class="logo-container">
-                <div class="logo-text">Writer.</div>
+            <div class="logo-container" onclick="openLogoModal()">
+                <div class="logo-text" id="displayLogo">Writer.</div>
                 <div class="logo-sub">The Pages. Sources</div>
+                <div class="logo-edit-hint">Cliquer pour changer le logo</div>
             </div>
             
             <div class="toolbar">
-                <!-- Gestion des pages -->
                 <select id="pageSelector" onchange="loadPageData()"></select>
                 <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i> <span data-i18n="newBtn">+ page</span></button>
                 <button class="btn btn-icon btn-danger" onclick="deletePage()" title="Supprimer la page"><i class="fas fa-trash"></i></button>
                 
                 <div class="toolbar-divider"></div>
                 
-                <!-- Typographie (Tt) -->
                 <div class="font-tool" title="Police du texte">
                     <i>Tt</i>
                     <select id="fontSelector" onchange="changeFont()">
@@ -113,25 +137,20 @@
                     </select>
                 </div>
                 
-                <!-- Thème de la feuille -->
                 <button class="btn btn-icon" onclick="cycleTheme()" title="Couleur de la page"><i class="fa-solid fa-circle-half-stroke"></i></button>
                 
                 <div class="toolbar-divider"></div>
                 
-                <!-- Langue de l'interface -->
                 <button class="btn" onclick="toggleLang()" id="langBtn">EN</button>
-                <button class="btn" onclick="clearSession()" title="Effacer tout le projet" style="margin-left:5px;"><i class="fas fa-eraser"></i></button>
+                <button class="btn btn-save" onclick="manualSave()" title="Sauvegarder la session pour reprendre plus tard"><i class="fas fa-save"></i> Sauvegarder</button>
             </div>
         </div>
         
-        <!-- Téléchargement -->
-        <button class="btn btn-green" onclick="exportJSON()"><i class="fas fa-download"></i> data.json</button>
+        <button class="btn btn-green" onclick="exportPagesData()"><i class="fas fa-download"></i> pages.data</button>
     </div>
 
     <!-- CORPS DE L'APPLICATION -->
     <div class="main-body">
-        
-        <!-- SIDEBAR FIXE -->
         <div class="sidebar">
             <div class="menu-category" data-i18n="catReading">Lecture</div>
             <div class="menu-item active" id="tab-book" onclick="setMode('book')"><i class="fas fa-book"></i> <span data-i18n="menuBook">Livre (Poche)</span></div>
@@ -147,17 +166,14 @@
             <div class="menu-item" id="tab-post" onclick="setMode('post')"><i class="fas fa-layer-group"></i> <span data-i18n="menuPost">Fil d'Actualités</span></div>
         </div>
 
-        <!-- ZONE D'ÉDITION -->
         <div class="editor-workspace">
             <div class="writing-sheet" id="writingSheet">
                 
-                <!-- Titre Global de l'App -->
                 <div class="input-group" style="padding-bottom: 25px; border-bottom: 1px dashed rgba(128,128,128,0.3);">
                     <label id="globalTitleLabel" data-i18n="lblAppTitle">Nom du Livre / Projet (Global)</label>
                     <input type="text" id="globalTitle" class="text-input" placeholder="Ex: Mon Livre Magique" oninput="autoSave()">
                 </div>
 
-                <!-- Ligne Titre de page / Catégorie -->
                 <div class="meta-row">
                     <div class="input-group">
                         <label id="labelTitle" data-i18n="lblPageTitle">Nom de la page (S'affiche dans l'application)</label>
@@ -169,16 +185,14 @@
                     </div>
                 </div>
 
-                <!-- URL Image -->
                 <div class="input-group" id="grpImage">
                     <label id="labelImage" data-i18n="lblImage">URL de l'image (Pour la couverture ou l'illustration)</label>
                     <input type="text" id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()">
                 </div>
 
-                <!-- Texte -->
                 <div class="input-group" style="flex:1;">
                     <div class="toolbar-text">
-                        <button class="link-btn" onclick="insertInternalLink()" title="Créer un lien vers une autre page (ex: pour le sommaire)"><i class="fas fa-link"></i> Insérer un lien interne</button>
+                        <button class="link-btn" onclick="insertInternalLink()" title="Créer un lien vers une autre page"><i class="fas fa-link"></i> Insérer un lien interne</button>
                     </div>
                     <label id="labelText" data-i18n="lblText">Contenu</label>
                     <textarea id="itemText" class="main-textarea" placeholder="Commencez à écrire..." oninput="autoSave()"></textarea>
@@ -216,8 +230,15 @@
         };
 
         let currentLang = 'fr';
+        
+        // --- CONFIGURATION GLOBALE (exportée dans pages.data) ---
+        let appConfig = {
+            logoUrl: '',
+            logoAlt: 'Writer.',
+            fontFamily: "'Newsreader', serif",
+            theme: 'clair'
+        };
 
-        // --- MOTEUR DE DONNÉES (Structure Standardisée) ---
         let defaultData = {
             book: { 
                 title: "", 
@@ -240,48 +261,103 @@
         let currentMode = 'book';
         let currentPageId = 'cover';
         
-        // --- GESTION DE SESSION (Sauvegarde automatique) ---
+        // --- GESTION DE SESSION ---
         function loadSession() {
-            const savedData = localStorage.getItem('writer_session_v2');
+            const savedData = localStorage.getItem('writer_session_v3');
             if(savedData) {
-                appData = JSON.parse(savedData);
+                const parsed = JSON.parse(savedData);
+                appData = parsed.data || appData;
+                appConfig = parsed.config || appConfig;
+                
+                // Appliquer la config
+                if(appConfig.logoUrl) {
+                    document.getElementById('displayLogo').innerHTML = `<img src="${appConfig.logoUrl}" alt="${appConfig.logoAlt}" style="height:30px; vertical-align:middle;">`;
+                }
+                if(appConfig.fontFamily) {
+                    document.getElementById('fontSelector').value = appConfig.fontFamily;
+                    document.getElementById('itemText').style.fontFamily = appConfig.fontFamily;
+                }
+                if(appConfig.theme) {
+                    const themes = ['clair', 'papier', 'sombre'];
+                    currentThemeIndex = themes.indexOf(appConfig.theme);
+                    if(currentThemeIndex === -1) currentThemeIndex = 0;
+                    applyTheme(appConfig.theme);
+                }
             }
             setMode('book');
         }
 
         function saveSession() {
-            localStorage.setItem('writer_session_v2', JSON.stringify(appData));
+            localStorage.setItem('writer_session_v3', JSON.stringify({
+                data: appData,
+                config: appConfig
+            }));
         }
 
-        function clearSession() {
-            if(confirm("Êtes-vous sûr de vouloir effacer tout le projet ? Cette action est irréversible.")) {
-                localStorage.removeItem('writer_session_v2');
-                appData = JSON.parse(JSON.stringify(defaultData));
-                setMode(currentMode);
+        function manualSave() {
+            autoSave();
+            saveSession();
+            const indicator = document.getElementById('saveIndicator');
+            indicator.classList.add('show');
+            setTimeout(() => indicator.classList.remove('show'), 2000);
+        }
+        
+        // --- GESTION DU LOGO ---
+        function openLogoModal() {
+            document.getElementById('logoModal').classList.add('active');
+            document.getElementById('logoUrlInput').value = appConfig.logoUrl;
+            document.getElementById('logoAltInput').value = appConfig.logoAlt;
+        }
+        
+        function closeLogoModal() {
+            document.getElementById('logoModal').classList.remove('active');
+        }
+        
+        function saveLogo() {
+            const url = document.getElementById('logoUrlInput').value.trim();
+            const alt = document.getElementById('logoAltInput').value.trim() || 'Writer.';
+            
+            appConfig.logoUrl = url;
+            appConfig.logoAlt = alt;
+            
+            if(url) {
+                document.getElementById('displayLogo').innerHTML = `<img src="${url}" alt="${alt}" style="height:30px; vertical-align:middle;">`;
+            } else {
+                document.getElementById('displayLogo').textContent = 'Writer.';
             }
+            
+            closeLogoModal();
+            saveSession();
         }
         
         // --- THÈME ET POLICES ---
         let themes = ['clair', 'papier', 'sombre'];
         let currentThemeIndex = 0;
 
-        function cycleTheme() {
-            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-            const theme = themes[currentThemeIndex];
+        function applyTheme(theme) {
             const sheet = document.getElementById('writingSheet');
-            
             if(theme === 'clair') { sheet.style.background = 'var(--sheet-bg-clair)'; sheet.style.color = 'var(--sheet-text-clair)'; }
             else if (theme === 'papier') { sheet.style.background = 'var(--sheet-bg-papier)'; sheet.style.color = 'var(--sheet-text-papier)'; }
             else { sheet.style.background = 'var(--sheet-bg-sombre)'; sheet.style.color = 'var(--sheet-text-sombre)'; }
+        }
+
+        function cycleTheme() {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            const theme = themes[currentThemeIndex];
+            appConfig.theme = theme;
+            applyTheme(theme);
+            saveSession();
         }
 
         function changeFont() {
             const font = document.getElementById('fontSelector').value;
             document.getElementById('itemText').style.fontFamily = font;
             document.getElementById('itemTitle').style.fontFamily = font;
+            appConfig.fontFamily = font;
+            saveSession();
         }
 
-        // --- TRADUCTION DE L'INTERFACE ---
+        // --- TRADUCTION ---
         function toggleLang() {
             currentLang = currentLang === 'fr' ? 'en' : 'fr';
             document.getElementById('langBtn').innerText = i18n[currentLang].langBtn;
@@ -292,9 +368,10 @@
             });
             updateLabelsForMode();
             refreshSelector();
+            saveSession();
         }
 
-        // --- GESTION DES MODES ET DES DONNÉES ---
+        // --- GESTION DES MODES ---
         function setMode(mode) {
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + mode).classList.add('active');
@@ -311,6 +388,7 @@
 
             updateLabelsForMode();
             refreshSelector();
+            saveSession();
         }
 
         function updateLabelsForMode() {
@@ -349,7 +427,6 @@
                 selector.value = currentPageId; 
                 loadPageData(); 
             } else {
-                // Vider les champs si aucune page
                 document.getElementById('itemTitle').value = '';
                 document.getElementById('itemImage').value = '';
                 document.getElementById('itemText').value = '';
@@ -386,10 +463,8 @@
 
         function addPage() {
             const uniqueId = 'page_' + Date.now();
-            // On calcule le prochain numéro logique pour le titre par défaut
             const num = appData[currentMode].items.length + 1;
             
-            // Si on est dans "book", on l'insère avant le "Book Ending" si possible
             let newPage = { id: uniqueId, title: `Page ${num}`, image: '', text: '', category: '' };
             
             if(currentMode === 'book') {
@@ -418,7 +493,7 @@
             }
         }
 
-        // --- OUTIL DE LIEN INTERNE (Sommaire) ---
+        // --- OUTIL DE LIEN INTERNE ---
         function insertInternalLink() {
             if(!currentPageId) return;
             let options = appData[currentMode].items.map((i, index) => `${index + 1} - ${i.title}`).join('\n');
@@ -429,11 +504,8 @@
                 if (targetIndex >= 0 && targetIndex < appData[currentMode].items.length) {
                     let text = prompt("Texte du lien (ex: Lire le chapitre) :");
                     if (text) {
-                        // Ce code HTML correspond exactement à la fonction navigateToPage(index) dans l'application Pages.
                         let linkHTML = `<a href="#" onclick="navigateToPage(${targetIndex}); return false;" style="color:var(--accent); text-decoration:underline;">${text}</a>`;
                         let textarea = document.getElementById('itemText');
-                        
-                        // Insère à la position du curseur
                         textarea.setRangeText(linkHTML, textarea.selectionStart, textarea.selectionEnd, 'end');
                         autoSave();
                     }
@@ -443,28 +515,36 @@
             }
         }
 
-        // --- GÉNÉRATION JSON ---
-        function exportJSON() {
+        // --- EXPORT pages.data ---
+        function exportPagesData() {
             autoSave();
+            saveSession();
+            
             const formatData = appData[currentMode];
             
             const exportObject = {
                 format: currentMode,
                 titre: formatData.title || (currentLang === 'fr' ? 'Projet sans titre' : 'Untitled Project'),
                 langue: currentLang,
+                config: {
+                    logo: appConfig.logoUrl,
+                    logoAlt: appConfig.logoAlt,
+                    fontFamily: appConfig.fontFamily,
+                    theme: appConfig.theme
+                },
                 items: formatData.items
             };
 
-            let filename = `${currentMode}.json`;
-            if(currentMode === 'book') filename = 'livre.json';
-
             const jsonString = JSON.stringify(exportObject, null, 2);
-            const blob = new Blob([jsonString], { type: "application/json" });
+            const blob = new Blob([jsonString], { type: "application/octet-stream" });
             const url = URL.createObjectURL(blob);
             
             const a = document.createElement("a");
-            a.href = url; a.download = "data.json"; // Renommé selon la demande
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            a.href = url;
+            a.download = "pages.data";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
             URL.revokeObjectURL(url);
         }
 
