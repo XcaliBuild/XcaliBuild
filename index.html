@@ -1,602 +1,159 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="nuit">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Writer. · The Pages. Sources</title>
-    <!-- Polices -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,600&family=Merriweather:ital,wght@0,400;0,700&family=EB+Garamond:ital,wght@0,400;0,600&display=swap" rel="stylesheet">
+    <title>The Pages. Sources | Pro Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Garamond&family=Lora&family=Merriweather&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            /* Palette Glass Black Professionnelle */
-            --bg-base: #000000;
-            --glass-bg: rgba(20, 20, 25, 0.65);
+            --bg-body: #050505;
+            --glass-bg: rgba(25, 25, 30, 0.7);
             --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-hover: rgba(255, 255, 255, 0.12);
-            
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --accent: #0ea5e9; /* Bleu cyan pro */
-            
-            /* Thèmes de la feuille d'écriture */
-            --sheet-nuit: #0f0f11; --sheet-text-nuit: #e5e7eb; --sheet-border-nuit: rgba(255,255,255,0.05);
-            --sheet-creme: #fcfbf9; --sheet-text-creme: #1f2937; --sheet-border-creme: rgba(0,0,0,0.1);
-            --sheet-papier: #f4ebd8; --sheet-text-papier: #3e2723; --sheet-border-papier: rgba(0,0,0,0.1);
+            --accent: #06b6d4;
+            --text-main: #e5e7eb;
+            --text-muted: #6b7280;
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: radial-gradient(circle at 50% -20%, #1a1a24 0%, var(--bg-base) 100%);
-            color: var(--text-main); 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
-        
-        /* SCROLLBAR MODERNE ET DISCRÈTE */
-        ::-webkit-scrollbar { width: 5px; height: 5px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; }
 
-        /* EFFET GLASSMORPHISM GÉNÉRIQUE */
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        /* --- RUBAN SUPERIEUR --- */
-        .ribbon { 
-            width: 100%; 
-            height: 64px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: space-between; 
-            padding: 0 24px; 
-            flex-shrink: 0; 
-            z-index: 10;
-        }
-        
-        .ribbon-group { display: flex; align-items: center; gap: 16px; }
-        
-        .logo-text { font-family: 'Newsreader', serif; font-size: 20px; font-weight: 600; color: #fff; letter-spacing: -0.5px; display:flex; align-items:center; gap:8px;}
-        .logo-text span { color: var(--accent); font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; padding: 2px 6px; border: 1px solid rgba(14, 165, 233, 0.3); border-radius: 4px; background: rgba(14, 165, 233, 0.05);}
-        
-        .toolbar-divider { width: 1px; height: 20px; background-color: var(--glass-border); margin: 0 4px; }
-        
-        /* --- BOUTONS PROFESSIONNELS --- */
-        select, .btn { 
-            background: transparent; 
-            color: var(--text-main); 
-            border: 1px solid transparent; 
-            padding: 7px 12px; 
-            border-radius: 6px; 
-            font-family: 'Inter', sans-serif; 
-            font-size: 12px; 
-            font-weight: 500; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            transition: all 0.2s ease; 
-            outline: none; 
-        }
-        
-        .btn:hover { background: var(--glass-hover); border-color: var(--glass-border); }
-        .btn-outline { border: 1px solid var(--glass-border); background: rgba(255,255,255,0.02); }
-        .btn-outline:hover { background: var(--glass-hover); }
-        
-        .btn-primary { background: var(--accent); color: #000; font-weight: 600; } 
-        .btn-primary:hover { background: #0284c7; border-color: transparent;}
-        
-        .btn-danger:hover { color: #ef4444; background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.2); }
-        .btn-new { color: #eab308; } .btn-new:hover { background: rgba(234, 179, 8, 0.1); border-color: rgba(234, 179, 8, 0.3); }
-
-        /* FIX DU FOND BLANC SUR LE SELECTEUR */
-        select { border: 1px solid var(--glass-border); background: rgba(0,0,0,0.2); appearance: auto; }
-        select option { background-color: #111111; color: #ffffff; font-size: 13px; }
-
-        .sync-indicator { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        .sync-indicator.synced i { color: #10b981; }
-        .sync-indicator.saving i { color: #f59e0b; animation: spin 1s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        /* --- STRUCTURE PRINCIPALE --- */
-        .main-body { display: flex; flex: 1; overflow: hidden; position: relative;}
+        /* HEADER */
+        header { height: 60px; background: var(--glass-bg); backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 100; }
+        .logo-branding { color: var(--accent); font-family: 'Newsreader', serif; font-size: 18px; font-weight: 700; }
         
         /* SIDEBAR */
-        .sidebar { 
-            width: 220px; 
-            background: rgba(10, 10, 12, 0.4); 
-            border-right: 1px solid var(--glass-border); 
-            display: flex; 
-            flex-direction: column; 
-            overflow-y: auto; 
-            flex-shrink: 0; 
-        }
-        .menu-category { font-size: 10px; text-transform: uppercase; color: var(--text-muted); padding: 20px 20px 8px 20px; letter-spacing: 1px; font-weight: 600; }
-        .menu-item { padding: 8px 20px; display: flex; align-items: center; gap: 10px; color: var(--text-muted); cursor: pointer; transition: 0.2s; font-size: 13px; border-left: 2px solid transparent; }
-        .menu-item:hover { color: var(--text-main); background: var(--glass-hover); }
-        .menu-item.active { color: #fff; background: rgba(255,255,255,0.05); border-left: 2px solid var(--accent); font-weight: 500;}
+        .app-container { display: flex; flex: 1; overflow: hidden; }
+        nav { width: 200px; background: rgba(10,10,15,0.5); border-right: 1px solid var(--glass-border); display: flex; flex-direction: column; padding: 20px 0; }
+        .nav-item { padding: 12px 20px; cursor: pointer; color: var(--text-muted); font-size: 13px; font-weight: 500; transition: 0.2s; }
+        .nav-item:hover { color: var(--text-main); background: rgba(255,255,255,0.03); }
+        .nav-item.active { color: var(--accent); border-left: 2px solid var(--accent); }
 
-        /* WORKSPACE & FEUILLE D'ECRITURE */
-        .workspace { 
-            flex: 1; 
-            padding: 40px; 
-            overflow-y: auto; 
-            display: flex; 
-            justify-content: center; /* Centrage parfait sur PC */
-            align-items: flex-start; 
-        }
+        /* WORKSPACE */
+        .workspace { flex: 1; overflow-y: auto; padding: 40px; display: flex; justify-content: center; }
+        .editor-sheet { width: 100%; max-width: 700px; background: #fff; color: #111; padding: 60px; border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); min-height: 900px; }
         
-        .writing-sheet { 
-            width: 100%; 
-            max-width: 850px; /* Taille optimale pour lecture/ecriture sur PC */
-            border-radius: 6px; 
-            padding: 60px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 28px; 
-            transition: background 0.3s, color 0.3s; 
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* Thèmes d'Écriture */
-        body[data-theme="nuit"] .writing-sheet { background: var(--sheet-nuit); color: var(--sheet-text-nuit); border: 1px solid var(--sheet-border-nuit); }
-        body[data-theme="creme"] .writing-sheet { background: var(--sheet-creme); color: var(--sheet-text-creme); border: 1px solid var(--sheet-border-creme); }
-        body[data-theme="papier"] .writing-sheet { background: var(--sheet-papier); color: var(--sheet-text-papier); border: 1px solid var(--sheet-border-papier); }
+        /* THEMES */
+        [data-theme="noir"] .editor-sheet { background: #000; color: #fff; }
+        [data-theme="bleu"] .editor-sheet { background: #002b36; color: #839496; }
+        [data-theme="vieux-papier"] .editor-sheet { background: #f4ecd8; color: #3e2723; }
+        [data-theme="clair-papier"] .editor-sheet { background: #fafafa; color: #222; }
 
-        .input-group { display: flex; flex-direction: column; gap: 6px; }
-        .input-group label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.5; font-weight: 600; font-family: 'Inter', sans-serif; color: inherit;}
+        textarea { width: 100%; border: none; outline: none; font-size: 16px; line-height: 1.8; resize: none; background: transparent; }
         
-        input.text-input { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,0.15); color: inherit; font-size: 20px; font-weight: 600; font-family: inherit; padding: 8px 0; outline: none; transition: 0.2s;}
-        input.text-input:focus { border-bottom-color: var(--accent); }
-        
-        input.meta-input { background: rgba(128,128,128,0.03); border: 1px solid rgba(128,128,128,0.15); color: inherit; font-family: 'Inter', sans-serif; font-size: 13px; padding: 10px 14px; border-radius: 4px; outline: none; width: 100%; transition: 0.2s;}
-        input.meta-input:focus { border-color: var(--accent); background: rgba(128,128,128,0.06);}
-        
-        textarea.main-textarea { width: 100%; flex: 1; min-height: 450px; background: transparent; border: none; color: inherit; font-family: inherit; font-size: 16px; line-height: 1.8; resize: vertical; outline: none; padding-top: 10px;}
-        
-        .meta-row { display: flex; gap: 24px; flex-wrap: wrap; }
-        .meta-row .input-group { flex: 1; min-width: 200px; }
-
-        /* Segments Layout Image (Style Pro) */
-        .segment-group { display: flex; background: rgba(128,128,128,0.05); border-radius: 4px; padding: 3px; border: 1px solid rgba(128,128,128,0.15); }
-        .segment-btn { flex: 1; background: transparent; color: inherit; opacity: 0.5; border: none; padding: 6px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500; cursor: pointer; border-radius: 3px; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .segment-btn:hover { opacity: 0.8; }
-        .segment-btn.active { background: var(--text-main); color: var(--bg-base); opacity: 1; font-weight: 600;}
-        body[data-theme="creme"] .segment-btn.active, body[data-theme="papier"] .segment-btn.active { background: var(--sheet-text-creme); color: var(--sheet-creme); }
-
-        /* --- PREVIEW MODAL (Optimisé Mobile) --- */
-        .btn-preview { position: fixed; bottom: 30px; right: 40px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: var(--text-main); padding: 12px 20px; border-radius: 30px; font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 8px; transition: 0.2s; z-index: 100;}
-        .btn-preview:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
-
-        .preview-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .preview-overlay.active { display: flex; }
-        
-        .preview-container { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .preview-close { align-self: flex-end; background: transparent; border: none; color: white; font-size: 24px; cursor: pointer; opacity: 0.7; transition: 0.2s;}
-        .preview-close:hover { opacity: 1; color: #ef4444; }
-        
-        .preview-screen { background: #faf8f5; border-radius: 24px; overflow-y: auto; overflow-x: hidden; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 8px solid #222;}
-        .preview-screen.mobile { width: 340px; height: 650px; }
-
-        .prv-content { padding: 24px; color: #111; font-size: 15px; line-height: 1.6; }
-        .prv-title { font-size: 1.5em; font-weight: bold; margin-bottom: 16px; line-height: 1.2;}
-        .prv-img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 6px; margin-bottom: 16px; }
-        .prv-img.bg-mode { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.15; border-radius: 0; max-height: none; }
-        .prv-text { position: relative; z-index: 1; white-space: pre-wrap; text-align: left;}
+        .floating-preview { position: fixed; bottom: 30px; right: 30px; background: var(--accent); color: white; padding: 12px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
     </style>
 </head>
-<body data-theme="nuit">
+<body>
 
-    <!-- RUBAN GLASS BLACK -->
-    <div class="ribbon glass">
-        <div class="ribbon-group">
-            <div class="logo-text">The Pages.<span>Sources</span></div>
-            <div class="toolbar-divider"></div>
-            
-            <button class="btn btn-new" onclick="createNewProject()" title="Nouveau Livre"><i class="fas fa-file-medical"></i> <span data-i18n="btnNew">Nouveau</span></button>
-            
-            <select id="pageSelector" onchange="loadPageData()"></select>
-            
-            <button class="btn btn-outline" onclick="addPage()"><i class="fas fa-plus"></i></button>
-            <button class="btn btn-outline btn-danger" onclick="deletePage()"><i class="fas fa-trash"></i></button>
+    <header class="glass">
+        <div class="logo-branding">The Pages. Sources</div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn" onclick="createNewProject()">+ Nouveau Livre</button>
+            <button class="btn" onclick="exportData()">Exporter .data</button>
         </div>
+    </header>
+
+    <div class="app-container">
+        <nav>
+            <div class="menu-category">PROJETS</div>
+            <div id="projectList"></div>
+            <div class="menu-category">PARAMÈTRES</div>
+            <div class="nav-item" onclick="showSection('settings')">Configuration</div>
+        </nav>
+
+        <main class="workspace" id="editorSection">
+            <div class="editor-sheet" id="editorSheet">
+                <input type="text" id="pageTitle" placeholder="Titre de la page" style="width:100%; border:none; font-size: 24px; font-weight:bold; margin-bottom:20px; background:transparent;">
+                <input type="text" id="imgUrl" placeholder="URL Image" style="width:100%; margin-bottom:10px;">
+                <div id="imgLayout" style="margin-bottom:20px;">
+                    <button onclick="setLayout('top')">Haut</button>
+                    <button onclick="setLayout('center')">Centre</button>
+                    <button onclick="setLayout('bottom')">Bas</button>
+                </div>
+                <textarea id="pageContent" class="main-textarea" placeholder="Commencez à écrire..."></textarea>
+            </div>
+        </main>
         
-        <div class="ribbon-group">
-            <div class="sync-indicator synced" id="syncIndicator"><i class="fas fa-check-circle"></i></div>
-            
-            <div class="toolbar-divider"></div>
-            
-            <!-- OUTILS VISUELS -->
-            <select id="fontSelector" onchange="changeFont()" title="Police d'écriture">
-                <option value="Newsreader">Newsreader</option>
-                <option value="Lora">Lora</option>
-                <option value="Merriweather">Merriweather</option>
-                <option value="EB Garamond">Garamond</option>
-                <option value="Inter">Inter</option>
-            </select>
-
-            <button class="btn btn-outline" onclick="cycleTheme()" title="Mode de lecture"><i class="fa-solid fa-circle-half-stroke"></i></button>
-            <button class="btn btn-outline" onclick="toggleLang()" id="langBtn">EN</button>
-            
-            <div class="toolbar-divider"></div>
-
-            <!-- FICHIERS -->
-            <input type="file" id="importWorkInput" accept=".writerwork,.json" style="display:none" onchange="importWorkflow(event)">
-            <button class="btn btn-outline" onclick="document.getElementById('importWorkInput').click()"><i class="fas fa-upload"></i> <span data-i18n="btnImport">Import</span></button>
-            <button class="btn btn-outline" onclick="exportWorkflow()"><i class="fas fa-download"></i> <span data-i18n="btnBackup">Backup</span></button>
-            
-            <button class="btn btn-outline" onclick="manualSave()" style="color:var(--accent); border-color:rgba(14, 165, 233, 0.3);"><i class="fas fa-save"></i> <span data-i18n="btnSave">Save</span></button>
-            <button class="btn btn-primary" onclick="exportPagesData()">pages.data</button>
-        </div>
-    </div>
-
-    <div class="main-body">
-        <!-- SIDEBAR TRANSLUCIDE -->
-        <div class="sidebar">
-            <div class="menu-category" data-i18n="catReading">Lecture</div>
-            <div class="menu-item active" id="tab-book" onclick="setMode('book')"><i class="fas fa-book"></i> <span data-i18n="menuBook">Livre (Poche)</span></div>
-            <div class="menu-item" id="tab-bd" onclick="setMode('bd')"><i class="fas fa-mask"></i> <span data-i18n="menuBd">Bande Dessinée</span></div>
-            <div class="menu-item" id="tab-enfant" onclick="setMode('enfant')"><i class="fas fa-child"></i> <span data-i18n="menuKid">Livre Enfant</span></div>
-            
-            <div class="menu-category" data-i18n="catEdition">Éditions</div>
-            <div class="menu-item" id="tab-magazine" onclick="setMode('magazine')"><i class="fas fa-th-large"></i> <span data-i18n="menuMag">Magazine</span></div>
-            <div class="menu-item" id="tab-journal" onclick="setMode('journal')"><i class="far fa-newspaper"></i> <span data-i18n="menuNews">Journal</span></div>
-        </div>
-
-        <!-- ESPACE D'ÉCRITURE CENTRAL -->
-        <div class="workspace">
-            <div class="writing-sheet">
-                
-                <div class="input-group">
-                    <label data-i18n="lblAppTitle">Titre de l'œuvre</label>
-                    <input type="text" id="globalTitle" class="text-input" data-i18n-ph="phGlobalTitle" placeholder="Ex: Mon Chef-d'œuvre" oninput="autoSave()">
-                </div>
-
-                <div class="meta-row" style="margin-top: 10px;">
-                    <div class="input-group">
-                        <label data-i18n="lblPageTitle">Titre du chapitre / section</label>
-                        <input type="text" id="itemTitle" class="meta-input" data-i18n-ph="phPageTitle" placeholder="Chapitre 1..." style="font-size: 16px; font-weight:bold; font-family:inherit;" oninput="autoSave()">
-                    </div>
-                </div>
-
-                <div class="meta-row">
-                    <div class="input-group" style="flex:2;">
-                        <label data-i18n="lblImage">Illustration (URL Optionnelle)</label>
-                        <input type="text" id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()">
-                    </div>
-                    <div class="input-group" style="flex:1.5;">
-                        <label data-i18n="lblLayout">Disposition Image</label>
-                        <div class="segment-group">
-                            <button class="segment-btn active" id="lay-top" onclick="setLayout('top')" title="Haut"><i class="fas fa-arrow-up"></i></button>
-                            <button class="segment-btn" id="lay-center" onclick="setLayout('center')" title="Centre"><i class="fas fa-align-center"></i></button>
-                            <button class="segment-btn" id="lay-bottom" onclick="setLayout('bottom')" title="Bas"><i class="fas fa-arrow-down"></i></button>
-                            <button class="segment-btn" id="lay-bg" onclick="setLayout('bg')" title="Fond"><i class="fas fa-image"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="input-group" style="flex:1; margin-top: 10px;">
-                    <label data-i18n="lblText">Corps du texte</label>
-                    <textarea id="itemText" class="main-textarea" data-i18n-ph="phText" placeholder="Commencez à écrire..." oninput="autoSave()"></textarea>
-                </div>
+        <!-- Section Paramètres -->
+        <main class="workspace" id="settingsSection" style="display:none;">
+            <div class="editor-sheet">
+                <h2>Paramètres</h2>
+                <label>Upload Font (.ttf/.otf)</label>
+                <input type="file" id="fontUpload" accept=".ttf,.otf" onchange="loadCustomFont(event)">
+                <label>Langue</label>
+                <select onchange="changeLang(this.value)">
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+                </select>
+                <label>Thème</label>
+                <select onchange="changeTheme(this.value)">
+                    <option value="noir">Noir</option>
+                    <option value="bleu">Écran Bleu</option>
+                    <option value="vieux-papier">Vieux Papier</option>
+                    <option value="clair-papier">Clair Papier</option>
+                </select>
             </div>
-            
-            <button class="btn-preview" onclick="openPreview()"><i class="fas fa-mobile-alt"></i> <span data-i18n="btnPreview">Aperçu Mobile</span></button>
-        </div>
-    </div>
-
-    <!-- PREVIEW MODAL -->
-    <div class="preview-overlay" id="previewModal">
-        <div class="preview-container">
-            <button class="preview-close" onclick="closePreview()"><i class="fas fa-times"></i></button>
-            <div class="preview-screen mobile" id="previewScreen">
-                <div class="prv-content" id="prvContent"></div>
-            </div>
-        </div>
+        </main>
     </div>
 
     <script>
-        // --- DICTIONNAIRES & TRADUCTION INTÉGRALE ---
-        const i18n = {
-            fr: {
-                btnNew: "Nouveau", btnImport: "Import", btnBackup: "Backup", btnSave: "Sauvegarder",
-                catReading: "Lecture", menuBook: "Livre (Poche)", menuBd: "Bande Dessinée", menuKid: "Livre Enfant",
-                catEdition: "Éditions", menuMag: "Magazine", menuNews: "Journal",
-                btnPreview: "Aperçu Mobile",
-                lblAppTitle: "Titre de l'œuvre", lblPageTitle: "Titre du chapitre / section", lblImage: "Illustration (URL Optionnelle)", lblLayout: "Disposition Image", lblText: "Corps du texte",
-                phGlobalTitle: "Ex: Mon Chef-d'œuvre", phPageTitle: "Chapitre 1, Couverture...", phText: "Commencez à écrire votre histoire ici...",
-                cover: "Couverture", summary: "Sommaire", end: "Fin du livre", page: "Page"
-            },
-            en: {
-                btnNew: "New", btnImport: "Import", btnBackup: "Backup", btnSave: "Save",
-                catReading: "Reading", menuBook: "Pocket Book", menuBd: "Comic Book", menuKid: "Children's Book",
-                catEdition: "Publishing", menuMag: "Magazine", menuNews: "Newspaper",
-                btnPreview: "Mobile Preview",
-                lblAppTitle: "Book Title", lblPageTitle: "Chapter / Section Title", lblImage: "Illustration (Optional URL)", lblLayout: "Image Layout", lblText: "Body Text",
-                phGlobalTitle: "Ex: My Masterpiece", phPageTitle: "Chapter 1, Cover...", phText: "Start writing your story here...",
-                cover: "Cover", summary: "Summary", end: "Book End", page: "Page"
-            }
-        };
+        // Data structure simple
+        let projects = JSON.parse(localStorage.getItem('my_books')) || [{id: 1, title: 'Mon Premier Livre', pages: [{title:'Couverture', content:'', img:'', layout:'top'}]}];
+        let currentProjectIndex = 0;
+        let currentPageIndex = 0;
 
-        const fontMapping = {
-            'Newsreader': "'Newsreader', serif", 
-            'Inter': "'Inter', sans-serif",
-            'EB Garamond': "'EB Garamond', serif", 
-            'Lora': "'Lora', serif",
-            'Merriweather': "'Merriweather', serif"
-        };
-
-        let currentLang = 'fr';
-        let appConfig = { fontFamily: 'Newsreader', theme: 'nuit' };
-        let themes = ['nuit', 'creme', 'papier'];
-        let currentThemeIndex = 0;
-        
-        let defaultData = {
-            book: { title: "", items: [{ id: 'cover', title: 'Couverture', image: '', layout: 'top', text: '' }, { id: '1', title: 'Chapitre 1', image: '', layout: 'top', text: '' }] },
-            bd: { title: "", items: [{ id: '1', title: 'Planche 1', image: '', layout: 'bg', text: '' }] },
-            magazine: { title: "", items: [{ id: '1', title: 'Article 1', image: '', layout: 'top', text: '' }] },
-            journal: { title: "", items: [{ id: '1', title: 'News 1', image: '', layout: 'top', text: '' }] },
-            enfant: { title: "", items: [{ id: '1', title: 'Page 1', image: '', layout: 'top', text: '' }] }
-        };
-
-        let appData = JSON.parse(JSON.stringify(defaultData));
-        let currentMode = 'book';
-        let currentPageId = 'cover';
-        let saveTimeout = null;
-
-        // --- NOUVEAU PROJET ---
-        function createNewProject() {
-            const msg = currentLang === 'fr' 
-                ? "Attention : Créer un nouveau projet effacera le travail actuel. Avez-vous cliqué sur 'Backup' ?" 
-                : "Warning: Creating a new project will erase current work. Did you click 'Backup'?";
-            
-            if(confirm(msg)) {
-                appData = JSON.parse(JSON.stringify(defaultData));
-                document.getElementById('globalTitle').value = '';
-                setMode('book');
-                saveSession();
-            }
+        function showSection(id) {
+            document.getElementById('editorSection').style.display = id === 'editor' ? 'flex' : 'none';
+            document.getElementById('settingsSection').style.display = id === 'settings' ? 'flex' : 'none';
         }
 
-        // --- SYNCHRONISATION ---
-        function setSyncStatus(status) {
-            const indicator = document.getElementById('syncIndicator');
-            if (status === 'synced') indicator.innerHTML = '<i class="fas fa-check-circle"></i>';
-            else if (status === 'saving') indicator.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i>';
-        }
-
-        // --- POLICES ET THÈMES ---
-        function changeFont() {
-            const fontName = document.getElementById('fontSelector').value;
-            appConfig.fontFamily = fontName;
-            applyFont(fontName);
-            saveSession();
-        }
-
-        function applyFont(fontName) {
-            const cssFont = fontMapping[fontName] || fontMapping['Newsreader'];
-            document.getElementById('itemText').style.fontFamily = cssFont;
-            document.getElementById('itemTitle').style.fontFamily = cssFont;
-            document.getElementById('globalTitle').style.fontFamily = cssFont;
-        }
-
-        function cycleTheme() {
-            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-            const theme = themes[currentThemeIndex];
-            appConfig.theme = theme;
+        function changeTheme(theme) {
             document.body.setAttribute('data-theme', theme);
-            saveSession();
         }
 
-        // --- UI & MODES ---
-        function setMode(mode) {
-            document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + mode).classList.add('active');
-            
-            currentMode = mode;
-            document.getElementById('globalTitle').value = appData[mode].title || '';
-            refreshSelector();
-        }
-
-        function refreshSelector() {
-            const selector = document.getElementById('pageSelector');
-            selector.innerHTML = '';
-            const items = appData[currentMode].items;
-            
-            items.forEach((item, index) => {
-                const opt = document.createElement('option');
-                opt.value = item.id;
-                
-                // Traduction dynamique pour le sélecteur
-                if(currentMode === 'book' && item.id === 'cover') opt.text = item.title && item.title !== 'Couverture' && item.title !== 'Cover' ? item.title : i18n[currentLang].cover;
-                else if(currentMode === 'book' && item.id === 'summary') opt.text = item.title && item.title !== 'Sommaire' && item.title !== 'Summary' ? item.title : i18n[currentLang].summary;
-                else opt.text = item.title || `${i18n[currentLang].page} ${index + 1}`;
-                
-                selector.appendChild(opt);
-            });
-            
-            if(!items.find(i => i.id === currentPageId) && items.length > 0) currentPageId = items[0].id;
-            if(currentPageId) { selector.value = currentPageId; loadPageData(); }
-        }
-
-        function loadPageData() {
-            const item = appData[currentMode].items.find(i => i.id === currentPageId);
-            if(!item) return;
-            
-            document.getElementById('itemTitle').value = item.title || '';
-            document.getElementById('itemImage').value = item.image || '';
-            document.getElementById('itemText').value = item.text || '';
-            
-            setLayout(item.layout || 'top', false);
-        }
-
-        function setLayout(layoutStr, doSave = true) {
-            document.querySelectorAll('.segment-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('lay-' + layoutStr).classList.add('active');
-            if(doSave) autoSave();
-        }
-
-        function autoSave() {
-            if(!currentPageId) return;
-            setSyncStatus('saving');
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(() => {
-                appData[currentMode].title = document.getElementById('globalTitle').value;
-                let item = appData[currentMode].items.find(i => i.id === currentPageId);
-                if(item) {
-                    item.title = document.getElementById('itemTitle').value;
-                    item.image = document.getElementById('itemImage').value;
-                    item.text = document.getElementById('itemText').value;
-                    item.layout = document.querySelector('.segment-btn.active').id.replace('lay-', '');
-                    
-                    const opt = document.getElementById('pageSelector').querySelector(`option[value="${currentPageId}"]`);
-                    if(opt) opt.text = item.title || `${i18n[currentLang].page}`;
-                }
-                saveSession();
-                setSyncStatus('synced');
-            }, 500);
-        }
-
-        function addPage() {
-            const newId = 'page_' + Date.now();
-            appData[currentMode].items.push({ id: newId, title: ``, image: '', layout: 'top', text: '' });
-            currentPageId = newId;
-            saveSession(); refreshSelector();
-        }
-
-        function deletePage() {
-            if(appData[currentMode].items.length <= 1) return;
-            appData[currentMode].items = appData[currentMode].items.filter(i => i.id !== currentPageId);
-            saveSession(); refreshSelector();
-        }
-
-        // --- PREVIEW (APERÇU MOBILE) ---
-        function openPreview() {
-            autoSave();
-            const item = appData[currentMode].items.find(i => i.id === currentPageId);
-            if(!item) return;
-
-            const modal = document.getElementById('previewModal');
-            const contentBox = document.getElementById('prvContent');
-            const fontCSS = fontMapping[appConfig.fontFamily] || fontMapping['Newsreader'];
-            
-            contentBox.style.fontFamily = fontCSS;
-            
-            let html = ``;
-            const titleHTML = item.title ? `<div class="prv-title">${item.title}</div>` : '';
-            const imgHTML = item.image ? `<img src="${item.image}" class="prv-img ${item.layout === 'bg' ? 'bg-mode' : ''}">` : '';
-            const txtHTML = item.text ? `<div class="prv-text">${item.text}</div>` : '';
-
-            if(item.layout === 'bg') {
-                html = imgHTML + titleHTML + txtHTML;
-            } else if (item.layout === 'top') {
-                html = imgHTML + titleHTML + txtHTML;
-            } else if (item.layout === 'center') {
-                html = titleHTML + imgHTML + txtHTML;
-            } else if (item.layout === 'bottom') {
-                html = titleHTML + txtHTML + imgHTML;
-            }
-
-            contentBox.innerHTML = html;
-            modal.classList.add('active');
-        }
-
-        function closePreview() { document.getElementById('previewModal').classList.remove('active'); }
-
-        // --- GESTION DES FICHIERS & SESSION ---
-        function saveSession() { localStorage.setItem('writer_sources_pro', JSON.stringify({ data: appData, config: appConfig })); }
-        function manualSave() { autoSave(); saveSession(); setSyncStatus('synced'); }
-
-        function loadSession() {
-            const saved = localStorage.getItem('writer_sources_pro');
-            if(saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    appData = parsed.data || appData;
-                    appConfig = parsed.config || appConfig;
-                    
-                    if(appConfig.fontFamily) {
-                        document.getElementById('fontSelector').value = appConfig.fontFamily;
-                        applyFont(appConfig.fontFamily);
-                    }
-                    if(appConfig.theme) {
-                        currentThemeIndex = themes.indexOf(appConfig.theme) !== -1 ? themes.indexOf(appConfig.theme) : 0;
-                        document.body.setAttribute('data-theme', appConfig.theme);
-                    }
-                } catch(e) {}
-            }
-            setMode('book');
-        }
-
-        function exportWorkflow() {
-            autoSave(); saveSession();
-            const blob = new Blob([JSON.stringify({ data: appData, config: appConfig }, null, 2)], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a"); a.href = url; a.download = "projet.writerwork";
-            a.click(); URL.revokeObjectURL(url);
-        }
-
-        function importWorkflow(event) {
-            const file = event.target.files[0]; if(!file) return;
+        function loadCustomFont(event) {
+            const file = event.target.files[0];
             const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const parsed = JSON.parse(e.target.result);
-                    if(parsed.data && parsed.config) {
-                        appData = parsed.data; appConfig = parsed.config;
-                        saveSession(); loadSession();
-                    }
-                } catch(err) { alert(currentLang === 'fr' ? "Fichier invalide." : "Invalid file."); }
-                event.target.value = '';
+            reader.onload = function(e) {
+                const style = document.createElement('style');
+                style.textContent = `@font-face { font-family: 'CustomFont'; src: url('${e.target.result}'); }`;
+                document.head.appendChild(style);
+                document.body.style.fontFamily = 'CustomFont';
             };
-            reader.readAsText(file);
+            reader.readAsDataURL(file);
         }
 
-        function exportPagesData() {
-            autoSave(); saveSession();
-            const exportObj = {
-                format: currentMode, 
-                langue: currentLang,
-                config: { 
-                    fontFamily: appConfig.fontFamily, 
-                    fontCSS: fontMapping[appConfig.fontFamily]
-                },
-                items: appData[currentMode].items
-            };
-            const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a"); a.href = url; a.download = "pages.data";
-            a.click(); URL.revokeObjectURL(url);
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(projects[currentProjectIndex]));
+            const dl = document.createElement('a');
+            dl.setAttribute("href", dataStr);
+            dl.setAttribute("download", "pages.data");
+            dl.click();
         }
 
-        function toggleLang() {
-            currentLang = currentLang === 'fr' ? 'en' : 'fr';
-            document.getElementById('langBtn').innerText = currentLang === 'fr' ? 'EN' : 'FR';
-            
-            document.querySelectorAll('[data-i18n]').forEach(el => { 
-                if(i18n[currentLang][el.getAttribute('data-i18n')]) {
-                    el.innerText = i18n[currentLang][el.getAttribute('data-i18n')]; 
-                }
+        function createNewProject() {
+            const name = prompt("Nom du nouveau livre :");
+            if(name) {
+                projects.push({id: Date.now(), title: name, pages: [{title:'Nouvelle Page', content:'', img:'', layout:'top'}]});
+                renderProjects();
+            }
+        }
+
+        function renderProjects() {
+            const list = document.getElementById('projectList');
+            list.innerHTML = '';
+            projects.forEach((p, i) => {
+                const div = document.createElement('div');
+                div.className = 'nav-item';
+                div.textContent = p.title;
+                div.onclick = () => { currentProjectIndex = i; showSection('editor'); };
+                list.appendChild(div);
             });
-            document.querySelectorAll('[data-i18n-ph]').forEach(el => { 
-                if(i18n[currentLang][el.getAttribute('data-i18n-ph')]) {
-                    el.placeholder = i18n[currentLang][el.getAttribute('data-i18n-ph')]; 
-                }
-            });
-            refreshSelector();
         }
-
-        window.onload = loadSession;
+        
+        renderProjects();
     </script>
 </body>
 </html>
