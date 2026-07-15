@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Writer. · The Pages. Sources</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Courier+Prime&family=Lora&family=Merriweather&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -23,8 +23,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-app); color: var(--text-ui); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        .ribbon { width: 100%; height: 70px; background-color: var(--bg-ribbon); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+        .ribbon { width: 100%; height: 70px; background-color: var(--bg-ribbon); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; position: relative; }
         .ribbon-left { display: flex; align-items: center; gap: 30px; }
+        .ribbon-right { display: flex; align-items: center; gap: 15px; }
+        
         .logo-container { display: flex; flex-direction: column; line-height: 1.1; cursor: pointer; position: relative; }
         .logo-container:hover .logo-edit-hint { opacity: 1; }
         .logo-edit-hint { position: absolute; bottom: -15px; left: 0; font-size: 9px; color: cyan; opacity: 0; transition: 0.2s; white-space: nowrap; }
@@ -40,14 +42,21 @@
         
         .btn-green { background: #10b981; color: white; border: none; }
         .btn-green:hover { background: #059669; }
-        .btn-save { background: #3b82f6; color: white; border: none; }
-        .btn-save:hover { background: #2563eb; }
         .btn-danger { color: #ef4444; }
         .btn-danger:hover { background: rgba(239, 68, 68, 0.1); }
         
         .font-tool { display: flex; align-items: center; gap: 5px; background: var(--bg-app); padding: 2px 2px 2px 10px; border-radius: 6px; border: 1px solid var(--border-color); }
-        .font-tool i { font-family: 'Newsreader', serif; font-weight: 700; font-size: 16px; font-style: normal; }
-        .font-tool select { border: none; background: transparent; padding: 6px; color: white; outline: none;}
+        .font-tool i { font-size: 16px; }
+        .font-tool select { border: none; background: transparent; padding: 6px; color: white; outline: none; }
+
+        /* Indicateur de synchronisation */
+        .sync-indicator { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); }
+        .sync-indicator i { font-size: 14px; }
+        .sync-indicator.synced i { color: #10b981; }
+        .sync-indicator.saving i { color: #f59e0b; animation: spin 1s linear infinite; }
+        .sync-indicator.error i { color: #ef4444; }
+        
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .main-body { display: flex; flex: 1; overflow: hidden; }
         .sidebar { width: 220px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
@@ -64,10 +73,10 @@
         .input-group { display: flex; flex-direction: column; gap: 8px; position: relative;}
         .input-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; font-weight: 700; font-family: 'Inter', sans-serif; }
         
-        input.text-input { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,0.2); color: inherit; font-size: 26px; font-weight: 700; font-family: 'Newsreader', serif; padding: 5px 0; outline: none; }
+        input.text-input { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,0.2); color: inherit; font-size: 26px; font-weight: 700; font-family: inherit; padding: 5px 0; outline: none; }
         input.meta-input { background: rgba(128,128,128,0.08); border: 1px solid rgba(128,128,128,0.2); color: inherit; font-family: 'Inter', sans-serif; font-size: 13px; padding: 12px; border-radius: 6px; outline: none; width: 100%; }
         
-        textarea.main-textarea { width: 100%; flex: 1; min-height: 500px; background: transparent; border: none; color: inherit; font-family: 'Newsreader', serif; font-size: 17px; line-height: 1.7; resize: none; outline: none; }
+        textarea.main-textarea { width: 100%; flex: 1; min-height: 500px; background: transparent; border: none; color: inherit; font-family: inherit; font-size: 17px; line-height: 1.7; resize: none; outline: none; }
         
         .meta-row { display: flex; gap: 20px; }
         .meta-row .input-group { flex: 1; }
@@ -76,22 +85,15 @@
         .link-btn { background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); color: inherit; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-weight: 600;}
         .link-btn:hover { background: rgba(0, 255, 255, 0.2); color: cyan; border-color: cyan;}
         
-        /* Modal pour logo */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-overlay.active { display: flex; }
         .modal-box { background: var(--bg-ribbon); border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; width: 90%; max-width: 500px; display: flex; flex-direction: column; gap: 20px; }
         .modal-box h3 { font-family: 'Newsreader', serif; font-size: 20px; }
         .modal-box input { background: var(--bg-app); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 6px; font-family: 'Inter', sans-serif; }
         .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; }
-        
-        .save-indicator { position: fixed; bottom: 20px; right: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 8px; font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; }
-        .save-indicator.show { opacity: 1; }
     </style>
 </head>
 <body>
-
-    <!-- INDICATEUR DE SAUVEGARDE -->
-    <div class="save-indicator" id="saveIndicator">✓ Session sauvegardée</div>
 
     <!-- MODAL LOGO -->
     <div class="modal-overlay" id="logoModal">
@@ -120,20 +122,20 @@
             
             <div class="toolbar">
                 <select id="pageSelector" onchange="loadPageData()"></select>
-                <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i> <span data-i18n="newBtn">+ page</span></button>
+                <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i> <span data-i18n="newBtn">page</span></button>
                 <button class="btn btn-icon btn-danger" onclick="deletePage()" title="Supprimer la page"><i class="fas fa-trash"></i></button>
                 
                 <div class="toolbar-divider"></div>
                 
                 <div class="font-tool" title="Police du texte">
-                    <i>Tt</i>
+                    <i class="fas fa-font"></i>
                     <select id="fontSelector" onchange="changeFont()">
-                        <option value="'Newsreader', serif">Newsreader</option>
-                        <option value="'Inter', sans-serif">Inter</option>
-                        <option value="'Courier Prime', monospace">Courier</option>
-                        <option value="'Lora', serif">Lora</option>
-                        <option value="'Merriweather', serif">Merriweather</option>
-                        <option value="'Roboto', sans-serif">Roboto</option>
+                        <option value="Newsreader">Newsreader</option>
+                        <option value="Inter">Inter</option>
+                        <option value="Courier Prime">Courier</option>
+                        <option value="Lora">Lora</option>
+                        <option value="Merriweather">Merriweather</option>
+                        <option value="Roboto">Roboto</option>
                     </select>
                 </div>
                 
@@ -142,11 +144,18 @@
                 <div class="toolbar-divider"></div>
                 
                 <button class="btn" onclick="toggleLang()" id="langBtn">EN</button>
-                <button class="btn btn-save" onclick="manualSave()" title="Sauvegarder la session pour reprendre plus tard"><i class="fas fa-save"></i> Sauvegarder</button>
             </div>
         </div>
         
-        <button class="btn btn-green" onclick="exportPagesData()"><i class="fas fa-download"></i> pages.data</button>
+        <div class="ribbon-right">
+            <!-- INDICATEUR DE SYNCHRONISATION -->
+            <div class="sync-indicator synced" id="syncIndicator">
+                <i class="fas fa-sync-alt"></i>
+                <span id="syncText">Synchronisé</span>
+            </div>
+            
+            <button class="btn btn-green" onclick="exportPagesData()"><i class="fas fa-download"></i> pages.data</button>
+        </div>
     </div>
 
     <!-- CORPS DE L'APPLICATION -->
@@ -206,7 +215,7 @@
         // --- DICTIONNAIRE DE LANGUES ---
         const i18n = {
             fr: {
-                langBtn: "EN", newBtn: "+ page",
+                langBtn: "EN", newBtn: "page",
                 catReading: "Lecture", catEdition: "Éditions", catSocial: "Réseaux",
                 menuBook: "Livre (Poche)", menuBd: "Bande Dessinée", menuKid: "Livre Enfant",
                 menuMag: "Magazine", menuNews: "Journal", menuRecipe: "Recettes", menuPost: "Fil d'Actualités",
@@ -217,7 +226,7 @@
                 lblText: "Contenu", lblTextOpt: "Texte (Optionnel pour BD)"
             },
             en: {
-                langBtn: "FR", newBtn: "+ page",
+                langBtn: "FR", newBtn: "page",
                 catReading: "Reading", catEdition: "Publishing", catSocial: "Social",
                 menuBook: "Pocket Book", menuBd: "Comic Book", menuKid: "Children's Book",
                 menuMag: "Magazine", menuNews: "Newspaper", menuRecipe: "Recipes", menuPost: "News Feed",
@@ -231,11 +240,21 @@
 
         let currentLang = 'fr';
         
-        // --- CONFIGURATION GLOBALE (exportée dans pages.data) ---
+        // --- MAPPING DES POLICES (valeur → CSS font-family) ---
+        const fontMapping = {
+            'Newsreader': "'Newsreader', serif",
+            'Inter': "'Inter', sans-serif",
+            'Courier Prime': "'Courier Prime', monospace",
+            'Lora': "'Lora', serif",
+            'Merriweather': "'Merriweather', serif",
+            'Roboto': "'Roboto', sans-serif"
+        };
+        
+        // --- CONFIGURATION GLOBALE ---
         let appConfig = {
             logoUrl: '',
             logoAlt: 'Writer.',
-            fontFamily: "'Newsreader', serif",
+            fontFamily: 'Newsreader',
             theme: 'clair'
         };
 
@@ -260,46 +279,71 @@
         let appData = JSON.parse(JSON.stringify(defaultData));
         let currentMode = 'book';
         let currentPageId = 'cover';
+        let saveTimeout = null;
+        
+        // --- SYNCHRONISATION ---
+        function setSyncStatus(status) {
+            const indicator = document.getElementById('syncIndicator');
+            const text = document.getElementById('syncText');
+            
+            indicator.className = 'sync-indicator ' + status;
+            
+            switch(status) {
+                case 'synced':
+                    text.textContent = 'Synchronisé';
+                    break;
+                case 'saving':
+                    text.textContent = 'Sauvegarde...';
+                    break;
+                case 'error':
+                    text.textContent = 'Erreur sync';
+                    break;
+            }
+        }
         
         // --- GESTION DE SESSION ---
         function loadSession() {
-            const savedData = localStorage.getItem('writer_session_v3');
+            const savedData = localStorage.getItem('writer_session_v4');
             if(savedData) {
-                const parsed = JSON.parse(savedData);
-                appData = parsed.data || appData;
-                appConfig = parsed.config || appConfig;
-                
-                // Appliquer la config
-                if(appConfig.logoUrl) {
-                    document.getElementById('displayLogo').innerHTML = `<img src="${appConfig.logoUrl}" alt="${appConfig.logoAlt}" style="height:30px; vertical-align:middle;">`;
-                }
-                if(appConfig.fontFamily) {
-                    document.getElementById('fontSelector').value = appConfig.fontFamily;
-                    document.getElementById('itemText').style.fontFamily = appConfig.fontFamily;
-                }
-                if(appConfig.theme) {
-                    const themes = ['clair', 'papier', 'sombre'];
-                    currentThemeIndex = themes.indexOf(appConfig.theme);
-                    if(currentThemeIndex === -1) currentThemeIndex = 0;
-                    applyTheme(appConfig.theme);
+                try {
+                    const parsed = JSON.parse(savedData);
+                    appData = parsed.data || appData;
+                    appConfig = parsed.config || appConfig;
+                    
+                    if(appConfig.logoUrl) {
+                        document.getElementById('displayLogo').innerHTML = `<img src="${appConfig.logoUrl}" alt="${appConfig.logoAlt}" style="height:30px; vertical-align:middle;">`;
+                    }
+                    if(appConfig.fontFamily && fontMapping[appConfig.fontFamily]) {
+                        document.getElementById('fontSelector').value = appConfig.fontFamily;
+                        applyFont(appConfig.fontFamily);
+                    }
+                    if(appConfig.theme) {
+                        const themes = ['clair', 'papier', 'sombre'];
+                        let idx = themes.indexOf(appConfig.theme);
+                        if(idx === -1) idx = 0;
+                        currentThemeIndex = idx;
+                        applyTheme(appConfig.theme);
+                    }
+                    setSyncStatus('synced');
+                } catch(e) {
+                    console.error('Erreur chargement session:', e);
+                    setSyncStatus('error');
                 }
             }
             setMode('book');
         }
 
         function saveSession() {
-            localStorage.setItem('writer_session_v3', JSON.stringify({
-                data: appData,
-                config: appConfig
-            }));
-        }
-
-        function manualSave() {
-            autoSave();
-            saveSession();
-            const indicator = document.getElementById('saveIndicator');
-            indicator.classList.add('show');
-            setTimeout(() => indicator.classList.remove('show'), 2000);
+            try {
+                localStorage.setItem('writer_session_v4', JSON.stringify({
+                    data: appData,
+                    config: appConfig
+                }));
+                setSyncStatus('synced');
+            } catch(e) {
+                console.error('Erreur sauvegarde session:', e);
+                setSyncStatus('error');
+            }
         }
         
         // --- GESTION DU LOGO ---
@@ -336,9 +380,18 @@
 
         function applyTheme(theme) {
             const sheet = document.getElementById('writingSheet');
-            if(theme === 'clair') { sheet.style.background = 'var(--sheet-bg-clair)'; sheet.style.color = 'var(--sheet-text-clair)'; }
-            else if (theme === 'papier') { sheet.style.background = 'var(--sheet-bg-papier)'; sheet.style.color = 'var(--sheet-text-papier)'; }
-            else { sheet.style.background = 'var(--sheet-bg-sombre)'; sheet.style.color = 'var(--sheet-text-sombre)'; }
+            if(theme === 'clair') { 
+                sheet.style.background = 'var(--sheet-bg-clair)'; 
+                sheet.style.color = 'var(--sheet-text-clair)'; 
+            }
+            else if (theme === 'papier') { 
+                sheet.style.background = 'var(--sheet-bg-papier)'; 
+                sheet.style.color = 'var(--sheet-text-papier)'; 
+            }
+            else { 
+                sheet.style.background = 'var(--sheet-bg-sombre)'; 
+                sheet.style.color = 'var(--sheet-text-sombre)'; 
+            }
         }
 
         function cycleTheme() {
@@ -349,11 +402,19 @@
             saveSession();
         }
 
+        function applyFont(fontName) {
+            const cssFont = fontMapping[fontName];
+            if(cssFont) {
+                document.getElementById('itemText').style.fontFamily = cssFont;
+                document.getElementById('itemTitle').style.fontFamily = cssFont;
+                document.getElementById('globalTitle').style.fontFamily = cssFont;
+            }
+        }
+
         function changeFont() {
-            const font = document.getElementById('fontSelector').value;
-            document.getElementById('itemText').style.fontFamily = font;
-            document.getElementById('itemTitle').style.fontFamily = font;
-            appConfig.fontFamily = font;
+            const fontName = document.getElementById('fontSelector').value;
+            appConfig.fontFamily = fontName;
+            applyFont(fontName);
             saveSession();
         }
 
@@ -368,7 +429,6 @@
             });
             updateLabelsForMode();
             refreshSelector();
-            saveSession();
         }
 
         // --- GESTION DES MODES ---
@@ -377,7 +437,7 @@
             document.getElementById('tab-' + mode).classList.add('active');
             currentMode = mode;
             
-            document.getElementById('globalTitle').value = appData[mode].title;
+            document.getElementById('globalTitle').value = appData[mode].title || '';
             
             const grpCat = document.getElementById('grpCategory');
             if(['magazine', 'journal', 'recette', 'post'].includes(mode)) {
@@ -388,7 +448,6 @@
 
             updateLabelsForMode();
             refreshSelector();
-            saveSession();
         }
 
         function updateLabelsForMode() {
@@ -446,19 +505,26 @@
 
         function autoSave() {
             if(!currentPageId) return;
-            appData[currentMode].title = document.getElementById('globalTitle').value;
             
-            let item = appData[currentMode].items.find(i => i.id === currentPageId);
-            if(item) {
-                item.title = document.getElementById('itemTitle').value;
-                item.image = document.getElementById('itemImage').value;
-                item.text = document.getElementById('itemText').value;
-                if(document.getElementById('itemCategory')) item.category = document.getElementById('itemCategory').value;
+            // Afficher "Sauvegarde..." avec debounce
+            setSyncStatus('saving');
+            
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                appData[currentMode].title = document.getElementById('globalTitle').value;
                 
-                const opt = document.getElementById('pageSelector').querySelector(`option[value="${currentPageId}"]`);
-                if(opt) opt.text = item.title || `Page`;
-            }
-            saveSession();
+                let item = appData[currentMode].items.find(i => i.id === currentPageId);
+                if(item) {
+                    item.title = document.getElementById('itemTitle').value;
+                    item.image = document.getElementById('itemImage').value;
+                    item.text = document.getElementById('itemText').value;
+                    if(document.getElementById('itemCategory')) item.category = document.getElementById('itemCategory').value;
+                    
+                    const opt = document.getElementById('pageSelector').querySelector(`option[value="${currentPageId}"]`);
+                    if(opt) opt.text = item.title || `Page`;
+                }
+                saveSession();
+            }, 800);
         }
 
         function addPage() {
@@ -530,6 +596,7 @@
                     logo: appConfig.logoUrl,
                     logoAlt: appConfig.logoAlt,
                     fontFamily: appConfig.fontFamily,
+                    fontCSS: fontMapping[appConfig.fontFamily] || fontMapping['Newsreader'],
                     theme: appConfig.theme
                 },
                 items: formatData.items
@@ -546,6 +613,8 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
+            
+            setSyncStatus('synced');
         }
 
         // Démarrage
