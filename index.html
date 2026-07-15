@@ -25,7 +25,7 @@
         
         .ribbon { width: 100%; height: 70px; background-color: var(--bg-ribbon); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; position: relative; }
         .ribbon-left { display: flex; align-items: center; gap: 30px; }
-        .ribbon-right { display: flex; align-items: center; gap: 15px; }
+        .ribbon-right { display: flex; align-items: center; gap: 12px; }
         
         .logo-container { display: flex; flex-direction: column; line-height: 1.1; cursor: pointer; position: relative; }
         .logo-container:hover .logo-edit-hint { opacity: 1; }
@@ -42,6 +42,8 @@
         
         .btn-green { background: #10b981; color: white; border: none; }
         .btn-green:hover { background: #059669; }
+        .btn-blue { color: #3b82f6; border-color: rgba(59, 130, 246, 0.4); }
+        .btn-blue:hover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
         .btn-danger { color: #ef4444; }
         .btn-danger:hover { background: rgba(239, 68, 68, 0.1); }
         
@@ -154,6 +156,17 @@
                 <span id="syncText">Synchronisé</span>
             </div>
             
+            <div class="toolbar-divider" style="height:30px;"></div>
+
+            <!-- OUTILS WORKFLOW -->
+            <input type="file" id="importWorkInput" accept=".writerwork,.json" style="display:none" onchange="importWorkflow(event)">
+            <button class="btn" onclick="document.getElementById('importWorkInput').click()" title="Importer Workflow"><i class="fas fa-folder-open"></i> <span data-i18n="btnImportWork">Import Work</span></button>
+            <button class="btn" onclick="exportWorkflow()" title="Sauvegarder l'intégralité du travail localement"><i class="fas fa-archive"></i> <span data-i18n="btnExportWork">Backup Workflow</span></button>
+            
+            <button class="btn btn-blue" onclick="manualSave()"><i class="fas fa-save"></i> <span data-i18n="btnSave">Sauvegarder</span></button>
+            
+            <div class="toolbar-divider" style="height:30px;"></div>
+
             <button class="btn btn-green" onclick="exportPagesData()"><i class="fas fa-download"></i> pages.data</button>
         </div>
     </div>
@@ -223,7 +236,8 @@
                 lblPageTitle: "Nom de la page (S'affiche dans l'application)",
                 lblCategory: "Catégorie",
                 lblImage: "URL de l'image (Pour la couverture ou l'illustration)", lblImageReq: "URL DE LA PLANCHE (Obligatoire)",
-                lblText: "Contenu", lblTextOpt: "Texte (Optionnel pour BD)"
+                lblText: "Contenu", lblTextOpt: "Texte (Optionnel pour BD)",
+                btnSave: "Sauvegarder", btnExportWork: "Backup Workflow", btnImportWork: "Import Work"
             },
             en: {
                 langBtn: "FR", newBtn: "page",
@@ -234,7 +248,8 @@
                 lblPageTitle: "Page Name (Displayed in app)",
                 lblCategory: "Category",
                 lblImage: "Image URL (For cover or illustration)", lblImageReq: "COMIC PAGE URL (Required)",
-                lblText: "Content", lblTextOpt: "Text (Optional for Comics)"
+                lblText: "Content", lblTextOpt: "Text (Optional for Comics)",
+                btnSave: "SAVE", btnExportWork: "Backup Workflow", btnImportWork: "Import Work"
             }
         };
 
@@ -281,7 +296,7 @@
         let currentPageId = 'cover';
         let saveTimeout = null;
         
-        // --- SYNCHRONISATION ---
+        // --- SYNCHRONISATION ET SAUVEGARDE MANUELLE ---
         function setSyncStatus(status) {
             const indicator = document.getElementById('syncIndicator');
             const text = document.getElementById('syncText');
@@ -299,6 +314,75 @@
                     text.textContent = 'Erreur sync';
                     break;
             }
+        }
+
+        function manualSave() {
+            autoSave();
+            saveSession();
+            alert(currentLang === 'fr' ? "Votre travail a été sauvegardé avec succès dans le navigateur !" : "Your work has been successfully saved in the browser!");
+        }
+        
+        // --- EXPORT & IMPORT WORKFLOW (.writerwork) ---
+        function exportWorkflow() {
+            autoSave();
+            saveSession();
+            
+            const workflowData = {
+                data: appData,
+                config: appConfig
+            };
+            
+            const jsonString = JSON.stringify(workflowData, null, 2);
+            const blob = new Blob([jsonString], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "mon_projet.writerwork";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importWorkflow(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if(parsed.data && parsed.config) {
+                        appData = parsed.data;
+                        appConfig = parsed.config;
+                        saveSession();
+                        
+                        // Ré-appliquer la configuration visuelle
+                        if(appConfig.logoUrl) {
+                            document.getElementById('displayLogo').innerHTML = `<img src="${appConfig.logoUrl}" alt="${appConfig.logoAlt}" style="height:30px; vertical-align:middle;">`;
+                        } else {
+                            document.getElementById('displayLogo').textContent = 'Writer.';
+                        }
+                        if(appConfig.fontFamily && fontMapping[appConfig.fontFamily]) {
+                            document.getElementById('fontSelector').value = appConfig.fontFamily;
+                            applyFont(appConfig.fontFamily);
+                        }
+                        if(appConfig.theme) {
+                            applyTheme(appConfig.theme);
+                        }
+                        
+                        setMode(currentMode); // Rafraîchit l'interface
+                        alert(currentLang === 'fr' ? "Workflow importé avec succès !" : "Workflow imported successfully!");
+                    } else {
+                        throw new Error("Format invalide");
+                    }
+                } catch(error) {
+                    alert(currentLang === 'fr' ? "Erreur : le fichier est invalide ou corrompu." : "Error: The file is invalid or corrupted.");
+                }
+                event.target.value = ''; // Réinitialiser l'input
+            };
+            reader.readAsText(file);
         }
         
         // --- GESTION DE SESSION ---
