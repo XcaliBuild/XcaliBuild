@@ -1,597 +1,325 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Writer. · The Pages. Sources</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,600&family=Merriweather:ital,wght@0,400;0,700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-base: #000000;
-            --glass-bg: rgba(20, 20, 25, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-hover: rgba(255, 255, 255, 0.12);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --accent: #22d3ee;
-            --sheet-noir: #0f0f11; --sheet-text-noir: #e5e7eb;
-            --sheet-bleu: #0f172a; --sheet-text-bleu: #cbd5e1;
-            --sheet-vieux: #e8dcc6; --sheet-text-vieux: #3e2723;
-            --sheet-clair: #fdfbf7; --sheet-text-clair: #1f2937;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: radial-gradient(circle at 50% -20%, #1a1a24 0%, var(--bg-base) 100%); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        ::-webkit-scrollbar { width: 5px; height: 5px; } ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
-       .glass { background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--glass-border); }
-       .ribbon { width: 100%; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 18px; flex-shrink: 0; z-index: 10; }
-       .ribbon-group { display: flex; align-items: center; gap: 10px; }
-       .logo-text { font-family: 'Newsreader', serif; font-size: 22px; font-weight: 600; color: #fff; letter-spacing: -0.5px; display:flex; align-items:center; gap:10px;}
-       .logo-text.sources { font-family: 'EB Garamond', serif; font-style: italic; font-weight: 400; color: var(--accent); font-size: 22px; letter-spacing: 0.5px; text-shadow: 0 0 18px rgba(34,211,238,0.45); }
-       .toolbar-divider { width: 1px; height: 20px; background-color: var(--glass-border); margin: 0 6px; }
-        select,.btn { background: transparent; color: var(--text-main); border: 1px solid transparent; padding: 7px 12px; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; transition: all 0.2s ease; outline: none; }
-       .btn:hover { background: var(--glass-hover); border-color: var(--glass-border); }
-       .btn-outline { border: 1px solid var(--glass-border); background: rgba(255,255,255,0.02); }
-       .btn-primary { background: var(--accent); color: #000; font-weight: 600; }.btn-primary:hover { background: #06b6d4; }
-       .btn-danger:hover { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
-        select { border: 1px solid var(--glass-border); background: rgba(0,0,0,0.3); }
-        select option { background-color: #111; color: #fff; }
-       .sync-indicator { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
-       .sync-indicator.synced i { color: #10b981; }
-       .main-body { display: flex; flex: 1; overflow: hidden; }
-       .sidebar { width: 240px; background: rgba(10, 10, 12, 0.5); border-right: 1px solid var(--glass-border); display: flex; flex-direction: column; flex-shrink: 0; }
-       .sidebar-scroll { flex: 1; overflow-y: auto; }
-       .menu-category { font-size: 10px; text-transform: uppercase; color: var(--text-muted); padding: 18px 18px 8px 18px; letter-spacing: 1px; font-weight: 600; }
-       .menu-item { padding: 9px 18px; display: flex; align-items: center; gap: 10px; color: var(--text-muted); cursor: pointer; transition: 0.2s; font-size: 13px; border-left: 2px solid transparent; }
-       .menu-item:hover { color: var(--text-main); background: var(--glass-hover); }.menu-item.active { color: #fff; background: rgba(255,255,255,0.05); border-left: 2px solid var(--accent); }
-       .workspace { flex: 1; padding: 32px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; }
-       .writing-sheet { width: 100%; max-width: 820px; border-radius: 10px; padding: 50px; display: flex; flex-direction: column; gap: 24px; transition: all 0.3s; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.05); }
-        body[data-theme="noir"].writing-sheet { background: var(--sheet-noir); color: var(--sheet-text-noir); }
-        body[data-theme="bleu"].writing-sheet { background: radial-gradient(circle at top, #1e293b 0%, var(--sheet-bleu) 100%); color: var(--sheet-text-bleu); border-color: rgba(34,211,238,0.1); }
-        body[data-theme="vieux"].writing-sheet { background: var(--sheet-vieux); color: var(--sheet-text-vieux); background-image: url('https://www.transparenttextures.com/patterns/old-paper.png'); }
-        body[data-theme="clair"].writing-sheet { background: var(--sheet-clair); color: var(--sheet-text-clair); border-color: rgba(0,0,0,0.08); }
-       .input-group { display: flex; flex-direction: column; gap: 6px; }.input-group label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.6; font-weight: 600; display:flex; justify-content:space-between; }
-        input.text-input { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,0.15); color: inherit; font-size: 22px; font-weight: 600; font-family: inherit; padding: 8px 0; outline: none; }
-        input.text-input:focus { border-bottom-color: var(--accent); }
-        input.meta-input { background: rgba(128,128,128,0.06); border: 1px solid rgba(128,128,128,0.15); color: inherit; font-family: 'Inter', sans-serif; font-size: 13px; padding: 10px 14px; border-radius: 6px; outline: none; width: 100%; }
-        textarea.main-textarea { width: 100%; min-height: 380px; background: transparent; border: none; color: inherit; font-family: inherit; font-size: 17px; line-height: 1.85; resize: vertical; outline: none; }
-       .meta-row { display: flex; gap: 18px; flex-wrap: wrap; }.meta-row.input-group { flex: 1; min-width: 180px; }
-       .segment-group { display: flex; background: rgba(128,128,128,0.08); border-radius: 6px; padding: 3px; border: 1px solid rgba(128,128,128,0.15); }
-       .segment-btn { flex: 1; background: transparent; color: inherit; opacity: 0.6; border: none; padding: 7px; font-size: 11px; cursor: pointer; border-radius: 4px; display:flex; align-items:center; justify-content:center; gap:5px; }.segment-btn.active { background: var(--text-main); color: #000; opacity: 1; font-weight: 600; }
-        body[data-theme="vieux"].segment-btn.active, body[data-theme="clair"].segment-btn.active { background: #111; color: #fff; }
-        input[type="range"] { width: 100%; accent-color: var(--accent); }
-       .char-counter { font-size: 11px; text-align: right; margin-top: 4px; }.char-counter.warn { color: #f59e0b; }.char-counter.over { color: #ef4444; font-weight: 600; }
-       .btn-preview { position: fixed; bottom: 24px; right: 24px; background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); color: var(--text-main); padding: 12px 18px; border-radius: 30px; font-size: 13px; cursor: pointer; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; gap: 8px; z-index: 50; }
-       .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.82); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; z-index: 1000; padding: 20px; }.overlay.active { display: flex; }
-       .modal-box { background: #111114; border: 1px solid var(--glass-border); border-radius: 16px; width: 100%; max-width: 720px; max-height: 90vh; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
-       .modal-header { padding: 18px 20px; border-bottom: 1px solid var(--glass-border); display:flex; justify-content:space-between; align-items:center; }.modal-header h3 { font-size: 15px; font-weight: 600; }
-       .modal-content { padding: 20px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 20px; }
-       .preview-shell { display: flex; flex-direction: column; align-items: center; gap: 16px; width: 100%; }
-       .preview-topbar { display: flex; gap: 10px; align-items: center; background: #1a1a1e; border: 1px solid var(--glass-border); padding: 8px 12px; border-radius: 30px; }
-       .preview-screen { background: #faf8f5; border-radius: 24px; overflow-y: auto; overflow-x: hidden; position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.8); border: 8px solid #222; transition: all 0.3s; }
-       .preview-screen.mobile { width: 390px; height: 720px; }.preview-screen.tablet { width: 768px; height: 600px; border-radius: 16px; }
-       .prv-content { padding: 26px; color: #111; font-size: 15px; line-height: 1.6; }.prv-title { font-size: 1.6em; font-weight: bold; margin-bottom: 14px; line-height: 1.2; }.prv-img { border-radius: 8px; object-fit: cover; display:block; margin: 12px auto; }.prv-img.bg-mode { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.14; border-radius: 0; z-index: 0; margin: 0; }.prv-text { position: relative; z-index: 1; white-space: pre-wrap; text-align: left; }.prv-split { display: flex; flex-direction: column; gap: 16px; }
-       .project-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border: 1px solid var(--glass-border); border-radius: 8px; background: rgba(255,255,255,0.03); }.project-item.active { border-color: var(--accent); background: rgba(34,211,238,0.08); }
-       .theme-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }.theme-card { padding: 14px; border-radius: 10px; border: 1px solid var(--glass-border); cursor: pointer; text-align: left; }.theme-card.active { border-color: var(--accent); }.font-upload { border: 1px dashed var(--glass-border); padding: 14px; border-radius: 8px; text-align: center; cursor: pointer; }
-    </style>
-    <style id="customFontsStyle"></style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writer. · The Pages. Sources</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Lora:wght@400;600&family=Merriweather:wght@400;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--bg:#000;--glass:rgba(20,20,25,0.8);--border:rgba(255,255,255,0.08);--hover:rgba(255,255,255,0.1);--text:#f3f4f6;--muted:#9ca3af;--accent:#22d3ee;}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',sans-serif;background:radial-gradient(circle at 50% -20%,#1c1c26 0%,#000 100%);color:var(--text);display:flex;flex-direction:column;height:100vh;overflow:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.15);border-radius:10px}
+.glass{background:var(--glass);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.ribbon{height:64px;display:flex;justify-content:space-between;align-items:center;padding:0 18px;z-index:10}
+.ribbon-group{display:flex;align-items:center;gap:10px}
+.logo{display:flex;flex-direction:column;line-height:1}.logo.main{font-family:'Newsreader',serif;font-size:22px;font-weight:600;letter-spacing:-.5px}.logo.sub{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-top:-2px;margin-left:2px}
+.divider{width:1px;height:20px;background:var(--border);margin:0 6px}
+.btn,select{background:transparent;color:var(--text);border:1px solid transparent;padding:7px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:.2s;outline:none}
+.btn:hover{background:var(--hover);border-color:var(--border)}.btn-outline{border-color:var(--border);background:rgba(255,255,255,.02)}.btn-primary{background:var(--accent);color:#000;font-weight:700}.btn-danger:hover{color:#ef4444;background:rgba(239,68,68,.1)}
+select{border-color:var(--border);background:rgba(0,0,0,.4)}select option{background:#111}
+.sync{font-size:10px;color:var(--muted);text-transform:uppercase;display:flex;gap:6px;align-items:center}.sync.synced i{color:#10b981}
+.main-body{display:flex;flex:1;overflow:hidden}.sidebar{width:230px;background:rgba(10,10,12,.6);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}.sidebar-scroll{flex:1;overflow-y:auto}
+.cat{font-size:10px;text-transform:uppercase;color:var(--muted);padding:18px 18px 8px;letter-spacing:1px;font-weight:600}.menu-item{padding:9px 18px;display:flex;gap:10px;color:var(--muted);cursor:pointer;font-size:13px;border-left:2px solid transparent}.menu-item:hover{background:var(--hover);color:var(--text)}.menu-item.active{color:#fff;background:rgba(255,255,255,.05);border-left-color:var(--accent)}
+.workspace{flex:1;padding:32px;overflow-y:auto;display:flex;justify-content:center;align-items:flex-start}
+.sheet{width:100%;max-width:820px;background:#0f0f11;color:#e5e7eb;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:46px;box-shadow:0 25px 60px rgba(0,0,0,.7);display:flex;flex-direction:column;gap:20px}
+.input-group{display:flex;flex-direction:column;gap:6px;flex:1;min-width:160px}.input-group label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;opacity:.6;font-weight:600;display:flex;justify-content:space-between}
+.text-input{background:transparent;border:none;border-bottom:1px solid rgba(128,128,128,.2);color:inherit;font-size:26px;font-weight:600;font-family:inherit;padding:8px 0;outline:none}.text-input:focus{border-bottom-color:var(--accent)}
+.meta-input{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:inherit;font-family:'Inter',sans-serif;font-size:13px;padding:10px 12px;border-radius:6px;outline:none;width:100%}.meta-input:focus{border-color:var(--accent)}
+.meta-row{display:flex;gap:16px;flex-wrap:wrap}
+.segment-group{display:flex;background:rgba(255,255,255,.06);border-radius:6px;padding:3px;border:1px solid rgba(255,255,255,.1)}.segment-btn{flex:1;background:transparent;color:inherit;opacity:.6;border:none;padding:7px;border-radius:4px;font-size:11px;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:5px}.segment-btn.active{background:#fff;color:#000;opacity:1;font-weight:600}
+textarea.main{width:100%;min-height:380px;background:transparent;border:none;color:inherit;font-family:inherit;font-size:17px;line-height:1.85;resize:vertical;outline:none}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.char-counter{font-size:11px;text-align:right;opacity:.7}.char-counter.warn{color:#f59e0b}.char-counter.over{color:#ef4444;font-weight:700}
+.btn-preview{position:fixed;bottom:22px;right:22px;background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text);padding:12px 18px;border-radius:30px;font-size:13px;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.6);z-index:40;display:flex;gap:8px}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.86);backdrop-filter:blur(12px);display:none;justify-content:center;align-items:center;z-index:1000;padding:18px}.overlay.active{display:flex}
+.modal{ background:#111114;border:1px solid var(--border);border-radius:16px;width:100%;max-width:720px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.9)}
+.modal-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-body{padding:18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:18px}
+.preview-shell{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}.preview-top{display:flex;gap:8px;background:#18181b;border:1px solid var(--border);padding:8px 12px;border-radius:30px;align-items:center}
+.preview-screen{background:#faf8f5;border-radius:24px;overflow:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.8);border:8px solid #222;transition:.3s}.preview-screen.mobile{width:390px;height:700px}.preview-screen.tablet{width:768px;height:580px;border-radius:16px}
+.prv-content{padding:26px;color:#111;font-size:15px;line-height:1.6}.prv-title{font-size:1.6em;font-weight:700;margin-bottom:12px}.prv-img{border-radius:8px;display:block;margin:12px auto;object-fit:cover}.prv-img.bg{position:absolute;inset:0;width:100%;height:100%;border-radius:0;object-fit:cover;margin:0;z-index:0}.prv-text{position:relative;z-index:1;white-space:pre-wrap}
+.close-x{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.7);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5}
+.project-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.03)}.project-item.active{border-color:var(--accent);background:rgba(34,211,238,.08)}
+.upload{border:1px dashed var(--border);padding:12px;border-radius:8px;text-align:center;cursor:pointer}
+.saved-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(120px);background:#0f0f11;border:1px solid rgba(34,211,238,.3);color:#fff;padding:10px 18px;border-radius:30px;display:flex;align-items:center;gap:10px;z-index:3000;opacity:0;transition:all.45s cubic-bezier(.175,.885,.32,1.275);pointer-events:none}
+.saved-toast.show{transform:translateX(-50%) translateY(0);opacity:1}.saved-gif{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;animation:pop.5s}
+@keyframes pop{0%{transform:scale(0)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+</style>
+<style id="customFontsStyle"></style>
 </head>
-<body data-theme="noir">
-    <div class="ribbon glass">
-        <div class="ribbon-group">
-            <div class="logo-text">The Pages.<span class="sources">Sources</span></div>
-            <div class="toolbar-divider"></div>
-            <button class="btn btn-outline" onclick="openProjects()"><i class="fas fa-folder"></i> Mes Projets</button>
-            <select id="pageSelector" onchange="onPageChange()"></select>
-            <button class="btn btn-outline" onclick="addPage()"><i class="fas fa-plus"></i></button>
-            <button class="btn btn-outline btn-danger" onclick="deletePage()"><i class="fas fa-trash"></i></button>
-        </div>
-        <div class="ribbon-group">
-            <div class="sync-indicator synced" id="syncIndicator"><i class="fas fa-check-circle"></i> <span id="syncText">sync</span></div>
-            <div class="toolbar-divider"></div>
-            <select id="fontSelector" onchange="changeFont()"></select>
-            <button class="btn btn-outline" onclick="openSettings()" title="Paramètres"><i class="fas fa-cog"></i></button>
-            <div class="toolbar-divider"></div>
-            <button class="btn btn-outline" onclick="exportWorkflow()"><i class="fas fa-download"></i> Backup</button>
-            <button class="btn btn-outline" onclick="manualSave()" style="color:var(--accent);"><i class="fas fa-save"></i> Save</button>
-            <button class="btn btn-primary" onclick="exportPagesData()">pages.data</button>
-        </div>
-    </div>
+<body>
+<div class="ribbon glass">
+<div class="ribbon-group">
+<div class="logo"><span class="main">The Pages.</span><span class="sub">sources</span></div>
+<div class="divider"></div>
+<button class="btn btn-outline" onclick="openProjects()"><i class="fas fa-folder"></i> <span data-i18n="projects">Mes Projets</span></button>
+<select id="pageSelector" onchange="onPageChange()"></select>
+<button class="btn btn-outline" onclick="addPage()"><i class="fas fa-plus"></i></button>
+<button class="btn btn-outline btn-danger" onclick="deletePage()"><i class="fas fa-trash"></i></button>
+</div>
+<div class="ribbon-group">
+<div class="sync synced" id="syncIndicator"><i class="fas fa-check-circle"></i> <span data-i18n="sync">sync</span></div>
+<div class="divider"></div>
+<select id="fontSelector" onchange="changeFont()"></select>
+<button class="btn btn-outline" onclick="openSettings()"><i class="fas fa-cog"></i></button>
+<button class="btn btn-primary" onclick="manualSave()"><i class="fas fa-save"></i> <span data-i18n="save">Save</span></button>
+<button class="btn btn-primary" style="background:#fff" onclick="exportPagesData()">pages.data</button>
+</div>
+</div>
 
-    <div class="main-body">
-        <div class="sidebar">
-            <div class="sidebar-scroll">
-                <div class="menu-category">Lecture</div>
-                <div class="menu-item active" id="tab-book" onclick="setMode('book')"><i class="fas fa-book"></i> Livre (Poche)</div>
-                <div class="menu-item" id="tab-bd" onclick="setMode('bd')"><i class="fas fa-mask"></i> Bande Dessinée</div>
-                <div class="menu-item" id="tab-enfant" onclick="setMode('enfant')"><i class="fas fa-child"></i> Livre Enfant</div>
-                <div class="menu-category">Éditions</div>
-                <div class="menu-item" id="tab-magazine" onclick="setMode('magazine')"><i class="fas fa-th-large"></i> Magazine</div>
-                <div class="menu-item" id="tab-journal" onclick="setMode('journal')"><i class="far fa-newspaper"></i> Journal</div>
-                <div class="menu-category">Projet Actuel</div>
-                <div style="padding: 0 18px 10px; font-size: 12px; color: var(--text-muted);" id="currentProjectName">-</div>
-            </div>
-            <div style="padding: 12px; border-top: 1px solid var(--glass-border);">
-                <button class="btn btn-outline" style="width:100%; justify-content:center;" onclick="openSettings()"><i class="fas fa-sliders-h"></i> Paramètres</button>
-            </div>
-        </div>
-        <div class="workspace">
-            <div class="writing-sheet">
-                <div class="input-group">
-                    <label>Titre de l'œuvre</label>
-                    <input type="text" id="globalTitle" class="text-input" placeholder="Ex: Mon Chef-d'œuvre" oninput="autoSave()">
-                </div>
-                <div class="meta-row" style="margin-top:8px;">
-                    <div class="input-group" style="flex:2;">
-                        <label>Titre du chapitre / section</label>
-                        <input type="text" id="itemTitle" class="meta-input" placeholder="Chapitre 1..." style="font-weight:bold;" oninput="autoSave()">
-                    </div>
-                </div>
-                <div class="meta-row">
-                    <div class="input-group" style="flex:2;">
-                        <label>Illustration (URL)</label>
-                        <input type="text" id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()">
-                    </div>
-                    <div class="input-group" style="flex:1.3;">
-                        <label>Disposition</label>
-                        <div class="segment-group">
-                            <button class="segment-btn active" id="lay-top" onclick="setLayout('top')"><i class="fas fa-arrow-up"></i> Haut</button>
-                            <button class="segment-btn" id="lay-center" onclick="setLayout('center')"><i class="fas fa-align-center"></i> Centre</button>
-                            <button class="segment-btn" id="lay-bottom" onclick="setLayout('bottom')"><i class="fas fa-arrow-down"></i> Bas</button>
-                            <button class="segment-btn" id="lay-bg" onclick="setLayout('bg')"><i class="fas fa-image"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="meta-row">
-                    <div class="input-group" style="flex:1;">
-                        <label>Taille image <span id="imageSizeVal">70%</span></label>
-                        <input type="range" id="imageSize" min="20" max="100" value="70" oninput="updateImageSize(this.value)">
-                    </div>
-                <div class="input-group" style="flex:1;">
-                    <label>Corps du texte <span id="charCounterLabel"></span></label>
-                    <textarea id="itemText" class="main-textarea" placeholder="Commencez à écrire..." oninput="autoSave()"></textarea>
-                    <div id="charCounter" class="char-counter">0 / 1500</div>
-                </div>
-            </div>
-            <button class="btn-preview" onclick="openPreview()"><i class="fas fa-mobile-alt"></i> Aperçu</button>
-        </div>
-    </div>
+<div class="main-body">
+<div class="sidebar">
+<div class="sidebar-scroll">
+<div class="cat" data-i18n="reading">Lecture</div>
+<div class="menu-item active" id="tab-book" onclick="setMode('book')"><i class="fas fa-book"></i> <span data-i18n="book">Livre (Poche)</span></div>
+<div class="menu-item" id="tab-bd" onclick="setMode('bd')"><i class="fas fa-mask"></i> <span data-i18n="comic">Bande Dessinée</span></div>
+<div class="menu-item" id="tab-enfant" onclick="setMode('enfant')"><i class="fas fa-child"></i> <span data-i18n="kids">Livre Enfant</span></div>
+<div class="cat" data-i18n="editions">Éditions</div>
+<div class="menu-item" id="tab-magazine" onclick="setMode('magazine')"><i class="fas fa-th-large"></i> <span data-i18n="magazine">Magazine</span></div>
+<div class="menu-item" id="tab-journal" onclick="setMode('journal')"><i class="far fa-newspaper"></i> <span data-i18n="newspaper">Journal</span></div>
+<div class="cat" data-i18n="currentProject">Projet Actuel</div>
+<div style="padding:0 18px 10px;font-size:12px;color:var(--muted)" id="currentProjectName">-</div>
+</div>
+</div>
 
-    <!-- PREVIEW OVERLAY -->
-    <div class="overlay" id="previewModal" onclick="handleOverlayClick(event)">
-        <div class="preview-shell" onclick="event.stopPropagation()">
-            <div class="preview-topbar">
-                <button class="btn btn-outline" id="btnMobile" onclick="setPreviewDevice('mobile')"><i class="fas fa-mobile-alt"></i> Mobile</button>
-                <button class="btn btn-outline" id="btnTablet" onclick="setPreviewDevice('tablet')"><i class="fas fa-tablet-alt"></i> Tablette</button>
-                <div class="toolbar-divider"></div>
-                <button class="btn btn-primary" onclick="closePreview()"><i class="fas fa-times"></i> Fermer</button>
-            </div>
-            <div class="preview-screen mobile" id="previewScreen"><div class="prv-content" id="prvContent"></div></div>
-        </div>
-    </div>
+<div class="workspace">
+<div class="sheet" id="sheet">
+<div class="input-group">
+<label data-i18n="workTitle">Titre de l'œuvre</label>
+<input type="text" id="globalTitle" class="text-input" data-i18n-ph="workTitlePh" placeholder="Ex: Mon Chef-d'œuvre" oninput="autoSave()">
+</div>
+<div class="meta-row">
+<div class="input-group"><label data-i18n="author">Auteur</label><input id="globalAuthor" class="meta-input" data-i18n-ph="authorPh" placeholder="Ex: Victor Hugo" oninput="autoSave()"></div>
+<div class="input-group"><label data-i18n="date">Date</label><input id="globalDate" type="date" class="meta-input" oninput="autoSave()"></div>
+</div>
 
-    <!-- PROJECTS OVERLAY -->
-    <div class="overlay" id="projectsModal">
-        <div class="modal-box">
-            <div class="modal-header"><h3><i class="fas fa-folder-open"></i> Mes Projets</h3><button class="btn" onclick="closeProjects()"><i class="fas fa-times"></i></button></div>
-            <div class="modal-content">
-                <div style="display:flex; gap:8px;">
-                    <input type="text" id="newProjectTitle" class="meta-input" placeholder="Titre du nouveau livre..." style="flex:1;">
-                    <button class="btn btn-primary" onclick="createNewProject()"><i class="fas fa-plus"></i> Nouveau Livre</button>
-                </div>
-                <div id="projectsList" style="display:flex; flex-direction:column; gap:8px;"></div>
-            </div>
-        </div>
-    </div>
+<div class="meta-row">
+<div class="input-group" style="flex:2"><label data-i18n="chapterTitle">Titre du chapitre / section</label><input id="itemTitle" class="meta-input" style="font-weight:700" data-i18n-ph="chapterPh" placeholder="Chapitre 1..." oninput="autoSave()"></div>
+</div>
 
-    <!-- SETTINGS OVERLAY -->
-    <div class="overlay" id="settingsModal">
-        <div class="modal-box">
-            <div class="modal-header"><h3><i class="fas fa-cog"></i> Paramètres</h3><button class="btn" onclick="closeSettings()"><i class="fas fa-times"></i></button></div>
-            <div class="modal-content">
-                <div>
-                    <label style="font-size:11px; text-transform:uppercase; opacity:0.6;">Langue</label>
-                    <div style="display:flex; gap:8px; margin-top:8px;">
-                        <button class="btn btn-outline" id="lang-fr" onclick="setLang('fr')">FR Français</button>
-                        <button class="btn btn-outline" id="lang-en" onclick="setLang('en')">EN English</button>
-                    </div>
-                </div>
-                <div>
-                    <label style="font-size:11px; text-transform:uppercase; opacity:0.6;">Thèmes d'écriture</label>
-                    <div class="theme-grid" style="margin-top:8px;">
-                        <button class="theme-card" onclick="setTheme('noir')" data-theme-card="noir" style="background:#0f0f11; color:#e5e7eb;"><b>Noir</b><br><small>Profondeur pure</small></button>
-                        <button class="theme-card" onclick="setTheme('bleu')" data-theme-card="bleu" style="background:#0f172a; color:#cbd5e1;"><b>Écran Bleu</b><br><small>Lecture nuit</small></button>
-                        <button class="theme-card" onclick="setTheme('vieux')" data-theme-card="vieux" style="background:#e8dcc6; color:#3e2723;"><b>Papier Vieux</b><br><small>Texture ancien</small></button>
-                        <button class="theme-card" onclick="setTheme('clair')" data-theme-card="clair" style="background:#fdfbf7; color:#1f2937; border:1px solid #ddd;"><b>Papier Clair</b><br><small>Écran doux</small></button>
-                    </div>
-                </div>
-                <div>
-                    <label style="font-size:11px; text-transform:uppercase; opacity:0.6;">Polices</label>
-                    <div id="fontsList" style="display:flex; flex-direction:column; gap:6px; margin-top:8px;"></div>
-                    <div class="font-upload" style="margin-top:10px;" onclick="document.getElementById('fontFileInput').click()">
-                        <i class="fas fa-upload"></i> Importer une police (.ttf,.otf,.woff,.woff2)
-                        <input type="file" id="fontFileInput" accept=".ttf,.otf,.woff,.woff2" style="display:none" onchange="handleFontUpload(event)">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="meta-row">
+<div class="input-group" style="flex:2"><label data-i18n="image">Illustration (URL)</label><input id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()"></div>
+<div class="input-group" style="flex:1"><label data-i18n="layout">Disposition</label>
+<div class="segment-group">
+<button class="segment-btn active" id="lay-top" onclick="setLayout('top')"><i class="fas fa-arrow-up"></i> <span data-i18n="layoutTop">Haut</span></button>
+<button class="segment-btn" id="lay-center" onclick="setLayout('center')"><i class="fas fa-align-center"></i> <span data-i18n="layoutCenter">Centre</span></button>
+<button class="segment-btn" id="lay-bottom" onclick="setLayout('bottom')"><i class="fas fa-arrow-down"></i> <span data-i18n="layoutBottom">Bas</span></button>
+<button class="segment-btn" id="lay-bg" onclick="setLayout('bg')"><i class="fas fa-image"></i></button>
+</div></div>
+</div>
+
+<div class="meta-row">
+<div class="input-group"><label><span data-i18n="imageSize">Taille image</span> <span id="imageSizeVal">70%</span></label><input type="range" id="imageSize" min="20" max="100" value="70" oninput="updateImageSize(this.value)"></div>
+<div class="input-group" id="bgOpacityGroup" style="display:none"><label><span data-i18n="bgOpacity">Transparence du fond</span> <span id="bgOpacityVal">15%</span></label><input type="range" id="bgOpacity" min="5" max="100" value="15" oninput="updateBgOpacity(this.value)"></div>
+</div>
+
+<div class="input-group" style="flex:1">
+<label><span data-i18n="body">Corps du texte</span> <span id="charCounterLabel"></span></label>
+<textarea id="itemText" class="main" data-i18n-ph="bodyPh" placeholder="Commencez à écrire..." oninput="autoSave()"></textarea>
+<div id="charCounter" class="char-counter">0 / 1500</div>
+</div>
+
+</div>
+<button class="btn-preview" onclick="openPreview()"><i class="fas fa-mobile-alt"></i> <span data-i18n="preview">Aperçu</span></button>
+</div>
+</div>
+
+<div class="overlay" id="previewModal" onclick="if(event.target===this)closePreview()">
+<div class="preview-shell" onclick="event.stopPropagation()">
+<div class="preview-top">
+<button class="btn btn-outline" id="btnMobile" onclick="setPreviewDevice('mobile')"><i class="fas fa-mobile-alt"></i> <span data-i18n="mobile">Mobile</span></button>
+<button class="btn btn-outline" id="btnTablet" onclick="setPreviewDevice('tablet')"><i class="fas fa-tablet-alt"></i> <span data-i18n="tablet">Tablette</span></button>
+<div class="divider"></div>
+<button class="btn btn-primary" onclick="closePreview()"><i class="fas fa-times"></i> <span data-i18n="close">Fermer</span></button>
+</div>
+<div class="preview-screen mobile" id="previewScreen">
+<button class="close-x" onclick="closePreview()"><i class="fas fa-times"></i></button>
+<div class="prv-content" id="prvContent"></div>
+</div>
+</div>
+</div>
+
+<div class="overlay" id="projectsModal">
+<div class="modal"><div class="modal-head"><h3><i class="fas fa-folder-open"></i> <span data-i18n="projects">Mes Projets</span></h3><button class="btn" onclick="closeProjects()"><i class="fas fa-times"></i></button></div>
+<div class="modal-body">
+<div style="display:flex;gap:8px"><input id="newProjectTitle" class="meta-input" data-i18n-ph="newBookPlaceholder" placeholder="Titre du nouveau livre..." style="flex:1"><button class="btn btn-primary" onclick="createNewProject()"><i class="fas fa-plus"></i> <span data-i18n="newBook">Nouveau Livre</span></button></div>
+<div id="projectsList" style="display:flex;flex-direction:column;gap:8px"></div>
+</div></div>
+</div>
+
+<div class="overlay" id="settingsModal">
+<div class="modal"><div class="modal-head"><h3><i class="fas fa-cog"></i> <span data-i18n="settings">Paramètres</span></h3><button class="btn" onclick="closeSettings()"><i class="fas fa-times"></i></button></div>
+<div class="modal-body">
+<div><label style="font-size:11px;text-transform:uppercase;opacity:.6" data-i18n="language">Langue</label>
+<div style="display:flex;gap:8px;margin-top:8px"><button class="btn btn-outline" id="lang-fr" onclick="setLang('fr')">FR Français</button><button class="btn btn-outline" id="lang-en" onclick="setLang('en')">EN English</button></div></div>
+
+<div><label style="font-size:11px;text-transform:uppercase;opacity:.6" data-i18n="fonts">Polices de livre</label>
+<div id="fontsList" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div>
+<div class="upload" style="margin-top:10px" onclick="document.getElementById('fontFileInput').click()"><i class="fas fa-upload"></i> <span data-i18n="fontsHint">Importer une police (.ttf,.otf,.woff,.woff2)</span><input type="file" id="fontFileInput" accept=".ttf,.otf,.woff,.woff2" style="display:none" onchange="handleFontUpload(event)"></div>
+</div>
+
+<div><label style="font-size:11px;text-transform:uppercase;opacity:.6" data-i18n="backup">Sauvegarde</label>
+<p style="font-size:12px;opacity:.6;margin-top:4px" data-i18n="backupDesc">Exporte tout ton projet ou importe un.writerwork</p>
+<div style="display:flex;gap:8px;margin-top:10px">
+<button class="btn btn-outline" onclick="exportWorkflow()"><i class="fas fa-download"></i> <span data-i18n="btnBackup">Backup complet</span></button>
+<button class="btn btn-outline" onclick="document.getElementById('importWorkInput').click()"><i class="fas fa-upload"></i> <span data-i18n="btnImport">Importer.writerwork</span></button>
+<input type="file" id="importWorkInput" accept=".writerwork,.json" style="display:none" onchange="importWorkflow(event)">
+</div></div>
+</div></div>
+</div>
+
+<div id="savedToast" class="saved-toast"><div class="saved-gif">✓</div><span data-i18n="saved">Enregistré!</span></div>
 
 <script>
-const i18n = {
-    fr: { cover:"Couverture", summary:"Sommaire", page:"Page", limitBook:"Page poche (1500)", limitBD:"Planche (500)", limitKid:"Page enfant (700)", limitMag:"Magazine (2000)" },
-    en: { cover:"Cover", summary:"Summary", page:"Page", limitBook:"Pocket page (1500)", limitBD:"Board (500)", limitKid:"Kids page (700)", limitMag:"Magazine (2000)" }
+const i18nDict={
+fr:{projects:"Mes Projets",newBook:"Nouveau Livre",newBookPlaceholder:"Titre du nouveau livre...",sync:"sync",saved:"Enregistré!",workTitle:"Titre de l'œuvre",workTitlePh:"Ex: Mon Chef-d'œuvre",author:"Auteur",authorPh:"Ex: Victor Hugo",date:"Date",chapterTitle:"Titre du chapitre / section",chapterPh:"Chapitre 1, Couverture...",image:"Illustration (URL)",layout:"Disposition",layoutTop:"Haut",layoutCenter:"Centre",layoutBottom:"Bas",imageSize:"Taille image",bgOpacity:"Transparence du fond",body:"Corps du texte",bodyPh:"Commencez à écrire votre histoire ici...",preview:"Aperçu",mobile:"Mobile",tablet:"Tablette",close:"Fermer",settings:"Paramètres",language:"Langue",fonts:"Polices de livre",fontsHint:"Importer une police (.ttf,.otf,.woff,.woff2)",backup:"Sauvegarde",backupDesc:"Exporte tout ton projet ou importe un.writerwork",btnBackup:"Backup complet",btnImport:"Importer.writerwork",save:"Save",pagesData:"pages.data",currentProject:"Projet Actuel",reading:"Lecture",editions:"Éditions",book:"Livre (Poche)",comic:"Bande Dessinée",kids:"Livre Enfant",magazine:"Magazine",newspaper:"Journal",page:"Page",cover:"Couverture",limitBook:"Poche: 1500",limitBD:"BD: 500",limitKid:"Enfant: 700",limitMag:"Mag: 2000"},
+en:{projects:"My Projects",newBook:"New Book",newBookPlaceholder:"New book title...",sync:"sync",saved:"Saved!",workTitle:"Work Title",workTitlePh:"Ex: My Masterpiece",author:"Author",authorPh:"Ex: Victor Hugo",date:"Date",chapterTitle:"Chapter / Section Title",chapterPh:"Chapter 1, Cover...",image:"Illustration (URL)",layout:"Layout",layoutTop:"Top",layoutCenter:"Center",layoutBottom:"Bottom",imageSize:"Image Size",bgOpacity:"Background Opacity",body:"Body Text",bodyPh:"Start writing your story here...",preview:"Preview",mobile:"Mobile",tablet:"Tablet",close:"Close",settings:"Settings",language:"Language",fonts:"Book Fonts",fontsHint:"Import a font (.ttf,.otf,.woff,.woff2)",backup:"Backup",backupDesc:"Export your whole project or import a.writerwork file",btnBackup:"Full Backup",btnImport:"Import.writerwork",save:"Save",pagesData:"pages.data",currentProject:"Current Project",reading:"Reading",editions:"Editions",book:"Pocket Book",comic:"Comic Book",kids:"Children's Book",magazine:"Magazine",newspaper:"Newspaper",page:"Page",cover:"Cover",limitBook:"Pocket: 1500",limitBD:"Comic: 500",limitKid:"Kids: 700",limitMag:"Mag: 2000"}
 };
-const fontMappingBase = {
-    'Newsreader': "'Newsreader', serif",
-    'Inter': "'Inter', sans-serif",
-    'EB Garamond': "'EB Garamond', serif",
-    'Lora': "'Lora', serif",
-    'Merriweather': "'Merriweather', serif"
+const baseFonts={
+'EB Garamond':"'EB Garamond', serif",
+'Crimson Pro':"'Crimson Pro', serif",
+'Libre Baskerville':"'Libre Baskerville', serif",
+'Cormorant Garamond':"'Cormorant Garamond', serif",
+'Lora':"'Lora', serif",
+'Merriweather':"'Merriweather', serif",
+'Playfair Display':"'Playfair Display', serif",
+'Newsreader':"'Newsreader', serif",
+'Inter':"'Inter', sans-serif"
 };
-let fontMapping = {...fontMappingBase};
-let customFonts = [];
-let currentLang = 'fr';
-let currentTheme = 'noir';
-let currentMode = 'book';
-let currentPageId = null;
-let currentProjectId = null;
-let projects = [];
-let appConfig = { fontFamily: 'Newsreader', theme: 'noir' };
-let saveTimeout = null;
-let previewDevice = 'mobile';
+let fontMapping={...baseFonts}; let customFonts=[]; let currentLang=localStorage.getItem('writer_lang')||'fr';
+let currentMode='book'; let currentPageId=null; let currentProjectId=null; let projects=[]; let appConfig={fontFamily:'EB Garamond', theme:'noir'}; let saveTimeout=null; let previewDevice='mobile';
+const LIMITS={book:1500,bd:500,enfant:700,magazine:2000,journal:2000};
+const defaultDataTemplate=()=>({book:{title:"",author:"",date:"",items:[{id:'cover',title:'Couverture',image:'',layout:'top',imageSize:70,bgOpacity:15,text:''},{id:'p1',title:'Chapitre 1',image:'',layout:'top',imageSize:70,bgOpacity:15,text:''}]},bd:{title:"",author:"",date:"",items:[{id:'1',title:'Planche 1',image:'',layout:'bg',imageSize:100,bgOpacity:20,text:''}]},magazine:{title:"",author:"",date:"",items:[{id:'1',title:'Article 1',image:'',layout:'top',imageSize:70,bgOpacity:15,text:''}]},journal:{title:"",author:"",date:"",items:[{id:'1',title:'News 1',image:'',layout:'top',imageSize:70,bgOpacity:15,text:''}]},enfant:{title:"",author:"",date:"",items:[{id:'1',title:'Page 1',image:'',layout:'top',imageSize:80,bgOpacity:15,text:''}]}});
+const uid=()=> 'id_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
 
-const LIMITS = { book:1500, bd:500, enfant:700, magazine:2000, journal:2000 };
-
-let defaultDataTemplate = () => ({
-    book: { title:"", items:[{ id:'cover', title:'Couverture', image:'', layout:'top', imageSize:70, text:'' }, { id:'p1', title:'Chapitre 1', image:'', layout:'top', imageSize:70, text:'' }] },
-    bd: { title:"", items:[{ id:'1', title:'Planche 1', image:'', layout:'bg', imageSize:100, text:'' }] },
-    magazine: { title:"", items:[{ id:'1', title:'Article 1', image:'', layout:'top', imageSize:70, text:'' }] },
-    journal: { title:"", items:[{ id:'1', title:'News 1', image:'', layout:'top', imageSize:70, text:'' }] },
-    enfant: { title:"", items:[{ id:'1', title:'Page 1', image:'', layout:'top', imageSize:80, text:'' }] }
-});
-
-function uid(){ return 'id_'+Date.now()+'_'+Math.random().toString(36).slice(2,7); }
+function applyI18n(){
+ const dict=i18nDict[currentLang]||i18nDict.fr;
+ document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(dict[k]) el.textContent=dict[k]; });
+ document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const k=el.getAttribute('data-i18n-ph'); if(dict[k]) el.placeholder=dict[k]; });
+}
+function setLang(l){ currentLang=l; localStorage.setItem('writer_lang',l); applyI18n(); highlightLang(); refreshSelector(); updateCharCounter(); }
+function highlightLang(){ document.getElementById('lang-fr')?.classList.toggle('btn-primary',currentLang==='fr'); document.getElementById('lang-en')?.classList.toggle('btn-primary',currentLang==='en'); }
 
 function loadCustomFonts(){
-    try{
-        const saved = JSON.parse(localStorage.getItem('writer_custom_fonts')||'[]');
-        customFonts = saved;
-        const styleEl = document.getElementById('customFontsStyle');
-        let css = '';
-        customFonts.forEach(f=>{
-            css += `@font-face{ font-family:'${f.name}'; src:url('${f.dataUrl}'); }\n`;
-            fontMapping[f.name]=`'${f.name}'`;
-        });
-        styleEl.textContent = css;
-        renderFonts();
-        refreshFontSelector();
-    }catch(e){}
+ try{ const saved=JSON.parse(localStorage.getItem('writer_custom_fonts')||'[]'); customFonts=saved;
+  let css=''; saved.forEach(f=>{ css+=`@font-face{font-family:'${f.name}';src:url('${f.dataUrl}');}\n`; fontMapping[f.name]=`'${f.name}'`; });
+  document.getElementById('customFontsStyle').textContent=css; renderFonts(); refreshFontSelector();
+ }catch(e){}
 }
-function refreshFontSelector(){
-    const sel = document.getElementById('fontSelector');
-    const cur = sel.value || appConfig.fontFamily;
-    sel.innerHTML='';
-    Object.keys(fontMapping).forEach(name=>{
-        const o=document.createElement('option'); o.value=name; o.textContent=name; sel.appendChild(o);
-    });
-    sel.value = fontMapping[cur]?cur:Object.keys(fontMapping)[0];
-}
-function handleFontUpload(e){
-    const file = e.target.files[0]; if(!file) return;
-    const reader = new FileReader();
-    reader.onload = ev=>{
-        const dataUrl = ev.target.result;
-        const name = file.name.replace(/\.[^/.]+$/,"").replace(/[^a-zA-Z0-9 _-]/g,'').trim() || 'CustomFont';
-        if(fontMapping[name]){ alert('Police déjà existante'); return; }
-        const styleEl = document.getElementById('customFontsStyle');
-        styleEl.textContent += `\n@font-face{ font-family:'${name}'; src:url('${dataUrl}'); }\n`;
-        fontMapping[name]=`'${name}'`;
-        customFonts.push({name, dataUrl});
-        localStorage.setItem('writer_custom_fonts', JSON.stringify(customFonts));
-        refreshFontSelector();
-        renderFonts();
-        document.getElementById('fontSelector').value=name;
-        changeFont();
-    };
-    reader.readAsDataURL(file);
-    e.target.value='';
-}
-function renderFonts(){
-    const cont = document.getElementById('fontsList');
-    cont.innerHTML='';
-    Object.keys(fontMapping).forEach(name=>{
-        const div=document.createElement('div');
-        div.className='project-item';
-        div.innerHTML=`<span style="font-family:${fontMapping[name]}">${name}</span><small style="opacity:0.5">${customFonts.find(f=>f.name===name)?'custom':'système'}</small>`;
-        cont.appendChild(div);
-    });
-}
+function refreshFontSelector(){ const sel=document.getElementById('fontSelector'); const cur=sel.value||appConfig.fontFamily; sel.innerHTML=''; Object.keys(fontMapping).forEach(n=>{ const o=document.createElement('option'); o.value=n; o.textContent=n; sel.appendChild(o); }); sel.value=fontMapping[cur]?cur:Object.keys(fontMapping)[0]; }
+function handleFontUpload(e){ const file=e.target.files[0]; if(!file) return; const reader=new FileReader(); reader.onload=ev=>{ const dataUrl=ev.target.result; const name=file.name.replace(/\.[^/.]+$/,"").replace(/[^a-zA-Z0-9 _-]/g,'').trim()||'CustomFont'; if(fontMapping[name]){ alert('Font exists'); return; } document.getElementById('customFontsStyle').textContent+=`@font-face{font-family:'${name}';src:url('${dataUrl}');}\n`; fontMapping[name]=`'${name}'`; customFonts.push({name,dataUrl}); localStorage.setItem('writer_custom_fonts',JSON.stringify(customFonts)); refreshFontSelector(); renderFonts(); document.getElementById('fontSelector').value=name; changeFont(); }; reader.readAsDataURL(file); e.target.value=''; }
+function renderFonts(){ const cont=document.getElementById('fontsList'); if(!cont) return; cont.innerHTML=''; Object.keys(fontMapping).forEach(name=>{ const d=document.createElement('div'); d.className='project-item'; d.innerHTML=`<span style="font-family:${fontMapping[name]}">${name}</span><small style="opacity:.5">${customFonts.find(f=>f.name===name)?'custom':'book'}</small>`; cont.appendChild(d); }); }
 
-function loadProjects(){
-    try{
-        projects = JSON.parse(localStorage.getItem('writer_projects_v2')||'[]');
-        currentProjectId = localStorage.getItem('writer_current_project_id');
-        if(projects.length===0){
-            const p = { id:uid(), title:'Mon premier livre', data:defaultDataTemplate(), config:{fontFamily:'Newsreader', theme:'noir'}, mode:'book', pageId:'cover', updatedAt:Date.now() };
-            projects=[p]; currentProjectId=p.id; saveProjects();
-        }
-        if(!projects.find(p=>p.id===currentProjectId)) currentProjectId=projects[0].id;
-    }catch(e){ projects=[]; }
-}
-function saveProjects(){
-    localStorage.setItem('writer_projects_v2', JSON.stringify(projects));
-    localStorage.setItem('writer_current_project_id', currentProjectId);
-}
+function loadProjects(){ try{ projects=JSON.parse(localStorage.getItem('writer_projects_v2')||'[]'); currentProjectId=localStorage.getItem('writer_current_project_id'); if(projects.length===0){ const p={id:uid(),title:'Mon premier livre',data:defaultDataTemplate(),config:{fontFamily:'EB Garamond',theme:'noir'},mode:'book',pageId:'cover',updatedAt:Date.now()}; projects=[p]; currentProjectId=p.id; saveProjects(); } if(!projects.find(p=>p.id===currentProjectId)) currentProjectId=projects[0].id; }catch(e){} }
+function saveProjects(){ localStorage.setItem('writer_projects_v2',JSON.stringify(projects)); localStorage.setItem('writer_current_project_id',currentProjectId); }
 function getCurrentProject(){ return projects.find(p=>p.id===currentProjectId); }
 
 function openProjects(){ renderProjectsList(); document.getElementById('projectsModal').classList.add('active'); }
 function closeProjects(){ document.getElementById('projectsModal').classList.remove('active'); }
-function renderProjectsList(){
-    const list=document.getElementById('projectsList'); list.innerHTML='';
-    projects.slice().sort((a,b)=>b.updatedAt-a.updatedAt).forEach(p=>{
-        const div=document.createElement('div'); div.className='project-item'+(p.id===currentProjectId?' active':'');
-        div.innerHTML=`<div><b>${p.title||'Sans titre'}</b><br><small style="opacity:0.6">${new Date(p.updatedAt).toLocaleString()} · ${p.data[p.mode]?.items?.length||0} pages</small></div>
-        <div style="display:flex; gap:6px;">
-        <button class="btn btn-outline" onclick="switchProject('${p.id}')"><i class="fas fa-external-link-alt"></i></button>
-        <button class="btn btn-outline" onclick="duplicateProject('${p.id}')"><i class="fas fa-copy"></i></button>
-        <button class="btn btn-outline btn-danger" onclick="deleteProject('${p.id}')"><i class="fas fa-trash"></i></button></div>`;
-        list.appendChild(div);
-    });
-}
-function createNewProject(){
-    const input=document.getElementById('newProjectTitle'); const title=input.value.trim()||'Nouveau Livre';
-    const p={ id:uid(), title, data:defaultDataTemplate(), config:{fontFamily:appConfig.fontFamily, theme:currentTheme}, mode:'book', pageId:'cover', updatedAt:Date.now() };
-    projects.unshift(p); currentProjectId=p.id; saveProjects(); loadProjectIntoUI(); input.value=''; renderProjectsList();
-}
+function renderProjectsList(){ const list=document.getElementById('projectsList'); list.innerHTML=''; projects.slice().sort((a,b)=>b.updatedAt-a.updatedAt).forEach(p=>{ const div=document.createElement('div'); div.className='project-item'+(p.id===currentProjectId?' active':''); div.innerHTML=`<div><b>${p.title}</b><br><small style="opacity:.6">${new Date(p.updatedAt).toLocaleString()} · ${p.data[p.mode]?.items?.length||0} pages</small></div><div style="display:flex;gap:6px"><button class="btn btn-outline" onclick="switchProject('${p.id}')"><i class="fas fa-external-link-alt"></i></button><button class="btn btn-outline" onclick="duplicateProject('${p.id}')"><i class="fas fa-copy"></i></button><button class="btn btn-outline btn-danger" onclick="deleteProject('${p.id}')"><i class="fas fa-trash"></i></button></div>`; list.appendChild(div); }); }
+function createNewProject(){ const input=document.getElementById('newProjectTitle'); const title=input.value.trim()|| (currentLang==='en'?'New Book':'Nouveau Livre'); const p={id:uid(),title,data:defaultDataTemplate(),config:{fontFamily:appConfig.fontFamily,theme:'noir'},mode:'book',pageId:'cover',updatedAt:Date.now()}; projects.unshift(p); currentProjectId=p.id; saveProjects(); loadProjectIntoUI(); input.value=''; renderProjectsList(); }
 function switchProject(id){ currentProjectId=id; saveProjects(); loadProjectIntoUI(); closeProjects(); }
-function duplicateProject(id){ const src=projects.find(p=>p.id===id); if(!src) return; const copy=JSON.parse(JSON.stringify(src)); copy.id=uid(); copy.title=src.title+' (copie)'; copy.updatedAt=Date.now(); projects.unshift(copy); saveProjects(); renderProjectsList(); }
-function deleteProject(id){
-    if(projects.length<=1){ alert(currentLang==='fr'?'Il faut au moins un projet':'At least one project'); return; }
-    if(!confirm(currentLang==='fr'?'Supprimer ce projet?':'Delete this project?')) return;
-    projects=projects.filter(p=>p.id!==id); if(currentProjectId===id) currentProjectId=projects[0].id; saveProjects(); loadProjectIntoUI(); renderProjectsList();
-}
+function duplicateProject(id){ const src=projects.find(p=>p.id===id); if(!src) return; const copy=JSON.parse(JSON.stringify(src)); copy.id=uid(); copy.title=src.title+' (copy)'; copy.updatedAt=Date.now(); projects.unshift(copy); saveProjects(); renderProjectsList(); }
+function deleteProject(id){ if(projects.length<=1){ alert('Need 1 project'); return; } if(!confirm(currentLang==='en'?'Delete this project?':'Supprimer ce projet?')) return; projects=projects.filter(p=>p.id!==id); if(currentProjectId===id) currentProjectId=projects[0].id; saveProjects(); loadProjectIntoUI(); renderProjectsList(); }
 
 function loadProjectIntoUI(){
-    const proj=getCurrentProject(); if(!proj) return;
-    appConfig=proj.config||{fontFamily:'Newsreader', theme:'noir'};
-    currentTheme=appConfig.theme||'noir'; document.body.setAttribute('data-theme', currentTheme);
-    currentMode=proj.mode||'book'; currentPageId=proj.pageId||proj.data[currentMode]?.items?.[0]?.id||'cover';
-    document.getElementById('currentProjectName').textContent=proj.title;
-    document.getElementById('globalTitle').value=proj.data[currentMode]?.title||proj.title||'';
-    document.getElementById('fontSelector').value=appConfig.fontFamily||'Newsreader';
-    applyFont(appConfig.fontFamily);
-    setMode(currentMode, false);
-    refreshSelector(true);
-    highlightTheme();
-    highlightLang();
+ const proj=getCurrentProject(); if(!proj) return;
+ appConfig=proj.config||{fontFamily:'EB Garamond',theme:'noir'};
+ document.getElementById('currentProjectName').textContent=proj.title;
+ document.getElementById('globalTitle').value=proj.data[currentMode]?.title||proj.title||'';
+ document.getElementById('globalAuthor').value=proj.data[currentMode]?.author||'';
+ document.getElementById('globalDate').value=proj.data[currentMode]?.date||'';
+ document.getElementById('fontSelector').value=appConfig.fontFamily||'EB Garamond';
+ applyFont(appConfig.fontFamily);
+ setMode(currentMode,false);
+ refreshSelector(true);
+ applyI18n(); highlightLang();
 }
-
-function setLang(l){
-    currentLang=l; localStorage.setItem('writer_lang', l);
-    highlightLang(); refreshSelector();
+function setMode(mode,save=true){
+ currentMode=mode;
+ document.querySelectorAll('.menu-item').forEach(el=>el.classList.remove('active'));
+ document.getElementById('tab-'+mode)?.classList.add('active');
+ const proj=getCurrentProject(); if(proj){ document.getElementById('globalTitle').value=proj.data[mode]?.title||''; document.getElementById('globalAuthor').value=proj.data[mode]?.author||''; document.getElementById('globalDate').value=proj.data[mode]?.date||''; }
+ refreshSelector(); if(save) autoSave();
 }
-function highlightLang(){
-    document.getElementById('lang-fr')?.classList.toggle('btn-primary', currentLang==='fr');
-    document.getElementById('lang-en')?.classList.toggle('btn-primary', currentLang==='en');
-}
-function setTheme(t){
-    currentTheme=t; appConfig.theme=t; document.body.setAttribute('data-theme', t);
-    highlightTheme(); autoSave();
-}
-function highlightTheme(){
-    document.querySelectorAll('[data-theme-card]').forEach(el=> el.classList.toggle('active', el.dataset.themeCard===currentTheme));
-}
-
-function openSettings(){ document.getElementById('settingsModal').classList.add('active'); renderFonts(); highlightTheme(); highlightLang(); }
-function closeSettings(){ document.getElementById('settingsModal').classList.remove('active'); }
-
-function setMode(mode, save=true){
-    currentMode=mode;
-    document.querySelectorAll('.menu-item').forEach(el=> el.classList.remove('active'));
-    const tab=document.getElementById('tab-'+mode); if(tab) tab.classList.add('active');
-    const proj=getCurrentProject(); if(proj){ proj.mode=mode; document.getElementById('globalTitle').value=proj.data[mode]?.title||''; }
-    refreshSelector();
-    if(save) autoSave();
-}
-function refreshSelector(keepPage=false){
-    const proj=getCurrentProject(); if(!proj) return;
-    const selector=document.getElementById('pageSelector'); selector.innerHTML='';
-    const items=proj.data[currentMode]?.items||[];
-    items.forEach((item, idx)=>{
-        const opt=document.createElement('option'); opt.value=item.id;
-        let label=item.title;
-        if(!label){ if(currentMode==='book' && item.id==='cover') label=i18n[currentLang].cover; else label=`${i18n[currentLang].page} ${idx+1}`; }
-        opt.text=label; selector.appendChild(opt);
-    });
-    if(!keepPage ||!items.find(i=>i.id===currentPageId)){ if(items.length) currentPageId=items[0].id; }
-    if(currentPageId) selector.value=currentPageId;
-    loadPageData();
+function refreshSelector(keep=false){
+ const proj=getCurrentProject(); if(!proj) return;
+ const sel=document.getElementById('pageSelector'); sel.innerHTML='';
+ const items=proj.data[currentMode]?.items||[];
+ items.forEach((it,idx)=>{ const o=document.createElement('option'); o.value=it.id; let label=it.title; if(!label){ if(currentMode==='book'&&it.id==='cover') label=i18nDict[currentLang].cover; else label=`${i18nDict[currentLang].page} ${idx+1}`; } o.text=label; sel.appendChild(o); });
+ if(!keep||!items.find(i=>i.id===currentPageId)) currentPageId=items[0]?.id||null;
+ if(currentPageId) sel.value=currentPageId;
+ loadPageData();
 }
 function onPageChange(){ currentPageId=document.getElementById('pageSelector').value; loadPageData(); }
 function loadPageData(){
-    const proj=getCurrentProject(); if(!proj) return;
-    const item=proj.data[currentMode]?.items.find(i=>i.id===currentPageId); if(!item) return;
-    document.getElementById('itemTitle').value=item.title||'';
-    document.getElementById('itemImage').value=item.image||'';
-    document.getElementById('itemText').value=item.text||'';
-    document.getElementById('imageSize').value=item.imageSize||70;
-    document.getElementById('imageSizeVal').textContent=(item.imageSize||70)+'%';
-    setLayout(item.layout||'top', false);
-    updateCharCounter();
+ const proj=getCurrentProject(); if(!proj) return;
+ const item=proj.data[currentMode]?.items.find(i=>i.id===currentPageId); if(!item) return;
+ document.getElementById('itemTitle').value=item.title||'';
+ document.getElementById('itemImage').value=item.image||'';
+ document.getElementById('itemText').value=item.text||'';
+ document.getElementById('imageSize').value=item.imageSize||70; document.getElementById('imageSizeVal').textContent=(item.imageSize||70)+'%';
+ document.getElementById('bgOpacity').value=item.bgOpacity||15; document.getElementById('bgOpacityVal').textContent=(item.bgOpacity||15)+'%';
+ setLayout(item.layout||'top',false); updateCharCounter();
 }
-function setLayout(layoutStr, doSave=true){
-    document.querySelectorAll('.segment-btn').forEach(b=> b.classList.remove('active'));
-    const el=document.getElementById('lay-'+layoutStr); if(el) el.classList.add('active');
-    if(doSave) autoSave();
+function setLayout(l,save=true){
+ document.querySelectorAll('.segment-btn').forEach(b=>b.classList.remove('active'));
+ document.getElementById('lay-'+l)?.classList.add('active');
+ document.getElementById('bgOpacityGroup').style.display = l==='bg'?'flex':'none';
+ if(save) autoSave();
 }
 function updateImageSize(v){ document.getElementById('imageSizeVal').textContent=v+'%'; autoSave(); }
+function updateBgOpacity(v){ document.getElementById('bgOpacityVal').textContent=v+'%'; autoSave(); }
 function updateCharCounter(){
-    const limit=LIMITS[currentMode]||1500;
-    const text=document.getElementById('itemText').value;
-    const len=text.length;
-    const counter=document.getElementById('charCounter');
-    counter.textContent=`${len} / ${limit}`;
-    counter.className='char-counter'+(len>limit?' over': len>limit*0.8?' warn':'');
-    document.getElementById('charCounterLabel').textContent = `· ${i18n[currentLang]['limit'+(currentMode==='book'?'Book': currentMode==='bd'?'BD': currentMode==='enfant'?'Kid':'Mag') ] || (limit+' max')}`;
+ const limit=LIMITS[currentMode]||1500; const txt=document.getElementById('itemText').value; const len=txt.length;
+ const c=document.getElementById('charCounter'); c.textContent=`${len} / ${limit}`; c.className='char-counter'+(len>limit?' over': len>limit*.8?' warn':'');
+ const dict=i18nDict[currentLang]; const key='limit'+(currentMode==='book'?'Book':currentMode==='bd'?'BD':currentMode==='enfant'?'Kid':'Mag');
+ document.getElementById('charCounterLabel').textContent='· '+(dict[key]||limit);
+}
+function showSavedGif(){
+ const toast=document.getElementById('savedToast'); toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),2200);
+ document.getElementById('syncIndicator').innerHTML='<i class="fas fa-check-circle" style="color:#22d3ee"></i> saved';
+ setTimeout(()=>{ document.getElementById('syncIndicator').innerHTML='<i class="fas fa-check-circle"></i> sync'; },2000);
 }
 function autoSave(){
-    const proj=getCurrentProject(); if(!proj) return;
-    setSyncStatus('saving');
-    clearTimeout(saveTimeout);
-    saveTimeout=setTimeout(()=>{
-        const globalTitle=document.getElementById('globalTitle').value;
-        proj.title=globalTitle||proj.title;
-        proj.data[currentMode].title=globalTitle;
-        const item=proj.data[currentMode].items.find(i=>i.id===currentPageId);
-        if(item){
-            const newText=document.getElementById('itemText').value;
-            const limit=LIMITS[currentMode]||1500;
-            if(newText.length>limit){
-                document.getElementById('itemText').value=newText.slice(0,limit);
-            }
-            item.title=document.getElementById('itemTitle').value;
-            item.image=document.getElementById('itemImage').value;
-            item.text=document.getElementById('itemText').value;
-            item.layout=document.querySelector('.segment-btn.active')?.id.replace('lay-','')||'top';
-            item.imageSize=parseInt(document.getElementById('imageSize').value)||70;
-            const opt=document.getElementById('pageSelector').querySelector(`option[value="${currentPageId}"]`);
-            if(opt) opt.text=item.title||`${i18n[currentLang].page}`;
-        }
-        proj.config=appConfig; proj.pageId=currentPageId; proj.mode=currentMode; proj.updatedAt=Date.now();
-        saveProjects();
-        setSyncStatus('synced');
-        updateCharCounter();
-        document.getElementById('currentProjectName').textContent=proj.title;
-    }, 400);
+ const proj=getCurrentProject(); if(!proj) return;
+ document.getElementById('syncIndicator').innerHTML='<i class="fas fa-sync-alt fa-spin"></i> saving';
+ clearTimeout(saveTimeout);
+ saveTimeout=setTimeout(()=>{
+  const gTitle=document.getElementById('globalTitle').value; const gAuthor=document.getElementById('globalAuthor').value; const gDate=document.getElementById('globalDate').value;
+  proj.title=gTitle||proj.title; proj.data[currentMode].title=gTitle; proj.data[currentMode].author=gAuthor; proj.data[currentMode].date=gDate;
+  const item=proj.data[currentMode].items.find(i=>i.id===currentPageId);
+  if(item){
+   let nt=document.getElementById('itemText').value; const limit=LIMITS[currentMode]||1500; if(nt.length>limit) nt=nt.slice(0,limit);
+   document.getElementById('itemText').value=nt;
+   item.title=document.getElementById('itemTitle').value; item.image=document.getElementById('itemImage').value; item.text=nt;
+   item.layout=document.querySelector('.segment-btn.active')?.id.replace('lay-','')||'top';
+   item.imageSize=parseInt(document.getElementById('imageSize').value)||70;
+   item.bgOpacity=parseInt(document.getElementById('bgOpacity').value)||15;
+   const opt=document.getElementById('pageSelector').querySelector(`option[value="${currentPageId}"]`); if(opt) opt.text=item.title||`${i18nDict[currentLang].page}`;
+  }
+  proj.config=appConfig; proj.pageId=currentPageId; proj.mode=currentMode; proj.updatedAt=Date.now();
+  saveProjects(); showSavedGif(); updateCharCounter();
+  document.getElementById('currentProjectName').textContent=proj.title;
+ },400);
 }
-function setSyncStatus(s){
-    const ind=document.getElementById('syncIndicator');
-    if(s==='saving') ind.innerHTML='<i class="fas fa-sync-alt fa-spin"></i> saving';
-    else ind.innerHTML='<i class="fas fa-check-circle"></i> sync';
-}
-function addPage(){
-    const proj=getCurrentProject(); if(!proj) return;
-    const newId='p_'+Date.now();
-    proj.data[currentMode].items.push({ id:newId, title:'', image:'', layout:'top', imageSize:70, text:'' });
-    currentPageId=newId; saveProjects(); refreshSelector(true); autoSave();
-}
-function deletePage(){
-    const proj=getCurrentProject(); if(!proj) return;
-    if(proj.data[currentMode].items.length<=1) return;
-    if(!confirm('Supprimer cette page?')) return;
-    proj.data[currentMode].items=proj.data[currentMode].items.filter(i=>i.id!==currentPageId);
-    currentPageId=proj.data[currentMode].items[0].id; saveProjects(); refreshSelector(true);
-}
-function changeFont(){
-    const name=document.getElementById('fontSelector').value;
-    appConfig.fontFamily=name; applyFont(name); saveProjects();
-}
-function applyFont(name){
-    const css=fontMapping[name]||fontMapping['Newsreader'];
-    document.getElementById('itemText').style.fontFamily=css;
-    document.getElementById('itemTitle').style.fontFamily=css;
-    document.getElementById('globalTitle').style.fontFamily=css;
-}
-function splitTextForCenter(text){
-    if(!text || text.length<60) return [text, ''];
-    const mid=Math.floor(text.length/2);
-    let splitIdx=text.indexOf('\n\n', mid-100);
-    if(splitIdx===-1) splitIdx=text.lastIndexOf('. ', mid);
-    if(splitIdx===-1) splitIdx=mid;
-    return [text.slice(0,splitIdx).trim(), text.slice(splitIdx).trim()];
-}
-function openPreview(){
-    autoSave();
-    const proj=getCurrentProject(); if(!proj) return;
-    const item=proj.data[currentMode].items.find(i=>i.id===currentPageId); if(!item) return;
-    const modal=document.getElementById('previewModal');
-    const contentBox=document.getElementById('prvContent');
-    const fontCSS=fontMapping[appConfig.fontFamily]||fontMapping['Newsreader'];
-    contentBox.style.fontFamily=fontCSS;
-    let html='';
-    const titleHTML=item.title?`<div class="prv-title">${escapeHtml(item.title)}</div>`:'';
-    const size=item.imageSize||70;
-    const imgStyle=`width:${size}%;`;
-    const imgHTML=item.image?`<img src="${item.image}" class="prv-img ${item.layout==='bg'?'bg-mode':''}" style="${item.layout!=='bg'?imgStyle:''}" onerror="this.style.display='none'">`:'';
-    const textEscaped=escapeHtml(item.text||'');
-    if(item.layout==='bg'){
-        html=imgHTML+`<div style="position:relative; z-index:1;">${titleHTML}<div class="prv-text">${textEscaped}</div></div>`;
-    } else if(item.layout==='center'){
-        const [a,b]=splitTextForCenter(item.text||'');
-        html=`<div class="prv-split"><div class="prv-text">${escapeHtml(a)}</div>${imgHTML}<div class="prv-text">${escapeHtml(b)}</div></div>`;
-        if(titleHTML) html=titleHTML+html;
-    } else if(item.layout==='top'){
-        html=imgHTML+titleHTML+`<div class="prv-text">${textEscaped}</div>`;
-    } else {
-        html=titleHTML+`<div class="prv-text">${textEscaped}</div>`+imgHTML;
-    }
-    contentBox.innerHTML=html;
-    modal.classList.add('active');
-    setPreviewDevice(previewDevice);
-}
+function addPage(){ const proj=getCurrentProject(); if(!proj) return; const nid='p_'+Date.now(); proj.data[currentMode].items.push({id:nid,title:'',image:'',layout:'top',imageSize:70,bgOpacity:15,text:''}); currentPageId=nid; saveProjects(); refreshSelector(true); autoSave(); }
+function deletePage(){ const proj=getCurrentProject(); if(!proj) return; if(proj.data[currentMode].items.length<=1) return; if(!confirm(currentLang==='en'?'Delete this page?':'Supprimer cette page?')) return; proj.data[currentMode].items=proj.data[currentMode].items.filter(i=>i.id!==currentPageId); currentPageId=proj.data[currentMode].items[0].id; saveProjects(); refreshSelector(true); }
+function changeFont(){ const n=document.getElementById('fontSelector').value; appConfig.fontFamily=n; applyFont(n); saveProjects(); }
+function applyFont(n){ const css=fontMapping[n]||fontMapping['EB Garamond']; document.getElementById('itemText').style.fontFamily=css; document.getElementById('itemTitle').style.fontFamily=css; document.getElementById('globalTitle').style.fontFamily=css; }
+function splitCenter(t){ if(!t||t.length<60) return [t,'']; const mid=Math.floor(t.length/2); let idx=t.indexOf('\n\n',mid-120); if(idx===-1) idx=t.lastIndexOf('. ',mid); if(idx===-1) idx=mid; return [t.slice(0,idx).trim(), t.slice(idx).trim()]; }
+function openPreview(){ autoSave(); const proj=getCurrentProject(); if(!proj) return; const item=proj.data[currentMode].items.find(i=>i.id===currentPageId); if(!item) return; const box=document.getElementById('prvContent'); box.style.fontFamily=fontMapping[appConfig.fontFamily]||fontMapping['EB Garamond']; const size=item.imageSize||70; const opacity=(item.bgOpacity||15)/100; const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); const title=item.title?`<div class="prv-title">${esc(item.title)}</div>`:''; const img=item.image?`<img src="${item.image}" class="prv-img ${item.layout==='bg'?'bg':''}" style="${item.layout!=='bg'?`width:${size}%`:`opacity:${opacity}`}" onerror="this.style.display='none'">`:''; let html=''; if(item.layout==='bg'){ html=img+`<div style="position:relative;z-index:1">${title}<div class="prv-text">${esc(item.text||'')}</div></div>`; }else if(item.layout==='center'){ const [a,b]=splitCenter(item.text||''); html=title+`<div style="display:flex;flex-direction:column;gap:16px"><div class="prv-text">${esc(a)}</div>${img}<div class="prv-text">${esc(b)}</div></div>`; }else if(item.layout==='top'){ html=img+title+`<div class="prv-text">${esc(item.text||'')}</div>`; }else{ html=title+`<div class="prv-text">${esc(item.text||'')}</div>`+img; } box.innerHTML=html; document.getElementById('previewModal').classList.add('active'); setPreviewDevice(previewDevice); }
 function closePreview(){ document.getElementById('previewModal').classList.remove('active'); }
-function handleOverlayClick(e){ if(e.target.id==='previewModal') closePreview(); }
-function setPreviewDevice(dev){
-    previewDevice=dev;
-    const scr=document.getElementById('previewScreen');
-    scr.className='preview-screen '+dev;
-    document.getElementById('btnMobile').classList.toggle('btn-primary', dev==='mobile');
-    document.getElementById('btnTablet').classList.toggle('btn-primary', dev==='tablet');
-}
-function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function setPreviewDevice(d){ previewDevice=d; const scr=document.getElementById('previewScreen'); scr.className='preview-screen '+d; document.getElementById('btnMobile')?.classList.toggle('btn-primary',d==='mobile'); document.getElementById('btnTablet')?.classList.toggle('btn-primary',d==='tablet'); }
 
-function exportWorkflow(){
-    autoSave();
-    const proj=getCurrentProject();
-    const blob=new Blob([JSON.stringify({ project:proj, projectsMeta:projects.map(p=>({id:p.id, title:p.title})), customFonts:customFonts.map(f=>f.name) }, null, 2)], {type:"application/json"});
-    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=(proj.title||'projet')+".writerwork"; a.click(); URL.revokeObjectURL(url);
-}
-function exportPagesData(){
-    autoSave();
-    const proj=getCurrentProject(); if(!proj) return;
-    const items=proj.data[currentMode].items.map(it=>{
-        const limit=LIMITS[currentMode]||1500;
-        return {
-            id: it.id,
-            title: it.title,
-            image: it.image,
-            layout: it.layout,
-            imageSize: it.imageSize||70,
-            text: it.text,
-            charCount: (it.text||'').length,
-            charLimit: limit,
-            splitCenter: it.layout==='center',
-            readingTime: Math.ceil((it.text||'').split(/\s+/).length/200)+' min'
-        };
-    });
-    const exportObj={
-        projectTitle: proj.title,
-        format: currentMode,
-        langue: currentLang,
-        exportDate: new Date().toISOString(),
-        config:{
-            fontFamily: appConfig.fontFamily,
-            fontCSS: fontMapping[appConfig.fontFamily],
-            theme: appConfig.theme,
-            themeLabel: currentTheme,
-            limits: LIMITS,
-            customFontsAvailable: customFonts.map(f=>f.name)
-        },
-        items
-    };
-    const blob=new Blob([JSON.stringify(exportObj, null, 2)], {type:"application/json"});
-    const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download="pages.data"; a.click(); URL.revokeObjectURL(url);
-}
-function manualSave(){ autoSave(); setTimeout(()=>{ setSyncStatus('synced'); }, 200); }
+function openSettings(){ document.getElementById('settingsModal').classList.add('active'); renderFonts(); highlightLang(); }
+function closeSettings(){ document.getElementById('settingsModal').classList.remove('active'); }
+function exportWorkflow(){ const proj=getCurrentProject(); const blob=new Blob([JSON.stringify({project:proj},null,2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=(proj.title||'projet')+'.writerwork'; a.click(); URL.revokeObjectURL(url); }
+function importWorkflow(e){ const file=e.target.files[0]; if(!file) return; const r=new FileReader(); r.onload=ev=>{ try{ const parsed=JSON.parse(ev.target.result); const p=parsed.project||parsed; if(p.data){ p.id=uid(); p.updatedAt=Date.now(); projects.unshift(p); currentProjectId=p.id; saveProjects(); loadProjectIntoUI(); alert(currentLang==='en'?'Imported!':'Importé!'); } }catch(err){ alert('Invalid file'); } }; r.readAsText(file); e.target.value=''; }
+function exportPagesData(){ autoSave(); const proj=getCurrentProject(); if(!proj) return; const items=proj.data[currentMode].items.map(it=>({id:it.id,title:it.title,image:it.image,layout:it.layout,imageSize:it.imageSize,bgOpacity:it.bgOpacity,text:it.text,charCount:(it.text||'').length,charLimit:LIMITS[currentMode]})); const obj={projectTitle:proj.title,author:proj.data[currentMode].author,date:proj.data[currentMode].date,format:currentMode,lang:currentLang,config:{fontFamily:appConfig.fontFamily,fontCSS:fontMapping[appConfig.fontFamily],limits:LIMITS},items}; const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='pages.data'; a.click(); URL.revokeObjectURL(url); }
+function manualSave(){ autoSave(); }
 
-window.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closePreview(); closeSettings(); closeProjects(); } });
-window.onload=()=>{
-    currentLang=localStorage.getItem('writer_lang')||'fr';
-    loadCustomFonts();
-    loadProjects();
-    loadProjectIntoUI();
-};
+window.addEventListener('keydown',e=>{ if(e.key==='Escape'){ closePreview(); closeSettings(); closeProjects(); } });
+window.onload=()=>{ loadCustomFonts(); loadProjects(); refreshFontSelector(); applyI18n(); loadProjectIntoUI(); };
 </script>
 </body>
 </html>
