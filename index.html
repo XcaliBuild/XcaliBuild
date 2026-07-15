@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Pages. Sources</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <title>Writer. · The Pages. Sources</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -15,8 +15,12 @@
             --text-ui: #ffffff;
             --text-muted: #9ca3af;
             --border-color: #3f3f4e;
-            --sheet-bg: #ffffff; --sheet-text: #111111;
             --accent: #06b6d4;
+            
+            /* Thèmes de la feuille */
+            --sheet-nuit: #121212; --sheet-text-nuit: #e6e6e6;
+            --sheet-creme: #ffffff; --sheet-text-creme: #111111;
+            --sheet-papier: #f4ecd8; --sheet-text-papier: #433422;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,12 +28,11 @@
         
         /* RUBAN */
         .ribbon { width: 100%; height: 70px; background-color: var(--bg-ribbon); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
-        .ribbon-left { display: flex; align-items: center; gap: 30px; }
+        .ribbon-left { display: flex; align-items: center; gap: 20px; }
         .ribbon-right { display: flex; align-items: center; gap: 12px; }
         
-        .logo-container { display: flex; flex-direction: column; line-height: 1.1; }
         .logo-text { font-family: 'Newsreader', serif; font-size: 24px; font-weight: 700; font-style: italic; color: #ffffff; letter-spacing: -0.5px; }
-        .logo-text span { color: var(--accent); font-family: 'Inter', sans-serif; font-size: 12px; font-style: normal; text-transform: uppercase; letter-spacing: 1px; margin-left: 8px;}
+        .logo-text span { color: var(--accent); font-family: 'Inter', sans-serif; font-size: 11px; font-style: normal; text-transform: uppercase; letter-spacing: 1px; margin-left: 8px;}
         
         .toolbar { display: flex; align-items: center; gap: 10px; border-left: 1px solid var(--border-color); padding-left: 20px; }
         .toolbar-divider { width: 1px; height: 30px; background-color: var(--border-color); margin: 0 5px; }
@@ -41,9 +44,14 @@
         .btn-green { background: #10b981; color: white; border: none; } .btn-green:hover { background: #059669; }
         .btn-blue { color: #3b82f6; border-color: rgba(59, 130, 246, 0.4); } .btn-blue:hover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
         .btn-danger { color: #ef4444; } .btn-danger:hover { background: rgba(239, 68, 68, 0.1); }
+        .btn-new { color: #eab308; border-color: rgba(234, 179, 8, 0.4); } .btn-new:hover { background: rgba(234, 179, 8, 0.1); border-color: #eab308; }
+
+        .font-tool { display: flex; align-items: center; gap: 5px; background: var(--bg-app); padding: 2px 2px 2px 10px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .font-tool i { font-size: 14px; color: var(--text-muted); }
+        .font-tool select { border: none; background: transparent; padding: 6px; color: white; outline: none; font-size: 13px; }
         
-        /* Indicateur Sync (Réduit et discret) */
-        .sync-indicator { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding-right: 10px;}
+        /* Indicateur Sync */
+        .sync-indicator { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding-right: 5px; }
         .sync-indicator i { font-size: 11px; }
         .sync-indicator.synced i { color: #10b981; }
         .sync-indicator.saving i { color: #f59e0b; animation: spin 1s linear infinite; }
@@ -51,42 +59,38 @@
 
         /* CORPS & SIDEBAR */
         .main-body { display: flex; flex: 1; overflow: hidden; }
-        .sidebar { width: 240px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
+        .sidebar { width: 220px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
         .menu-category { font-size: 11px; text-transform: uppercase; color: var(--text-muted); padding: 15px 20px 5px 20px; letter-spacing: 1px; font-weight: 700; }
         .menu-item { padding: 10px 20px; display: flex; align-items: center; gap: 12px; color: var(--text-muted); cursor: pointer; transition: 0.2s; font-size: 13px; font-weight: 500; border-left: 3px solid transparent; }
         .menu-item:hover { color: var(--text-ui); background: rgba(255,255,255,0.03); }
         .menu-item.active { color: var(--accent); background: rgba(6, 182, 212, 0.05); border-left: 3px solid var(--accent); }
 
-        /* WORKSPACES */
-        .workspace { flex: 1; background-color: #17171c; padding: 40px 20px; overflow-y: auto; display: none; justify-content: center; align-items: flex-start; position: relative; }
-        .workspace.active { display: flex; }
+        /* WORKSPACE */
+        .workspace { flex: 1; background-color: #17171c; padding: 40px 20px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; position: relative; }
         
-        .writing-sheet { width: 100%; max-width: 800px; background: var(--sheet-bg); color: var(--sheet-text); border-radius: 8px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 24px; position: relative;}
+        .writing-sheet { width: 100%; max-width: 800px; background: var(--sheet-nuit); color: var(--sheet-text-nuit); border-radius: 8px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 24px; transition: background 0.3s, color 0.3s; border: 1px solid rgba(128,128,128,0.1); }
         
+        /* Thèmes CSS */
+        body[data-theme="creme"] .writing-sheet { background: var(--sheet-creme); color: var(--sheet-text-creme); }
+        body[data-theme="papier"] .writing-sheet { background: var(--sheet-papier); color: var(--sheet-text-papier); }
+
         .input-group { display: flex; flex-direction: column; gap: 8px; }
-        .input-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 700; font-family: 'Inter', sans-serif; }
+        .input-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; font-weight: 700; font-family: 'Inter', sans-serif; color: inherit;}
         
-        input.meta-input, select.meta-input { background: rgba(128,128,128,0.08); border: 1px solid rgba(128,128,128,0.2); color: inherit; font-family: 'Inter', sans-serif; font-size: 14px; padding: 12px; border-radius: 6px; outline: none; width: 100%; }
+        input.text-input { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,0.2); color: inherit; font-size: 22px; font-weight: 700; font-family: inherit; padding: 5px 0; outline: none; }
+        input.meta-input { background: rgba(128,128,128,0.05); border: 1px solid rgba(128,128,128,0.2); color: inherit; font-family: 'Inter', sans-serif; font-size: 14px; padding: 12px; border-radius: 6px; outline: none; width: 100%; }
         input.meta-input:focus { border-color: var(--accent); }
         
-        textarea.main-textarea { width: 100%; flex: 1; min-height: 400px; background: transparent; border: 1px solid rgba(128,128,128,0.2); border-radius: 6px; padding: 20px; color: inherit; font-family: inherit; font-size: 17px; line-height: 1.7; resize: vertical; outline: none; transition: 0.2s; }
+        textarea.main-textarea { width: 100%; flex: 1; min-height: 400px; background: transparent; border: 1px dashed rgba(128,128,128,0.2); border-radius: 6px; padding: 15px; color: inherit; font-family: inherit; font-size: 17px; line-height: 1.7; resize: vertical; outline: none; transition: 0.2s; }
         textarea.main-textarea:focus { border-color: var(--accent); }
         
         .meta-row { display: flex; gap: 20px; flex-wrap: wrap; }
-        .meta-row .input-group { flex: 1; min-width: 250px; }
+        .meta-row .input-group { flex: 1; min-width: 200px; }
 
         /* Segments Layout Image */
         .segment-group { display: flex; background: rgba(128,128,128,0.08); border-radius: 6px; padding: 4px; border: 1px solid rgba(128,128,128,0.2); }
-        .segment-btn { flex: 1; background: transparent; color: #666; border: none; padding: 8px 5px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 4px; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
-        .segment-btn.active { background: var(--accent); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-
-        /* Font Cards in Config */
-        .font-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-        .font-card { border: 1px solid var(--border-color); background: var(--bg-app); padding: 20px; border-radius: 8px; cursor: pointer; transition: 0.2s; text-align: center; }
-        .font-card:hover { border-color: var(--text-muted); }
-        .font-card.active { border-color: var(--accent); background: rgba(6, 182, 212, 0.05); }
-        .font-card h4 { font-size: 24px; margin-bottom: 5px; }
-        .font-card span { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+        .segment-btn { flex: 1; background: transparent; color: inherit; opacity: 0.6; border: none; padding: 8px 5px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 4px; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .segment-btn.active { background: rgba(128,128,128,0.2); opacity: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.1); color: var(--accent); }
 
         /* PREVIEW MODAL */
         .btn-preview { position: fixed; bottom: 30px; right: 40px; background: var(--accent); color: white; border: none; padding: 15px 25px; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3); display: flex; align-items: center; gap: 10px; transition: 0.2s; z-index: 100;}
@@ -100,32 +104,51 @@
         .preview-controls button { background: transparent; border: none; color: var(--text-muted); padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 16px; }
         .preview-controls button.active { background: var(--border-color); color: white; }
         
+        /* Ajustements de taille pour Mobile/Tablette */
         .preview-screen { background: #faf8f5; border-radius: 12px; overflow-y: auto; overflow-x: hidden; position: relative; transition: width 0.3s, height 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .preview-screen.mobile { width: 375px; height: 667px; }
-        .preview-screen.tablet { width: 768px; height: 800px; }
-        .preview-screen.pc { width: 1024px; height: 700px; }
+        .preview-screen.mobile { width: 340px; height: 600px; }
+        .preview-screen.tablet { width: 600px; height: 800px; max-height: 80vh;}
 
-        /* Preview Content Styles */
-        .prv-content { padding: 30px; color: #111; font-size: 18px; line-height: 1.6; }
-        .prv-title { font-size: 2em; font-weight: bold; margin-bottom: 20px; line-height: 1.2; }
-        .prv-img { width: 100%; border-radius: 8px; margin-bottom: 20px; object-fit: cover; }
-        .prv-img.bg-mode { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3; border-radius: 0; }
-        .prv-text { position: relative; z-index: 1; white-space: pre-wrap;}
+        /* Contenu du Preview - Tailles réduites pour écran mobile */
+        .prv-content { padding: 20px; color: #111; font-size: 15px; line-height: 1.6; }
+        .prv-title { font-size: 1.6em; font-weight: bold; margin-bottom: 15px; line-height: 1.2; text-align: left;}
+        .prv-img { width: 100%; max-height: 250px; object-fit: contain; border-radius: 8px; margin-bottom: 15px; }
+        .prv-img.bg-mode { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.2; object-fit: cover; border-radius: 0; max-height: none; }
+        .prv-text { position: relative; z-index: 1; white-space: pre-wrap; text-align: justify;}
     </style>
 </head>
-<body>
+<body data-theme="nuit">
 
     <!-- RUBAN DU HAUT -->
     <div class="ribbon">
         <div class="ribbon-left">
-            <div class="logo-container">
-                <div class="logo-text">The Pages.<span>Sources</span></div>
-            </div>
+            <div class="logo-text">The Pages.<span>Sources</span></div>
             
-            <div class="toolbar" id="mainToolbar">
+            <div class="toolbar">
+                <button class="btn btn-new" onclick="createNewProject()" title="Commencer un nouveau livre"><i class="fas fa-file-medical"></i> <span data-i18n="btnNewProject">Nouveau</span></button>
+                <div class="toolbar-divider"></div>
+                
                 <select id="pageSelector" onchange="loadPageData()"></select>
                 <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i> <span data-i18n="newBtn">Page</span></button>
-                <button class="btn btn-icon btn-danger" onclick="deletePage()" title="Supprimer"><i class="fas fa-trash"></i></button>
+                <button class="btn btn-icon btn-danger" onclick="deletePage()" title="Supprimer la page"><i class="fas fa-trash"></i></button>
+                
+                <div class="toolbar-divider"></div>
+                
+                <!-- SELECTEUR DE POLICES (De retour !) -->
+                <div class="font-tool" title="Police du livre">
+                    <i class="fas fa-font"></i>
+                    <select id="fontSelector" onchange="changeFont()">
+                        <option value="Newsreader">Newsreader</option>
+                        <option value="Lora">Lora</option>
+                        <option value="Merriweather">Merriweather</option>
+                        <option value="EB Garamond">Garamond</option>
+                        <option value="Inter">Inter (Moderne)</option>
+                    </select>
+                </div>
+
+                <!-- SELECTEUR DE THEME (De retour !) -->
+                <button class="btn btn-icon" onclick="cycleTheme()" title="Changer de thème (Protection des yeux)"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                
                 <div class="toolbar-divider"></div>
                 <button class="btn" onclick="toggleLang()" id="langBtn">EN</button>
             </div>
@@ -134,15 +157,15 @@
         <div class="ribbon-right">
             <!-- INDICATEUR DE SYNCHRONISATION -->
             <div class="sync-indicator synced" id="syncIndicator">
-                <i class="fas fa-sync-alt"></i><span id="syncText">Sync</span>
+                <i class="fas fa-sync-alt"></i><span id="syncText" data-i18n="lblSync">Sync</span>
             </div>
             
             <div class="toolbar-divider" style="height:30px;"></div>
 
             <input type="file" id="importWorkInput" accept=".writerwork,.json" style="display:none" onchange="importWorkflow(event)">
-            <button class="btn" onclick="document.getElementById('importWorkInput').click()" title="Importer"><i class="fas fa-folder-open"></i> Import</button>
-            <button class="btn" onclick="exportWorkflow()" title="Backup Local"><i class="fas fa-archive"></i> Backup</button>
-            <button class="btn btn-blue" onclick="manualSave()"><i class="fas fa-save"></i> Save</button>
+            <button class="btn" onclick="document.getElementById('importWorkInput').click()"><i class="fas fa-folder-open"></i> <span data-i18n="btnImport">Import</span></button>
+            <button class="btn" onclick="exportWorkflow()"><i class="fas fa-archive"></i> <span data-i18n="btnBackup">Backup</span></button>
+            <button class="btn btn-blue" onclick="manualSave()"><i class="fas fa-save"></i> <span data-i18n="btnSave">Save</span></button>
             
             <div class="toolbar-divider" style="height:30px;"></div>
 
@@ -153,9 +176,6 @@
     <div class="main-body">
         <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="menu-category" data-i18n="catConfig">Configuration</div>
-            <div class="menu-item" id="tab-config" onclick="setMode('config')"><i class="fas fa-cog"></i> <span data-i18n="menuConfig">Paramètres App</span></div>
-            
             <div class="menu-category" data-i18n="catReading">Lecture</div>
             <div class="menu-item active" id="tab-book" onclick="setMode('book')"><i class="fas fa-book"></i> <span data-i18n="menuBook">Livre (Poche)</span></div>
             <div class="menu-item" id="tab-bd" onclick="setMode('bd')"><i class="fas fa-mask"></i> <span data-i18n="menuBd">Bande Dessinée</span></div>
@@ -166,13 +186,19 @@
             <div class="menu-item" id="tab-journal" onclick="setMode('journal')"><i class="far fa-newspaper"></i> <span data-i18n="menuNews">Journal</span></div>
         </div>
 
-        <!-- WORKSPACE : ÉDITEUR DE TEXTE -->
-        <div class="workspace active" id="ws-editor">
+        <!-- WORKSPACE : ÉDITEUR -->
+        <div class="workspace">
             <div class="writing-sheet">
+                
+                <div class="input-group" style="padding-bottom: 20px; border-bottom: 1px dashed rgba(128,128,128,0.3);">
+                    <label data-i18n="lblAppTitle">Titre global du Livre / Projet</label>
+                    <input type="text" id="globalTitle" class="text-input" data-i18n-ph="phGlobalTitle" placeholder="Ex: Mon Livre Magique" oninput="autoSave()">
+                </div>
+
                 <div class="meta-row">
                     <div class="input-group">
                         <label data-i18n="lblPageTitle">Titre de la page</label>
-                        <input type="text" id="itemTitle" class="meta-input" style="font-size: 18px; font-weight:bold; font-family:'Newsreader';" oninput="autoSave()">
+                        <input type="text" id="itemTitle" class="meta-input" data-i18n-ph="phPageTitle" placeholder="Chapitre 1..." style="font-size: 18px; font-weight:bold; font-family:inherit;" oninput="autoSave()">
                     </div>
                 </div>
 
@@ -181,59 +207,25 @@
                         <label data-i18n="lblImage">URL de l'image</label>
                         <input type="text" id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()">
                     </div>
+                    <!-- POSITION DE L'IMAGE AVEC LE CENTRE -->
                     <div class="input-group" style="flex:1;">
                         <label data-i18n="lblLayout">Position Image</label>
                         <div class="segment-group">
-                            <button class="segment-btn active" id="lay-top" onclick="setLayout('top')"><i class="fas fa-arrow-up"></i> Haut</button>
-                            <button class="segment-btn" id="lay-bottom" onclick="setLayout('bottom')"><i class="fas fa-arrow-down"></i> Bas</button>
-                            <button class="segment-btn" id="lay-bg" onclick="setLayout('bg')"><i class="fas fa-image"></i> Fond</button>
+                            <button class="segment-btn active" id="lay-top" onclick="setLayout('top')" title="Haut"><i class="fas fa-arrow-up"></i></button>
+                            <button class="segment-btn" id="lay-center" onclick="setLayout('center')" title="Centre"><i class="fas fa-align-center"></i></button>
+                            <button class="segment-btn" id="lay-bottom" onclick="setLayout('bottom')" title="Bas"><i class="fas fa-arrow-down"></i></button>
+                            <button class="segment-btn" id="lay-bg" onclick="setLayout('bg')" title="Fond"><i class="fas fa-image"></i></button>
                         </div>
                     </div>
                 </div>
 
                 <div class="input-group" style="flex:1;">
                     <label data-i18n="lblText">Contenu</label>
-                    <textarea id="itemText" class="main-textarea" placeholder="..." oninput="autoSave()"></textarea>
+                    <textarea id="itemText" class="main-textarea" data-i18n-ph="phText" placeholder="Commencez à écrire..." oninput="autoSave()"></textarea>
                 </div>
             </div>
             
-            <!-- BOUTON PREVIEW FLOTTANT -->
             <button class="btn-preview" onclick="openPreview()"><i class="fas fa-eye"></i> <span data-i18n="btnPreview">Aperçu</span></button>
-        </div>
-
-        <!-- WORKSPACE : CONFIGURATION APP -->
-        <div class="workspace" id="ws-config">
-            <div class="writing-sheet" style="background: var(--bg-ribbon); color: var(--text-ui); border: 1px solid var(--border-color);">
-                <h2 style="font-family:'Inter'; margin-bottom: 10px; font-size:20px;" data-i18n="cfgTitle">Paramètres de votre Application</h2>
-                
-                <div class="input-group">
-                    <label data-i18n="lblAppTitle">Nom du Livre / Projet</label>
-                    <input type="text" id="globalTitle" class="meta-input" placeholder="Ex: Mon Chef-d'œuvre" style="background: var(--bg-app); color: white;" oninput="saveConfig()">
-                </div>
-
-                <div class="input-group">
-                    <label data-i18n="cfgLogo">Logo de l'application (URL Image)</label>
-                    <input type="text" id="appLogo" class="meta-input" placeholder="https://..." style="background: var(--bg-app); color: white;" oninput="saveConfig()">
-                </div>
-
-                <div class="input-group" style="margin-top: 20px;">
-                    <label data-i18n="cfgFont">Police de caractère par défaut</label>
-                    <div class="font-grid">
-                        <div class="font-card active" id="font-Newsreader" onclick="selectAppFont('Newsreader')">
-                            <h4 style="font-family: 'Newsreader', serif;">Ag</h4><span>Newsreader</span>
-                        </div>
-                        <div class="font-card" id="font-Inter" onclick="selectAppFont('Inter')">
-                            <h4 style="font-family: 'Inter', sans-serif;">Ag</h4><span>Inter</span>
-                        </div>
-                        <div class="font-card" id="font-Lora" onclick="selectAppFont('Lora')">
-                            <h4 style="font-family: 'Lora', serif;">Ag</h4><span>Lora</span>
-                        </div>
-                        <div class="font-card" id="font-Courier Prime" onclick="selectAppFont('Courier Prime')">
-                            <h4 style="font-family: 'Courier Prime', monospace;">Ag</h4><span>Courier</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -243,7 +235,6 @@
             <div class="preview-controls">
                 <button class="active" onclick="setPreviewSize('mobile', this)"><i class="fas fa-mobile-alt"></i></button>
                 <button onclick="setPreviewSize('tablet', this)"><i class="fas fa-tablet-alt"></i></button>
-                <button onclick="setPreviewSize('pc', this)"><i class="fas fa-desktop"></i></button>
                 <button onclick="closePreview()" style="margin-left: 20px; color: #ef4444;"><i class="fas fa-times"></i></button>
             </div>
             <div class="preview-screen mobile" id="previewScreen">
@@ -256,40 +247,62 @@
         // --- DICTIONNAIRES ---
         const i18n = {
             fr: {
-                catConfig: "Configuration", menuConfig: "Paramètres App", cfgTitle: "Paramètres de votre Application", cfgLogo: "Logo de l'application (URL)", cfgFont: "Police par défaut",
                 catReading: "Lecture", menuBook: "Livre (Poche)", menuBd: "Bande Dessinée", menuKid: "Livre Enfant",
                 catEdition: "Éditions", menuMag: "Magazine", menuNews: "Journal",
-                newBtn: "Page", btnPreview: "Aperçu de la page",
-                lblAppTitle: "Nom du Livre / Projet", lblPageTitle: "Titre de la page", lblImage: "URL de l'image", lblLayout: "Position Image", lblText: "Contenu du texte"
+                newBtn: "Page", btnPreview: "Aperçu de la page", btnNewProject: "Nouveau",
+                btnSave: "Sauvegarder", btnBackup: "Backup", btnImport: "Import", lblSync: "Sync",
+                lblAppTitle: "Titre global du Livre / Projet", lblPageTitle: "Titre de la page", lblImage: "URL de l'image (Optionnel)", lblLayout: "Position Image", lblText: "Contenu du texte",
+                phGlobalTitle: "Ex: Mon Livre Magique", phPageTitle: "Chapitre 1, Couverture...", phText: "Commencez à écrire..."
             },
             en: {
-                catConfig: "Configuration", menuConfig: "App Settings", cfgTitle: "Application Settings", cfgLogo: "App Logo (URL)", cfgFont: "Default Font",
                 catReading: "Reading", menuBook: "Pocket Book", menuBd: "Comic Book", menuKid: "Children's Book",
                 catEdition: "Publishing", menuMag: "Magazine", menuNews: "Newspaper",
-                newBtn: "Page", btnPreview: "Page Preview",
-                lblAppTitle: "Book / Project Name", lblPageTitle: "Page Title", lblImage: "Image URL", lblLayout: "Image Layout", lblText: "Text Content"
+                newBtn: "Page", btnPreview: "Page Preview", btnNewProject: "New Project",
+                btnSave: "Save", btnBackup: "Backup", btnImport: "Import", lblSync: "Sync",
+                lblAppTitle: "Global Book / Project Title", lblPageTitle: "Page Title", lblImage: "Image URL (Optional)", lblLayout: "Image Layout", lblText: "Text Content",
+                phGlobalTitle: "Ex: My Masterpiece", phPageTitle: "Chapter 1, Cover...", phText: "Start writing..."
             }
         };
 
         const fontMapping = {
-            'Newsreader': "'Newsreader', serif", 'Inter': "'Inter', sans-serif",
-            'Courier Prime': "'Courier Prime', monospace", 'Lora': "'Lora', serif"
+            'Newsreader': "'Newsreader', serif", 
+            'Inter': "'Inter', sans-serif",
+            'EB Garamond': "'EB Garamond', serif", 
+            'Lora': "'Lora', serif",
+            'Merriweather': "'Merriweather', serif"
         };
 
         let currentLang = 'fr';
-        let appConfig = { appName: '', logoUrl: '', fontFamily: 'Newsreader' };
+        let appConfig = { fontFamily: 'Newsreader', theme: 'nuit' };
+        let themes = ['nuit', 'creme', 'papier'];
+        let currentThemeIndex = 0;
         
-        let appData = {
-            book: { items: [{ id: '1', title: 'Chapitre 1', image: '', layout: 'top', text: 'Il était une fois...' }] },
-            bd: { items: [{ id: '1', title: 'Planche 1', image: '', layout: 'top', text: '' }] },
-            magazine: { items: [{ id: '1', title: 'Article 1', image: '', layout: 'top', text: '' }] },
-            journal: { items: [{ id: '1', title: 'News 1', image: '', layout: 'top', text: '' }] },
-            enfant: { items: [{ id: '1', title: 'Page 1', image: '', layout: 'top', text: '' }] }
+        let defaultData = {
+            book: { title: "", items: [{ id: 'cover', title: 'Couverture', image: '', layout: 'top', text: '' }, { id: '1', title: 'Chapitre 1', image: '', layout: 'top', text: '' }] },
+            bd: { title: "", items: [{ id: '1', title: 'Planche 1', image: '', layout: 'bg', text: '' }] },
+            magazine: { title: "", items: [{ id: '1', title: 'Article 1', image: '', layout: 'top', text: '' }] },
+            journal: { title: "", items: [{ id: '1', title: 'News 1', image: '', layout: 'top', text: '' }] },
+            enfant: { title: "", items: [{ id: '1', title: 'Page 1', image: '', layout: 'top', text: '' }] }
         };
 
+        let appData = JSON.parse(JSON.stringify(defaultData));
         let currentMode = 'book';
-        let currentPageId = '1';
+        let currentPageId = 'cover';
         let saveTimeout = null;
+
+        // --- NOUVEAU PROJET ---
+        function createNewProject() {
+            const msg = currentLang === 'fr' 
+                ? "Attention : Cela va effacer votre livre actuel pour en commencer un nouveau. Avez-vous fait un Backup ?" 
+                : "Warning: This will clear your current book to start a new one. Did you make a Backup?";
+            
+            if(confirm(msg)) {
+                appData = JSON.parse(JSON.stringify(defaultData));
+                document.getElementById('globalTitle').value = '';
+                setMode('book');
+                saveSession();
+            }
+        }
 
         // --- SYNCHRONISATION ---
         function setSyncStatus(status) {
@@ -297,23 +310,37 @@
             indicator.className = 'sync-indicator ' + status;
         }
 
+        // --- POLICES ET THÈMES ---
+        function changeFont() {
+            const fontName = document.getElementById('fontSelector').value;
+            appConfig.fontFamily = fontName;
+            applyFont(fontName);
+            saveSession();
+        }
+
+        function applyFont(fontName) {
+            const cssFont = fontMapping[fontName] || fontMapping['Newsreader'];
+            document.getElementById('itemText').style.fontFamily = cssFont;
+            document.getElementById('itemTitle').style.fontFamily = cssFont;
+            document.getElementById('globalTitle').style.fontFamily = cssFont;
+        }
+
+        function cycleTheme() {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            const theme = themes[currentThemeIndex];
+            appConfig.theme = theme;
+            document.body.setAttribute('data-theme', theme);
+            saveSession();
+        }
+
         // --- UI & MODES ---
         function setMode(mode) {
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + mode).classList.add('active');
             
-            if(mode === 'config') {
-                document.getElementById('ws-editor').classList.remove('active');
-                document.getElementById('ws-config').classList.add('active');
-                document.getElementById('mainToolbar').style.visibility = 'hidden';
-                loadConfigUI();
-            } else {
-                currentMode = mode;
-                document.getElementById('ws-config').classList.remove('active');
-                document.getElementById('ws-editor').classList.add('active');
-                document.getElementById('mainToolbar').style.visibility = 'visible';
-                refreshSelector();
-            }
+            currentMode = mode;
+            document.getElementById('globalTitle').value = appData[mode].title || '';
+            refreshSelector();
         }
 
         function refreshSelector() {
@@ -339,7 +366,6 @@
             document.getElementById('itemTitle').value = item.title || '';
             document.getElementById('itemImage').value = item.image || '';
             document.getElementById('itemText').value = item.text || '';
-            document.getElementById('itemText').style.fontFamily = fontMapping[appConfig.fontFamily] || fontMapping['Newsreader'];
             
             setLayout(item.layout || 'top', false);
         }
@@ -351,10 +377,11 @@
         }
 
         function autoSave() {
-            if(!currentPageId || currentMode === 'config') return;
+            if(!currentPageId) return;
             setSyncStatus('saving');
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(() => {
+                appData[currentMode].title = document.getElementById('globalTitle').value;
                 let item = appData[currentMode].items.find(i => i.id === currentPageId);
                 if(item) {
                     item.title = document.getElementById('itemTitle').value;
@@ -382,32 +409,6 @@
             saveSession(); refreshSelector();
         }
 
-        // --- CONFIGURATION TAB ---
-        function loadConfigUI() {
-            document.getElementById('globalTitle').value = appConfig.appName || '';
-            document.getElementById('appLogo').value = appConfig.logoUrl || '';
-            selectAppFont(appConfig.fontFamily || 'Newsreader', false);
-        }
-
-        function saveConfig() {
-            setSyncStatus('saving');
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(() => {
-                appConfig.appName = document.getElementById('globalTitle').value;
-                appConfig.logoUrl = document.getElementById('appLogo').value;
-                saveSession();
-            }, 500);
-        }
-
-        function selectAppFont(fontName, doSave = true) {
-            document.querySelectorAll('.font-card').forEach(c => c.classList.remove('active'));
-            const card = document.getElementById('font-' + fontName);
-            if(card) card.classList.add('active');
-            
-            appConfig.fontFamily = fontName;
-            if(doSave) saveConfig();
-        }
-
         // --- PREVIEW (APERÇU) ---
         function openPreview() {
             autoSave();
@@ -419,15 +420,20 @@
             const fontCSS = fontMapping[appConfig.fontFamily] || fontMapping['Newsreader'];
             
             contentBox.style.fontFamily = fontCSS;
-            let html = `<div class="prv-title">${item.title}</div>`;
             
+            let html = ``;
+            const titleHTML = `<div class="prv-title">${item.title}</div>`;
             const imgHTML = item.image ? `<img src="${item.image}" class="prv-img ${item.layout === 'bg' ? 'bg-mode' : ''}">` : '';
             const txtHTML = `<div class="prv-text">${item.text}</div>`;
 
-            if(item.layout === 'top' || item.layout === 'bg') {
-                html += imgHTML + txtHTML;
+            if(item.layout === 'bg') {
+                html = imgHTML + titleHTML + txtHTML;
+            } else if (item.layout === 'top') {
+                html = imgHTML + titleHTML + txtHTML;
+            } else if (item.layout === 'center') {
+                html = titleHTML + imgHTML + txtHTML;
             } else if (item.layout === 'bottom') {
-                html += txtHTML + imgHTML;
+                html = titleHTML + txtHTML + imgHTML;
             }
 
             contentBox.innerHTML = html;
@@ -445,19 +451,28 @@
 
         // --- GESTION DES FICHIERS & SESSION ---
         function saveSession() {
-            localStorage.setItem('writer_sources_v5', JSON.stringify({ data: appData, config: appConfig }));
+            localStorage.setItem('writer_sources_v6', JSON.stringify({ data: appData, config: appConfig }));
             setSyncStatus('synced');
         }
 
         function manualSave() { autoSave(); saveSession(); }
 
         function loadSession() {
-            const saved = localStorage.getItem('writer_sources_v5');
+            const saved = localStorage.getItem('writer_sources_v6');
             if(saved) {
                 try {
                     const parsed = JSON.parse(saved);
                     appData = parsed.data || appData;
                     appConfig = parsed.config || appConfig;
+                    
+                    if(appConfig.fontFamily) {
+                        document.getElementById('fontSelector').value = appConfig.fontFamily;
+                        applyFont(appConfig.fontFamily);
+                    }
+                    if(appConfig.theme) {
+                        currentThemeIndex = themes.indexOf(appConfig.theme) !== -1 ? themes.indexOf(appConfig.theme) : 0;
+                        document.body.setAttribute('data-theme', appConfig.theme);
+                    }
                 } catch(e) {}
             }
             setMode('book');
@@ -479,7 +494,7 @@
                     const parsed = JSON.parse(e.target.result);
                     if(parsed.data && parsed.config) {
                         appData = parsed.data; appConfig = parsed.config;
-                        saveSession(); setMode('book');
+                        saveSession(); loadSession();
                     }
                 } catch(err) { alert("Fichier invalide."); }
                 event.target.value = '';
@@ -490,8 +505,12 @@
         function exportPagesData() {
             autoSave(); saveSession();
             const exportObj = {
-                format: currentMode, langue: currentLang,
-                config: { appName: appConfig.appName, logo: appConfig.logoUrl, fontCSS: fontMapping[appConfig.fontFamily] },
+                format: currentMode, 
+                langue: currentLang,
+                config: { 
+                    fontFamily: appConfig.fontFamily, 
+                    fontCSS: fontMapping[appConfig.fontFamily]
+                },
                 items: appData[currentMode].items
             };
             const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: "application/json" });
@@ -503,7 +522,17 @@
         function toggleLang() {
             currentLang = currentLang === 'fr' ? 'en' : 'fr';
             document.getElementById('langBtn').innerText = currentLang === 'fr' ? 'EN' : 'FR';
-            document.querySelectorAll('[data-i18n]').forEach(el => { el.innerText = i18n[currentLang][el.getAttribute('data-i18n')]; });
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => { 
+                if(i18n[currentLang][el.getAttribute('data-i18n')]) {
+                    el.innerText = i18n[currentLang][el.getAttribute('data-i18n')]; 
+                }
+            });
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => { 
+                if(i18n[currentLang][el.getAttribute('data-i18n-ph')]) {
+                    el.placeholder = i18n[currentLang][el.getAttribute('data-i18n-ph')]; 
+                }
+            });
             refreshSelector();
         }
 
