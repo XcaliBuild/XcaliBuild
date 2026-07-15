@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Writer. · The Pages. Sources</title>
+    <title>The Pages. Sources</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -15,23 +15,21 @@
             --text-ui: #ffffff;
             --text-muted: #9ca3af;
             --border-color: #3f3f4e;
-            --sheet-bg-clair: #ffffff; --sheet-text-clair: #111111;
-            --sheet-bg-sombre: #121212; --sheet-text-sombre: #e0e0e0;
-            --sheet-bg-papier: #f4ecd8; --sheet-text-papier: #433422;
+            --sheet-bg: #ffffff; --sheet-text: #111111;
+            --accent: #06b6d4;
         }
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-app); color: var(--text-ui); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        .ribbon { width: 100%; height: 70px; background-color: var(--bg-ribbon); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; position: relative; }
+        /* RUBAN */
+        .ribbon { width: 100%; height: 70px; background-color: var(--bg-ribbon); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
         .ribbon-left { display: flex; align-items: center; gap: 30px; }
         .ribbon-right { display: flex; align-items: center; gap: 12px; }
         
-        .logo-container { display: flex; flex-direction: column; line-height: 1.1; cursor: pointer; position: relative; }
-        .logo-container:hover .logo-edit-hint { opacity: 1; }
-        .logo-edit-hint { position: absolute; bottom: -15px; left: 0; font-size: 9px; color: cyan; opacity: 0; transition: 0.2s; white-space: nowrap; }
-        .logo-text { font-family: 'Newsreader', serif; font-size: 26px; font-weight: 700; font-style: italic; color: #ffffff; letter-spacing: -0.5px; }
-        .logo-sub { font-size: 10px; color: cyan; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+        .logo-container { display: flex; flex-direction: column; line-height: 1.1; }
+        .logo-text { font-family: 'Newsreader', serif; font-size: 24px; font-weight: 700; font-style: italic; color: #ffffff; letter-spacing: -0.5px; }
+        .logo-text span { color: var(--accent); font-family: 'Inter', sans-serif; font-size: 12px; font-style: normal; text-transform: uppercase; letter-spacing: 1px; margin-left: 8px;}
         
         .toolbar { display: flex; align-items: center; gap: 10px; border-left: 1px solid var(--border-color); padding-left: 20px; }
         .toolbar-divider { width: 1px; height: 30px; background-color: var(--border-color); margin: 0 5px; }
@@ -40,111 +38,95 @@
         .btn:hover { background: #3f3f4e; }
         .btn-icon { padding: 8px; border-radius: 6px; width: 34px; height: 34px; justify-content: center; }
         
-        .btn-green { background: #10b981; color: white; border: none; }
-        .btn-green:hover { background: #059669; }
-        .btn-blue { color: #3b82f6; border-color: rgba(59, 130, 246, 0.4); }
-        .btn-blue:hover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
-        .btn-danger { color: #ef4444; }
-        .btn-danger:hover { background: rgba(239, 68, 68, 0.1); }
+        .btn-green { background: #10b981; color: white; border: none; } .btn-green:hover { background: #059669; }
+        .btn-blue { color: #3b82f6; border-color: rgba(59, 130, 246, 0.4); } .btn-blue:hover { background: rgba(59, 130, 246, 0.1); border-color: #3b82f6; }
+        .btn-danger { color: #ef4444; } .btn-danger:hover { background: rgba(239, 68, 68, 0.1); }
         
-        .font-tool { display: flex; align-items: center; gap: 5px; background: var(--bg-app); padding: 2px 2px 2px 10px; border-radius: 6px; border: 1px solid var(--border-color); }
-        .font-tool i { font-size: 16px; }
-        .font-tool select { border: none; background: transparent; padding: 6px; color: white; outline: none; }
-
-        /* Indicateur de synchronisation */
-        .sync-indicator { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); }
-        .sync-indicator i { font-size: 14px; }
+        /* Indicateur Sync (Réduit et discret) */
+        .sync-indicator { display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; padding-right: 10px;}
+        .sync-indicator i { font-size: 11px; }
         .sync-indicator.synced i { color: #10b981; }
         .sync-indicator.saving i { color: #f59e0b; animation: spin 1s linear infinite; }
-        .sync-indicator.error i { color: #ef4444; }
-        
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+        /* CORPS & SIDEBAR */
         .main-body { display: flex; flex: 1; overflow: hidden; }
-        .sidebar { width: 220px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
+        .sidebar { width: 240px; background-color: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
         .menu-category { font-size: 11px; text-transform: uppercase; color: var(--text-muted); padding: 15px 20px 5px 20px; letter-spacing: 1px; font-weight: 700; }
         .menu-item { padding: 10px 20px; display: flex; align-items: center; gap: 12px; color: var(--text-muted); cursor: pointer; transition: 0.2s; font-size: 13px; font-weight: 500; border-left: 3px solid transparent; }
         .menu-item:hover { color: var(--text-ui); background: rgba(255,255,255,0.03); }
-        .menu-item.active { color: cyan; background: rgba(0, 255, 255, 0.05); border-left: 3px solid cyan; }
-        .menu-item i { width: 16px; text-align: center; }
+        .menu-item.active { color: var(--accent); background: rgba(6, 182, 212, 0.05); border-left: 3px solid var(--accent); }
 
-        .editor-workspace { flex: 1; background-color: #17171c; padding: 40px 20px; overflow-y: auto; display: flex; justify-content: center; align-items: flex-start; }
+        /* WORKSPACES */
+        .workspace { flex: 1; background-color: #17171c; padding: 40px 20px; overflow-y: auto; display: none; justify-content: center; align-items: flex-start; position: relative; }
+        .workspace.active { display: flex; }
         
-        .writing-sheet { width: 100%; max-width: 780px; background: var(--sheet-bg-clair); color: var(--sheet-text-clair); border-radius: 4px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 24px; transition: background 0.3s, color 0.3s; }
+        .writing-sheet { width: 100%; max-width: 800px; background: var(--sheet-bg); color: var(--sheet-text); border-radius: 8px; padding: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 24px; position: relative;}
         
-        .input-group { display: flex; flex-direction: column; gap: 8px; position: relative;}
-        .input-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.6; font-weight: 700; font-family: 'Inter', sans-serif; }
+        .input-group { display: flex; flex-direction: column; gap: 8px; }
+        .input-group label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #888; font-weight: 700; font-family: 'Inter', sans-serif; }
         
-        input.text-input { background: transparent; border: none; border-bottom: 1px solid rgba(128,128,128,0.2); color: inherit; font-size: 26px; font-weight: 700; font-family: inherit; padding: 5px 0; outline: none; }
-        input.meta-input { background: rgba(128,128,128,0.08); border: 1px solid rgba(128,128,128,0.2); color: inherit; font-family: 'Inter', sans-serif; font-size: 13px; padding: 12px; border-radius: 6px; outline: none; width: 100%; }
+        input.meta-input, select.meta-input { background: rgba(128,128,128,0.08); border: 1px solid rgba(128,128,128,0.2); color: inherit; font-family: 'Inter', sans-serif; font-size: 14px; padding: 12px; border-radius: 6px; outline: none; width: 100%; }
+        input.meta-input:focus { border-color: var(--accent); }
         
-        textarea.main-textarea { width: 100%; flex: 1; min-height: 500px; background: transparent; border: none; color: inherit; font-family: inherit; font-size: 17px; line-height: 1.7; resize: none; outline: none; }
+        textarea.main-textarea { width: 100%; flex: 1; min-height: 400px; background: transparent; border: 1px solid rgba(128,128,128,0.2); border-radius: 6px; padding: 20px; color: inherit; font-family: inherit; font-size: 17px; line-height: 1.7; resize: vertical; outline: none; transition: 0.2s; }
+        textarea.main-textarea:focus { border-color: var(--accent); }
         
-        .meta-row { display: flex; gap: 20px; }
-        .meta-row .input-group { flex: 1; }
+        .meta-row { display: flex; gap: 20px; flex-wrap: wrap; }
+        .meta-row .input-group { flex: 1; min-width: 250px; }
 
-        .toolbar-text { display: flex; justify-content: flex-end; gap: 10px; margin-bottom: -15px; z-index: 10;}
-        .link-btn { background: rgba(128,128,128,0.1); border: 1px solid rgba(128,128,128,0.2); color: inherit; padding: 4px 8px; border-radius: 4px; font-size: 11px; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; font-weight: 600;}
-        .link-btn:hover { background: rgba(0, 255, 255, 0.2); color: cyan; border-color: cyan;}
+        /* Segments Layout Image */
+        .segment-group { display: flex; background: rgba(128,128,128,0.08); border-radius: 6px; padding: 4px; border: 1px solid rgba(128,128,128,0.2); }
+        .segment-btn { flex: 1; background: transparent; color: #666; border: none; padding: 8px 5px; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; border-radius: 4px; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .segment-btn.active { background: var(--accent); color: white; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+        /* Font Cards in Config */
+        .font-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .font-card { border: 1px solid var(--border-color); background: var(--bg-app); padding: 20px; border-radius: 8px; cursor: pointer; transition: 0.2s; text-align: center; }
+        .font-card:hover { border-color: var(--text-muted); }
+        .font-card.active { border-color: var(--accent); background: rgba(6, 182, 212, 0.05); }
+        .font-card h4 { font-size: 24px; margin-bottom: 5px; }
+        .font-card span { font-size: 11px; color: var(--text-muted); text-transform: uppercase; }
+
+        /* PREVIEW MODAL */
+        .btn-preview { position: fixed; bottom: 30px; right: 40px; background: var(--accent); color: white; border: none; padding: 15px 25px; border-radius: 30px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(6, 182, 212, 0.3); display: flex; align-items: center; gap: 10px; transition: 0.2s; z-index: 100;}
+        .btn-preview:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(6, 182, 212, 0.4); }
+
+        .preview-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 1000; }
+        .preview-overlay.active { display: flex; }
         
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-overlay.active { display: flex; }
-        .modal-box { background: var(--bg-ribbon); border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; width: 90%; max-width: 500px; display: flex; flex-direction: column; gap: 20px; }
-        .modal-box h3 { font-family: 'Newsreader', serif; font-size: 20px; }
-        .modal-box input { background: var(--bg-app); border: 1px solid var(--border-color); color: white; padding: 12px; border-radius: 6px; font-family: 'Inter', sans-serif; }
-        .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; }
+        .preview-container { background: var(--bg-ribbon); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; gap: 15px; border: 1px solid var(--border-color); max-height: 95vh; }
+        .preview-controls { display: flex; gap: 10px; background: var(--bg-app); padding: 5px; border-radius: 8px; }
+        .preview-controls button { background: transparent; border: none; color: var(--text-muted); padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 16px; }
+        .preview-controls button.active { background: var(--border-color); color: white; }
+        
+        .preview-screen { background: #faf8f5; border-radius: 12px; overflow-y: auto; overflow-x: hidden; position: relative; transition: width 0.3s, height 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .preview-screen.mobile { width: 375px; height: 667px; }
+        .preview-screen.tablet { width: 768px; height: 800px; }
+        .preview-screen.pc { width: 1024px; height: 700px; }
+
+        /* Preview Content Styles */
+        .prv-content { padding: 30px; color: #111; font-size: 18px; line-height: 1.6; }
+        .prv-title { font-size: 2em; font-weight: bold; margin-bottom: 20px; line-height: 1.2; }
+        .prv-img { width: 100%; border-radius: 8px; margin-bottom: 20px; object-fit: cover; }
+        .prv-img.bg-mode { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.3; border-radius: 0; }
+        .prv-text { position: relative; z-index: 1; white-space: pre-wrap;}
     </style>
 </head>
 <body>
 
-    <!-- MODAL LOGO -->
-    <div class="modal-overlay" id="logoModal">
-        <div class="modal-box">
-            <h3>Personnaliser le logo de Pages</h3>
-            <p style="font-size:13px; color: var(--text-muted);">Entrez l'URL de votre logo (image). Il sera affiché dans l'application Pages.</p>
-            <input type="text" id="logoUrlInput" placeholder="https://monsite.com/logo.png">
-            <div style="display:flex; gap:10px; align-items:center;">
-                <input type="text" id="logoAltInput" placeholder="Texte alternatif (optionnel)" style="flex:1;">
-            </div>
-            <div class="modal-buttons">
-                <button class="btn" onclick="closeLogoModal()">Annuler</button>
-                <button class="btn btn-green" onclick="saveLogo()">Appliquer</button>
-            </div>
-        </div>
-    </div>
-
     <!-- RUBAN DU HAUT -->
     <div class="ribbon">
         <div class="ribbon-left">
-            <div class="logo-container" onclick="openLogoModal()">
-                <div class="logo-text" id="displayLogo">Writer.</div>
-                <div class="logo-sub">The Pages. Sources</div>
-                <div class="logo-edit-hint">Cliquer pour changer le logo</div>
+            <div class="logo-container">
+                <div class="logo-text">The Pages.<span>Sources</span></div>
             </div>
             
-            <div class="toolbar">
+            <div class="toolbar" id="mainToolbar">
                 <select id="pageSelector" onchange="loadPageData()"></select>
-                <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i> <span data-i18n="newBtn">page</span></button>
-                <button class="btn btn-icon btn-danger" onclick="deletePage()" title="Supprimer la page"><i class="fas fa-trash"></i></button>
-                
+                <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i> <span data-i18n="newBtn">Page</span></button>
+                <button class="btn btn-icon btn-danger" onclick="deletePage()" title="Supprimer"><i class="fas fa-trash"></i></button>
                 <div class="toolbar-divider"></div>
-                
-                <div class="font-tool" title="Police du texte">
-                    <i class="fas fa-font"></i>
-                    <select id="fontSelector" onchange="changeFont()">
-                        <option value="Newsreader">Newsreader</option>
-                        <option value="Inter">Inter</option>
-                        <option value="Courier Prime">Courier</option>
-                        <option value="Lora">Lora</option>
-                        <option value="Merriweather">Merriweather</option>
-                        <option value="Roboto">Roboto</option>
-                    </select>
-                </div>
-                
-                <button class="btn btn-icon" onclick="cycleTheme()" title="Couleur de la page"><i class="fa-solid fa-circle-half-stroke"></i></button>
-                
-                <div class="toolbar-divider"></div>
-                
                 <button class="btn" onclick="toggleLang()" id="langBtn">EN</button>
             </div>
         </div>
@@ -152,18 +134,15 @@
         <div class="ribbon-right">
             <!-- INDICATEUR DE SYNCHRONISATION -->
             <div class="sync-indicator synced" id="syncIndicator">
-                <i class="fas fa-sync-alt"></i>
-                <span id="syncText">Synchronisé</span>
+                <i class="fas fa-sync-alt"></i><span id="syncText">Sync</span>
             </div>
             
             <div class="toolbar-divider" style="height:30px;"></div>
 
-            <!-- OUTILS WORKFLOW -->
             <input type="file" id="importWorkInput" accept=".writerwork,.json" style="display:none" onchange="importWorkflow(event)">
-            <button class="btn" onclick="document.getElementById('importWorkInput').click()" title="Importer Workflow"><i class="fas fa-folder-open"></i> <span data-i18n="btnImportWork">Import Work</span></button>
-            <button class="btn" onclick="exportWorkflow()" title="Sauvegarder l'intégralité du travail localement"><i class="fas fa-archive"></i> <span data-i18n="btnExportWork">Backup Workflow</span></button>
-            
-            <button class="btn btn-blue" onclick="manualSave()"><i class="fas fa-save"></i> <span data-i18n="btnSave">Sauvegarder</span></button>
+            <button class="btn" onclick="document.getElementById('importWorkInput').click()" title="Importer"><i class="fas fa-folder-open"></i> Import</button>
+            <button class="btn" onclick="exportWorkflow()" title="Backup Local"><i class="fas fa-archive"></i> Backup</button>
+            <button class="btn btn-blue" onclick="manualSave()"><i class="fas fa-save"></i> Save</button>
             
             <div class="toolbar-divider" style="height:30px;"></div>
 
@@ -171,9 +150,12 @@
         </div>
     </div>
 
-    <!-- CORPS DE L'APPLICATION -->
     <div class="main-body">
+        <!-- SIDEBAR -->
         <div class="sidebar">
+            <div class="menu-category" data-i18n="catConfig">Configuration</div>
+            <div class="menu-item" id="tab-config" onclick="setMode('config')"><i class="fas fa-cog"></i> <span data-i18n="menuConfig">Paramètres App</span></div>
+            
             <div class="menu-category" data-i18n="catReading">Lecture</div>
             <div class="menu-item active" id="tab-book" onclick="setMode('book')"><i class="fas fa-book"></i> <span data-i18n="menuBook">Livre (Poche)</span></div>
             <div class="menu-item" id="tab-bd" onclick="setMode('bd')"><i class="fas fa-mask"></i> <span data-i18n="menuBd">Bande Dessinée</span></div>
@@ -182,369 +164,155 @@
             <div class="menu-category" data-i18n="catEdition">Éditions</div>
             <div class="menu-item" id="tab-magazine" onclick="setMode('magazine')"><i class="fas fa-th-large"></i> <span data-i18n="menuMag">Magazine</span></div>
             <div class="menu-item" id="tab-journal" onclick="setMode('journal')"><i class="far fa-newspaper"></i> <span data-i18n="menuNews">Journal</span></div>
-            <div class="menu-item" id="tab-recette" onclick="setMode('recette')"><i class="fas fa-utensils"></i> <span data-i18n="menuRecipe">Recettes</span></div>
-            
-            <div class="menu-category" data-i18n="catSocial">Réseaux</div>
-            <div class="menu-item" id="tab-post" onclick="setMode('post')"><i class="fas fa-layer-group"></i> <span data-i18n="menuPost">Fil d'Actualités</span></div>
         </div>
 
-        <div class="editor-workspace">
-            <div class="writing-sheet" id="writingSheet">
-                
-                <div class="input-group" style="padding-bottom: 25px; border-bottom: 1px dashed rgba(128,128,128,0.3);">
-                    <label id="globalTitleLabel" data-i18n="lblAppTitle">Nom du Livre / Projet (Global)</label>
-                    <input type="text" id="globalTitle" class="text-input" placeholder="Ex: Mon Livre Magique" oninput="autoSave()">
+        <!-- WORKSPACE : ÉDITEUR DE TEXTE -->
+        <div class="workspace active" id="ws-editor">
+            <div class="writing-sheet">
+                <div class="meta-row">
+                    <div class="input-group">
+                        <label data-i18n="lblPageTitle">Titre de la page</label>
+                        <input type="text" id="itemTitle" class="meta-input" style="font-size: 18px; font-weight:bold; font-family:'Newsreader';" oninput="autoSave()">
+                    </div>
                 </div>
 
                 <div class="meta-row">
-                    <div class="input-group">
-                        <label id="labelTitle" data-i18n="lblPageTitle">Nom de la page (S'affiche dans l'application)</label>
-                        <input type="text" id="itemTitle" class="meta-input" placeholder="Chapitre 1, Couverture, Sommaire..." oninput="autoSave()">
+                    <div class="input-group" style="flex:2;">
+                        <label data-i18n="lblImage">URL de l'image</label>
+                        <input type="text" id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()">
                     </div>
-                    <div class="input-group" id="grpCategory" style="display:none;">
-                        <label data-i18n="lblCategory">Catégorie</label>
-                        <input type="text" id="itemCategory" class="meta-input" placeholder="Ex: News..." oninput="autoSave()">
+                    <div class="input-group" style="flex:1;">
+                        <label data-i18n="lblLayout">Position Image</label>
+                        <div class="segment-group">
+                            <button class="segment-btn active" id="lay-top" onclick="setLayout('top')"><i class="fas fa-arrow-up"></i> Haut</button>
+                            <button class="segment-btn" id="lay-bottom" onclick="setLayout('bottom')"><i class="fas fa-arrow-down"></i> Bas</button>
+                            <button class="segment-btn" id="lay-bg" onclick="setLayout('bg')"><i class="fas fa-image"></i> Fond</button>
+                        </div>
                     </div>
-                </div>
-
-                <div class="input-group" id="grpImage">
-                    <label id="labelImage" data-i18n="lblImage">URL de l'image (Pour la couverture ou l'illustration)</label>
-                    <input type="text" id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()">
                 </div>
 
                 <div class="input-group" style="flex:1;">
-                    <div class="toolbar-text">
-                        <button class="link-btn" onclick="insertInternalLink()" title="Créer un lien vers une autre page"><i class="fas fa-link"></i> Insérer un lien interne</button>
-                    </div>
-                    <label id="labelText" data-i18n="lblText">Contenu</label>
-                    <textarea id="itemText" class="main-textarea" placeholder="Commencez à écrire..." oninput="autoSave()"></textarea>
+                    <label data-i18n="lblText">Contenu</label>
+                    <textarea id="itemText" class="main-textarea" placeholder="..." oninput="autoSave()"></textarea>
                 </div>
+            </div>
+            
+            <!-- BOUTON PREVIEW FLOTTANT -->
+            <button class="btn-preview" onclick="openPreview()"><i class="fas fa-eye"></i> <span data-i18n="btnPreview">Aperçu</span></button>
+        </div>
+
+        <!-- WORKSPACE : CONFIGURATION APP -->
+        <div class="workspace" id="ws-config">
+            <div class="writing-sheet" style="background: var(--bg-ribbon); color: var(--text-ui); border: 1px solid var(--border-color);">
+                <h2 style="font-family:'Inter'; margin-bottom: 10px; font-size:20px;" data-i18n="cfgTitle">Paramètres de votre Application</h2>
                 
+                <div class="input-group">
+                    <label data-i18n="lblAppTitle">Nom du Livre / Projet</label>
+                    <input type="text" id="globalTitle" class="meta-input" placeholder="Ex: Mon Chef-d'œuvre" style="background: var(--bg-app); color: white;" oninput="saveConfig()">
+                </div>
+
+                <div class="input-group">
+                    <label data-i18n="cfgLogo">Logo de l'application (URL Image)</label>
+                    <input type="text" id="appLogo" class="meta-input" placeholder="https://..." style="background: var(--bg-app); color: white;" oninput="saveConfig()">
+                </div>
+
+                <div class="input-group" style="margin-top: 20px;">
+                    <label data-i18n="cfgFont">Police de caractère par défaut</label>
+                    <div class="font-grid">
+                        <div class="font-card active" id="font-Newsreader" onclick="selectAppFont('Newsreader')">
+                            <h4 style="font-family: 'Newsreader', serif;">Ag</h4><span>Newsreader</span>
+                        </div>
+                        <div class="font-card" id="font-Inter" onclick="selectAppFont('Inter')">
+                            <h4 style="font-family: 'Inter', sans-serif;">Ag</h4><span>Inter</span>
+                        </div>
+                        <div class="font-card" id="font-Lora" onclick="selectAppFont('Lora')">
+                            <h4 style="font-family: 'Lora', serif;">Ag</h4><span>Lora</span>
+                        </div>
+                        <div class="font-card" id="font-Courier Prime" onclick="selectAppFont('Courier Prime')">
+                            <h4 style="font-family: 'Courier Prime', monospace;">Ag</h4><span>Courier</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PREVIEW MODAL -->
+    <div class="preview-overlay" id="previewModal">
+        <div class="preview-container">
+            <div class="preview-controls">
+                <button class="active" onclick="setPreviewSize('mobile', this)"><i class="fas fa-mobile-alt"></i></button>
+                <button onclick="setPreviewSize('tablet', this)"><i class="fas fa-tablet-alt"></i></button>
+                <button onclick="setPreviewSize('pc', this)"><i class="fas fa-desktop"></i></button>
+                <button onclick="closePreview()" style="margin-left: 20px; color: #ef4444;"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="preview-screen mobile" id="previewScreen">
+                <div class="prv-content" id="prvContent"></div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- DICTIONNAIRE DE LANGUES ---
+        // --- DICTIONNAIRES ---
         const i18n = {
             fr: {
-                langBtn: "EN", newBtn: "page",
-                catReading: "Lecture", catEdition: "Éditions", catSocial: "Réseaux",
-                menuBook: "Livre (Poche)", menuBd: "Bande Dessinée", menuKid: "Livre Enfant",
-                menuMag: "Magazine", menuNews: "Journal", menuRecipe: "Recettes", menuPost: "Fil d'Actualités",
-                lblAppTitle: "Nom du Livre / Projet (Global)",
-                lblPageTitle: "Nom de la page (S'affiche dans l'application)",
-                lblCategory: "Catégorie",
-                lblImage: "URL de l'image (Pour la couverture ou l'illustration)", lblImageReq: "URL DE LA PLANCHE (Obligatoire)",
-                lblText: "Contenu", lblTextOpt: "Texte (Optionnel pour BD)",
-                btnSave: "Sauvegarder", btnExportWork: "Backup Workflow", btnImportWork: "Import Work"
+                catConfig: "Configuration", menuConfig: "Paramètres App", cfgTitle: "Paramètres de votre Application", cfgLogo: "Logo de l'application (URL)", cfgFont: "Police par défaut",
+                catReading: "Lecture", menuBook: "Livre (Poche)", menuBd: "Bande Dessinée", menuKid: "Livre Enfant",
+                catEdition: "Éditions", menuMag: "Magazine", menuNews: "Journal",
+                newBtn: "Page", btnPreview: "Aperçu de la page",
+                lblAppTitle: "Nom du Livre / Projet", lblPageTitle: "Titre de la page", lblImage: "URL de l'image", lblLayout: "Position Image", lblText: "Contenu du texte"
             },
             en: {
-                langBtn: "FR", newBtn: "page",
-                catReading: "Reading", catEdition: "Publishing", catSocial: "Social",
-                menuBook: "Pocket Book", menuBd: "Comic Book", menuKid: "Children's Book",
-                menuMag: "Magazine", menuNews: "Newspaper", menuRecipe: "Recipes", menuPost: "News Feed",
-                lblAppTitle: "Book / Project Name (Global)",
-                lblPageTitle: "Page Name (Displayed in app)",
-                lblCategory: "Category",
-                lblImage: "Image URL (For cover or illustration)", lblImageReq: "COMIC PAGE URL (Required)",
-                lblText: "Content", lblTextOpt: "Text (Optional for Comics)",
-                btnSave: "SAVE", btnExportWork: "Backup Workflow", btnImportWork: "Import Work"
+                catConfig: "Configuration", menuConfig: "App Settings", cfgTitle: "Application Settings", cfgLogo: "App Logo (URL)", cfgFont: "Default Font",
+                catReading: "Reading", menuBook: "Pocket Book", menuBd: "Comic Book", menuKid: "Children's Book",
+                catEdition: "Publishing", menuMag: "Magazine", menuNews: "Newspaper",
+                newBtn: "Page", btnPreview: "Page Preview",
+                lblAppTitle: "Book / Project Name", lblPageTitle: "Page Title", lblImage: "Image URL", lblLayout: "Image Layout", lblText: "Text Content"
             }
+        };
+
+        const fontMapping = {
+            'Newsreader': "'Newsreader', serif", 'Inter': "'Inter', sans-serif",
+            'Courier Prime': "'Courier Prime', monospace", 'Lora': "'Lora', serif"
         };
 
         let currentLang = 'fr';
+        let appConfig = { appName: '', logoUrl: '', fontFamily: 'Newsreader' };
         
-        // --- MAPPING DES POLICES (valeur → CSS font-family) ---
-        const fontMapping = {
-            'Newsreader': "'Newsreader', serif",
-            'Inter': "'Inter', sans-serif",
-            'Courier Prime': "'Courier Prime', monospace",
-            'Lora': "'Lora', serif",
-            'Merriweather': "'Merriweather', serif",
-            'Roboto': "'Roboto', sans-serif"
-        };
-        
-        // --- CONFIGURATION GLOBALE ---
-        let appConfig = {
-            logoUrl: '',
-            logoAlt: 'Writer.',
-            fontFamily: 'Newsreader',
-            theme: 'clair'
+        let appData = {
+            book: { items: [{ id: '1', title: 'Chapitre 1', image: '', layout: 'top', text: 'Il était une fois...' }] },
+            bd: { items: [{ id: '1', title: 'Planche 1', image: '', layout: 'top', text: '' }] },
+            magazine: { items: [{ id: '1', title: 'Article 1', image: '', layout: 'top', text: '' }] },
+            journal: { items: [{ id: '1', title: 'News 1', image: '', layout: 'top', text: '' }] },
+            enfant: { items: [{ id: '1', title: 'Page 1', image: '', layout: 'top', text: '' }] }
         };
 
-        let defaultData = {
-            book: { 
-                title: "", 
-                items: [
-                    { id: 'cover', title: 'Book Cover', image: '', text: '' },
-                    { id: 'summary', title: 'Summary', image: '', text: '' },
-                    { id: 'page_1', title: 'Page 1', image: '', text: '' },
-                    { id: 'ending', title: 'Book Ending', image: '', text: '' }
-                ] 
-            },
-            bd: { title: "", items: [{ id: 'page_1', title: 'Planche 1', image: '', text: '' }] },
-            magazine: { title: "", items: [{ id: 'page_1', title: 'Article 1', category: '', image: '', text: '' }] },
-            journal: { title: "", items: [{ id: 'page_1', title: 'Article 1', category: '', image: '', text: '' }] },
-            enfant: { title: "", items: [{ id: 'page_1', title: 'Page 1', image: '', text: '' }] },
-            recette: { title: "", items: [{ id: 'page_1', title: 'Recette 1', category: '', image: '', text: '' }] },
-            post: { title: "", items: [{ id: 'page_1', title: 'Post 1', category: '', image: '', text: '' }] }
-        };
-
-        let appData = JSON.parse(JSON.stringify(defaultData));
         let currentMode = 'book';
-        let currentPageId = 'cover';
+        let currentPageId = '1';
         let saveTimeout = null;
-        
-        // --- SYNCHRONISATION ET SAUVEGARDE MANUELLE ---
+
+        // --- SYNCHRONISATION ---
         function setSyncStatus(status) {
             const indicator = document.getElementById('syncIndicator');
-            const text = document.getElementById('syncText');
-            
             indicator.className = 'sync-indicator ' + status;
-            
-            switch(status) {
-                case 'synced':
-                    text.textContent = 'Synchronisé';
-                    break;
-                case 'saving':
-                    text.textContent = 'Sauvegarde...';
-                    break;
-                case 'error':
-                    text.textContent = 'Erreur sync';
-                    break;
-            }
         }
 
-        function manualSave() {
-            autoSave();
-            saveSession();
-            alert(currentLang === 'fr' ? "Votre travail a été sauvegardé avec succès dans le navigateur !" : "Your work has been successfully saved in the browser!");
-        }
-        
-        // --- EXPORT & IMPORT WORKFLOW (.writerwork) ---
-        function exportWorkflow() {
-            autoSave();
-            saveSession();
-            
-            const workflowData = {
-                data: appData,
-                config: appConfig
-            };
-            
-            const jsonString = JSON.stringify(workflowData, null, 2);
-            const blob = new Blob([jsonString], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "mon_projet.writerwork";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        function importWorkflow(event) {
-            const file = event.target.files[0];
-            if(!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    const parsed = JSON.parse(e.target.result);
-                    if(parsed.data && parsed.config) {
-                        appData = parsed.data;
-                        appConfig = parsed.config;
-                        saveSession();
-                        
-                        // Ré-appliquer la configuration visuelle
-                        if(appConfig.logoUrl) {
-                            document.getElementById('displayLogo').innerHTML = `<img src="${appConfig.logoUrl}" alt="${appConfig.logoAlt}" style="height:30px; vertical-align:middle;">`;
-                        } else {
-                            document.getElementById('displayLogo').textContent = 'Writer.';
-                        }
-                        if(appConfig.fontFamily && fontMapping[appConfig.fontFamily]) {
-                            document.getElementById('fontSelector').value = appConfig.fontFamily;
-                            applyFont(appConfig.fontFamily);
-                        }
-                        if(appConfig.theme) {
-                            applyTheme(appConfig.theme);
-                        }
-                        
-                        setMode(currentMode); // Rafraîchit l'interface
-                        alert(currentLang === 'fr' ? "Workflow importé avec succès !" : "Workflow imported successfully!");
-                    } else {
-                        throw new Error("Format invalide");
-                    }
-                } catch(error) {
-                    alert(currentLang === 'fr' ? "Erreur : le fichier est invalide ou corrompu." : "Error: The file is invalid or corrupted.");
-                }
-                event.target.value = ''; // Réinitialiser l'input
-            };
-            reader.readAsText(file);
-        }
-        
-        // --- GESTION DE SESSION ---
-        function loadSession() {
-            const savedData = localStorage.getItem('writer_session_v4');
-            if(savedData) {
-                try {
-                    const parsed = JSON.parse(savedData);
-                    appData = parsed.data || appData;
-                    appConfig = parsed.config || appConfig;
-                    
-                    if(appConfig.logoUrl) {
-                        document.getElementById('displayLogo').innerHTML = `<img src="${appConfig.logoUrl}" alt="${appConfig.logoAlt}" style="height:30px; vertical-align:middle;">`;
-                    }
-                    if(appConfig.fontFamily && fontMapping[appConfig.fontFamily]) {
-                        document.getElementById('fontSelector').value = appConfig.fontFamily;
-                        applyFont(appConfig.fontFamily);
-                    }
-                    if(appConfig.theme) {
-                        const themes = ['clair', 'papier', 'sombre'];
-                        let idx = themes.indexOf(appConfig.theme);
-                        if(idx === -1) idx = 0;
-                        currentThemeIndex = idx;
-                        applyTheme(appConfig.theme);
-                    }
-                    setSyncStatus('synced');
-                } catch(e) {
-                    console.error('Erreur chargement session:', e);
-                    setSyncStatus('error');
-                }
-            }
-            setMode('book');
-        }
-
-        function saveSession() {
-            try {
-                localStorage.setItem('writer_session_v4', JSON.stringify({
-                    data: appData,
-                    config: appConfig
-                }));
-                setSyncStatus('synced');
-            } catch(e) {
-                console.error('Erreur sauvegarde session:', e);
-                setSyncStatus('error');
-            }
-        }
-        
-        // --- GESTION DU LOGO ---
-        function openLogoModal() {
-            document.getElementById('logoModal').classList.add('active');
-            document.getElementById('logoUrlInput').value = appConfig.logoUrl;
-            document.getElementById('logoAltInput').value = appConfig.logoAlt;
-        }
-        
-        function closeLogoModal() {
-            document.getElementById('logoModal').classList.remove('active');
-        }
-        
-        function saveLogo() {
-            const url = document.getElementById('logoUrlInput').value.trim();
-            const alt = document.getElementById('logoAltInput').value.trim() || 'Writer.';
-            
-            appConfig.logoUrl = url;
-            appConfig.logoAlt = alt;
-            
-            if(url) {
-                document.getElementById('displayLogo').innerHTML = `<img src="${url}" alt="${alt}" style="height:30px; vertical-align:middle;">`;
-            } else {
-                document.getElementById('displayLogo').textContent = 'Writer.';
-            }
-            
-            closeLogoModal();
-            saveSession();
-        }
-        
-        // --- THÈME ET POLICES ---
-        let themes = ['clair', 'papier', 'sombre'];
-        let currentThemeIndex = 0;
-
-        function applyTheme(theme) {
-            const sheet = document.getElementById('writingSheet');
-            if(theme === 'clair') { 
-                sheet.style.background = 'var(--sheet-bg-clair)'; 
-                sheet.style.color = 'var(--sheet-text-clair)'; 
-            }
-            else if (theme === 'papier') { 
-                sheet.style.background = 'var(--sheet-bg-papier)'; 
-                sheet.style.color = 'var(--sheet-text-papier)'; 
-            }
-            else { 
-                sheet.style.background = 'var(--sheet-bg-sombre)'; 
-                sheet.style.color = 'var(--sheet-text-sombre)'; 
-            }
-        }
-
-        function cycleTheme() {
-            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-            const theme = themes[currentThemeIndex];
-            appConfig.theme = theme;
-            applyTheme(theme);
-            saveSession();
-        }
-
-        function applyFont(fontName) {
-            const cssFont = fontMapping[fontName];
-            if(cssFont) {
-                document.getElementById('itemText').style.fontFamily = cssFont;
-                document.getElementById('itemTitle').style.fontFamily = cssFont;
-                document.getElementById('globalTitle').style.fontFamily = cssFont;
-            }
-        }
-
-        function changeFont() {
-            const fontName = document.getElementById('fontSelector').value;
-            appConfig.fontFamily = fontName;
-            applyFont(fontName);
-            saveSession();
-        }
-
-        // --- TRADUCTION ---
-        function toggleLang() {
-            currentLang = currentLang === 'fr' ? 'en' : 'fr';
-            document.getElementById('langBtn').innerText = i18n[currentLang].langBtn;
-            
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (i18n[currentLang][key]) el.innerText = i18n[currentLang][key];
-            });
-            updateLabelsForMode();
-            refreshSelector();
-        }
-
-        // --- GESTION DES MODES ---
+        // --- UI & MODES ---
         function setMode(mode) {
             document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
             document.getElementById('tab-' + mode).classList.add('active');
-            currentMode = mode;
             
-            document.getElementById('globalTitle').value = appData[mode].title || '';
-            
-            const grpCat = document.getElementById('grpCategory');
-            if(['magazine', 'journal', 'recette', 'post'].includes(mode)) {
-                grpCat.style.display = 'flex';
+            if(mode === 'config') {
+                document.getElementById('ws-editor').classList.remove('active');
+                document.getElementById('ws-config').classList.add('active');
+                document.getElementById('mainToolbar').style.visibility = 'hidden';
+                loadConfigUI();
             } else {
-                grpCat.style.display = 'none';
-            }
-
-            updateLabelsForMode();
-            refreshSelector();
-        }
-
-        function updateLabelsForMode() {
-            if(currentMode === 'bd') {
-                document.getElementById('itemText').style.minHeight = '150px';
-                document.getElementById('labelText').innerText = i18n[currentLang].lblTextOpt;
-                document.getElementById('labelImage').innerText = i18n[currentLang].lblImageReq;
-                document.getElementById('itemImage').style.border = "1px solid cyan";
-            } else {
-                document.getElementById('itemText').style.minHeight = '500px';
-                document.getElementById('labelText').innerText = i18n[currentLang].lblText;
-                document.getElementById('labelImage').innerText = i18n[currentLang].lblImage;
-                document.getElementById('itemImage').style.border = "1px solid rgba(128,128,128,0.2)";
+                currentMode = mode;
+                document.getElementById('ws-config').classList.remove('active');
+                document.getElementById('ws-editor').classList.add('active');
+                document.getElementById('mainToolbar').style.visibility = 'visible';
+                refreshSelector();
             }
         }
 
@@ -560,148 +328,185 @@
                 selector.appendChild(opt);
             });
             
-            if(!items.find(i => i.id === currentPageId) && items.length > 0) {
-                currentPageId = items[0].id;
-            } else if (items.length === 0) {
-                currentPageId = null;
-            }
-            
-            if(currentPageId) { 
-                selector.value = currentPageId; 
-                loadPageData(); 
-            } else {
-                document.getElementById('itemTitle').value = '';
-                document.getElementById('itemImage').value = '';
-                document.getElementById('itemText').value = '';
-            }
+            if(!items.find(i => i.id === currentPageId) && items.length > 0) currentPageId = items[0].id;
+            if(currentPageId) { selector.value = currentPageId; loadPageData(); }
         }
 
         function loadPageData() {
-            currentPageId = document.getElementById('pageSelector').value;
             const item = appData[currentMode].items.find(i => i.id === currentPageId);
-            if(item) {
-                document.getElementById('itemTitle').value = item.title || '';
-                document.getElementById('itemImage').value = item.image || '';
-                document.getElementById('itemText').value = item.text || '';
-                if(document.getElementById('itemCategory')) document.getElementById('itemCategory').value = item.category || '';
-            }
+            if(!item) return;
+            
+            document.getElementById('itemTitle').value = item.title || '';
+            document.getElementById('itemImage').value = item.image || '';
+            document.getElementById('itemText').value = item.text || '';
+            document.getElementById('itemText').style.fontFamily = fontMapping[appConfig.fontFamily] || fontMapping['Newsreader'];
+            
+            setLayout(item.layout || 'top', false);
+        }
+
+        function setLayout(layoutStr, doSave = true) {
+            document.querySelectorAll('.segment-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('lay-' + layoutStr).classList.add('active');
+            if(doSave) autoSave();
         }
 
         function autoSave() {
-            if(!currentPageId) return;
-            
-            // Afficher "Sauvegarde..." avec debounce
+            if(!currentPageId || currentMode === 'config') return;
             setSyncStatus('saving');
-            
             clearTimeout(saveTimeout);
             saveTimeout = setTimeout(() => {
-                appData[currentMode].title = document.getElementById('globalTitle').value;
-                
                 let item = appData[currentMode].items.find(i => i.id === currentPageId);
                 if(item) {
                     item.title = document.getElementById('itemTitle').value;
                     item.image = document.getElementById('itemImage').value;
                     item.text = document.getElementById('itemText').value;
-                    if(document.getElementById('itemCategory')) item.category = document.getElementById('itemCategory').value;
+                    item.layout = document.querySelector('.segment-btn.active').id.replace('lay-', '');
                     
                     const opt = document.getElementById('pageSelector').querySelector(`option[value="${currentPageId}"]`);
                     if(opt) opt.text = item.title || `Page`;
                 }
                 saveSession();
-            }, 800);
+            }, 500);
         }
 
         function addPage() {
-            const uniqueId = 'page_' + Date.now();
-            const num = appData[currentMode].items.length + 1;
-            
-            let newPage = { id: uniqueId, title: `Page ${num}`, image: '', text: '', category: '' };
-            
-            if(currentMode === 'book') {
-                const endingIndex = appData[currentMode].items.findIndex(i => i.id === 'ending' || i.title.toLowerCase().includes('ending'));
-                if (endingIndex !== -1) {
-                    appData[currentMode].items.splice(endingIndex, 0, newPage);
-                } else {
-                    appData[currentMode].items.push(newPage);
-                }
-            } else {
-                appData[currentMode].items.push(newPage);
-            }
-            
-            saveSession();
-            refreshSelector();
-            document.getElementById('pageSelector').value = uniqueId;
-            loadPageData();
+            const newId = 'page_' + Date.now();
+            appData[currentMode].items.push({ id: newId, title: `Nouvelle Page`, image: '', layout: 'top', text: '' });
+            currentPageId = newId;
+            saveSession(); refreshSelector();
         }
 
         function deletePage() {
-            if(appData[currentMode].items.length <= 1) return alert("Action impossible. Gardez au moins une page.");
-            if(confirm("Confirmer la suppression de cette page ?")) {
-                appData[currentMode].items = appData[currentMode].items.filter(i => i.id !== currentPageId);
+            if(appData[currentMode].items.length <= 1) return;
+            appData[currentMode].items = appData[currentMode].items.filter(i => i.id !== currentPageId);
+            saveSession(); refreshSelector();
+        }
+
+        // --- CONFIGURATION TAB ---
+        function loadConfigUI() {
+            document.getElementById('globalTitle').value = appConfig.appName || '';
+            document.getElementById('appLogo').value = appConfig.logoUrl || '';
+            selectAppFont(appConfig.fontFamily || 'Newsreader', false);
+        }
+
+        function saveConfig() {
+            setSyncStatus('saving');
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                appConfig.appName = document.getElementById('globalTitle').value;
+                appConfig.logoUrl = document.getElementById('appLogo').value;
                 saveSession();
-                refreshSelector();
-            }
+            }, 500);
         }
 
-        // --- OUTIL DE LIEN INTERNE ---
-        function insertInternalLink() {
-            if(!currentPageId) return;
-            let options = appData[currentMode].items.map((i, index) => `${index + 1} - ${i.title}`).join('\n');
+        function selectAppFont(fontName, doSave = true) {
+            document.querySelectorAll('.font-card').forEach(c => c.classList.remove('active'));
+            const card = document.getElementById('font-' + fontName);
+            if(card) card.classList.add('active');
             
-            let targetIndexStr = prompt(`Sélectionnez le NUMÉRO de la page cible :\n\n${options}`);
-            if(targetIndexStr) {
-                let targetIndex = parseInt(targetIndexStr) - 1;
-                if (targetIndex >= 0 && targetIndex < appData[currentMode].items.length) {
-                    let text = prompt("Texte du lien (ex: Lire le chapitre) :");
-                    if (text) {
-                        let linkHTML = `<a href="#" onclick="navigateToPage(${targetIndex}); return false;" style="color:var(--accent); text-decoration:underline;">${text}</a>`;
-                        let textarea = document.getElementById('itemText');
-                        textarea.setRangeText(linkHTML, textarea.selectionStart, textarea.selectionEnd, 'end');
-                        autoSave();
-                    }
-                } else {
-                    alert("Numéro de page invalide.");
-                }
-            }
+            appConfig.fontFamily = fontName;
+            if(doSave) saveConfig();
         }
 
-        // --- EXPORT pages.data ---
-        function exportPagesData() {
+        // --- PREVIEW (APERÇU) ---
+        function openPreview() {
             autoSave();
-            saveSession();
-            
-            const formatData = appData[currentMode];
-            
-            const exportObject = {
-                format: currentMode,
-                titre: formatData.title || (currentLang === 'fr' ? 'Projet sans titre' : 'Untitled Project'),
-                langue: currentLang,
-                config: {
-                    logo: appConfig.logoUrl,
-                    logoAlt: appConfig.logoAlt,
-                    fontFamily: appConfig.fontFamily,
-                    fontCSS: fontMapping[appConfig.fontFamily] || fontMapping['Newsreader'],
-                    theme: appConfig.theme
-                },
-                items: formatData.items
-            };
+            const item = appData[currentMode].items.find(i => i.id === currentPageId);
+            if(!item) return;
 
-            const jsonString = JSON.stringify(exportObject, null, 2);
-            const blob = new Blob([jsonString], { type: "application/octet-stream" });
-            const url = URL.createObjectURL(blob);
+            const modal = document.getElementById('previewModal');
+            const contentBox = document.getElementById('prvContent');
+            const fontCSS = fontMapping[appConfig.fontFamily] || fontMapping['Newsreader'];
             
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "pages.data";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            contentBox.style.fontFamily = fontCSS;
+            let html = `<div class="prv-title">${item.title}</div>`;
             
+            const imgHTML = item.image ? `<img src="${item.image}" class="prv-img ${item.layout === 'bg' ? 'bg-mode' : ''}">` : '';
+            const txtHTML = `<div class="prv-text">${item.text}</div>`;
+
+            if(item.layout === 'top' || item.layout === 'bg') {
+                html += imgHTML + txtHTML;
+            } else if (item.layout === 'bottom') {
+                html += txtHTML + imgHTML;
+            }
+
+            contentBox.innerHTML = html;
+            modal.classList.add('active');
+        }
+
+        function closePreview() { document.getElementById('previewModal').classList.remove('active'); }
+        
+        function setPreviewSize(size, btn) {
+            document.querySelectorAll('.preview-controls button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const screen = document.getElementById('previewScreen');
+            screen.className = 'preview-screen ' + size;
+        }
+
+        // --- GESTION DES FICHIERS & SESSION ---
+        function saveSession() {
+            localStorage.setItem('writer_sources_v5', JSON.stringify({ data: appData, config: appConfig }));
             setSyncStatus('synced');
         }
 
-        // Démarrage
+        function manualSave() { autoSave(); saveSession(); }
+
+        function loadSession() {
+            const saved = localStorage.getItem('writer_sources_v5');
+            if(saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    appData = parsed.data || appData;
+                    appConfig = parsed.config || appConfig;
+                } catch(e) {}
+            }
+            setMode('book');
+        }
+
+        function exportWorkflow() {
+            autoSave(); saveSession();
+            const blob = new Blob([JSON.stringify({ data: appData, config: appConfig }, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a"); a.href = url; a.download = "projet.writerwork";
+            a.click(); URL.revokeObjectURL(url);
+        }
+
+        function importWorkflow(event) {
+            const file = event.target.files[0]; if(!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if(parsed.data && parsed.config) {
+                        appData = parsed.data; appConfig = parsed.config;
+                        saveSession(); setMode('book');
+                    }
+                } catch(err) { alert("Fichier invalide."); }
+                event.target.value = '';
+            };
+            reader.readAsText(file);
+        }
+
+        function exportPagesData() {
+            autoSave(); saveSession();
+            const exportObj = {
+                format: currentMode, langue: currentLang,
+                config: { appName: appConfig.appName, logo: appConfig.logoUrl, fontCSS: fontMapping[appConfig.fontFamily] },
+                items: appData[currentMode].items
+            };
+            const blob = new Blob([JSON.stringify(exportObj, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a"); a.href = url; a.download = "pages.data";
+            a.click(); URL.revokeObjectURL(url);
+        }
+
+        function toggleLang() {
+            currentLang = currentLang === 'fr' ? 'en' : 'fr';
+            document.getElementById('langBtn').innerText = currentLang === 'fr' ? 'EN' : 'FR';
+            document.querySelectorAll('[data-i18n]').forEach(el => { el.innerText = i18n[currentLang][el.getAttribute('data-i18n')]; });
+            refreshSelector();
+        }
+
         window.onload = loadSession;
     </script>
 </body>
