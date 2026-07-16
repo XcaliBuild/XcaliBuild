@@ -51,20 +51,21 @@ select{border-color:var(--border);background:rgba(0,0,0,.4)}select option{backgr
 .text-input{background:transparent;border:none;border-bottom:1px solid rgba(128,128,128,.2);color:inherit;font-size:24px;font-weight:600;font-family:inherit;padding:8px 0;outline:none}.text-input:focus{border-bottom-color:var(--accent)}
 .meta-input{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:inherit;font-family:'Inter',sans-serif;font-size:13px;padding:10px 12px;border-radius:6px;outline:none;width:100%}
 .meta-row{display:flex;gap:14px;flex-wrap:wrap}
-.segment-group{display:flex;background:rgba(255,255,255,.06);border-radius:6px;padding:3px;border:1px solid rgba(255,255,255,.1)}.segment-btn{flex:1;background:transparent;color:inherit;opacity:.6;border:none;padding:7px;border-radius:4px;font-size:11px;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:5px}.segment-btn.active{background:#fff;color:#000;opacity:1;font-weight:600}
+.segment-group{display:flex;background:rgba(255,255,255,.06);border-radius:6px;padding:3px;border:1px solid rgba(255,255,255,.1)}.segment-btn{flex:1;background:transparent;color:inherit;opacity:.6;border:none;padding:7px;border-radius:4px;font-size:11px;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:5px;transition:0.2s;}.segment-btn:hover{background:rgba(255,255,255,0.1);}.segment-btn.active{background:#fff;color:#000;opacity:1;font-weight:600}
 textarea.main{width:100%;min-height:360px;background:transparent;border:none;color:inherit;font-family:inherit;font-size:17px;line-height:1.85;resize:vertical;outline:none}
 input[type=range]{width:100%;accent-color:var(--accent)}
 .char-counter{font-size:11px;text-align:right;opacity:.6}
 .btn-preview{position:fixed;bottom:22px;right:22px;background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);color:var(--text);padding:12px 18px;border-radius:30px;font-size:13px;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.6);z-index:30;display:flex;gap:8px;transition:0.2s}
 .btn-preview:hover{border-color:var(--accent);color:var(--accent);}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(14px);display:none;justify-content:center;align-items:center;z-index:1000;padding:16px}.overlay.active{display:flex}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);backdrop-filter:blur(14px);display:none;justify-content:center;align-items:center;z-index:1000;padding:16px}.overlay.active{display:flex}
 .modal{background:#111114;border:1px solid var(--border);border-radius:16px;width:100%;max-width:720px;max-height:90vh;display:flex;flex-direction:column;overflow:hidden}
 .modal-head{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.modal-body{padding:18px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:18px}
-.preview-shell{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%}.preview-top{display:flex;gap:6px;background:#18181b;border:1px solid var(--border);padding:8px 12px;border-radius:30px;align-items:center;flex-wrap:wrap}
+.preview-shell{display:flex;flex-direction:column;align-items:center;gap:14px;width:100%; height:100%; justify-content:center;}
+.preview-top{display:flex;gap:10px;background:#18181b;border:1px solid var(--border);padding:8px 14px;border-radius:30px;align-items:center;flex-wrap:wrap; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+.preview-group{display:flex;gap:6px;}
 .preview-screen{background:#faf8f5;border-radius:24px;overflow:auto;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.8);border:8px solid #222;transition:.3s}.preview-screen.mobile{width:390px;height:700px}.preview-screen.tablet{width:768px;height:640px;border-radius:16px}.preview-screen.large{width:1024px;height:640px;border-radius:12px}
-.prv-content{padding:28px;color:#111;font-size:15px;line-height:1.65}.prv-title{font-size:1.6em;font-weight:700;margin-bottom:10px}.prv-img{border-radius:8px;display:block;margin:14px auto;object-fit:cover}.prv-img.bg{position:absolute;inset:0;width:100%;height:100%;border-radius:0;object-fit:cover;margin:0;z-index:0}.prv-text{position:relative;z-index:1;white-space:pre-wrap}
-.close-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.75);color:#fff;border:1px solid rgba(255,255,255,.2);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;transition:0.2s}
-.close-x:hover{background:#ef4444;border-color:#ef4444;}
+.prv-content{padding:34px;color:#111;font-size:16px;line-height:1.7}.prv-title{font-size:2em;font-weight:700;margin-bottom:14px;text-align:center;}.prv-text{position:relative;z-index:1;white-space:pre-wrap;text-align:justify;}
+.clearfix::after {content: ""; clear: both; display: table;}
 .project-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--border);border-radius:8px;background:rgba(255,255,255,.03)}.project-item.active{border-color:var(--accent);background:rgba(34,211,238,.08)}
 .upload{border:1px dashed var(--border);padding:12px;border-radius:8px;text-align:center;cursor:pointer}
 .saved-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(120px);background:#0f0f11;border:1px solid rgba(34,211,238,.35);color:#fff;padding:10px 18px;border-radius:30px;display:flex;align-items:center;gap:10px;z-index:3000;opacity:0;transition:all.45s cubic-bezier(.175,.885,.32,1.275)}.saved-toast.show{transform:translateX(-50%) translateY(0);opacity:1}.saved-gif{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;animation:pop.5s}
@@ -89,9 +90,6 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 <button class="btn btn-outline" onclick="openSettings()"><i class="fas fa-cog"></i></button>
 <button class="btn btn-outline" onclick="manualSave()"><i class="fas fa-save"></i> <span data-i18n="save">Save</span></button>
 <button class="btn btn-outline" onclick="exportPagesData()"><i class="fas fa-code"></i> pages.data</button>
-<!-- Boutons EPUB et PDF corrigés, style Glass Pro (plus de vert/orange) -->
-<button class="btn btn-outline" onclick="exportEPUB3()"><i class="fas fa-book-open"></i> EPUB3</button>
-<button class="btn btn-outline" onclick="exportPDFBook()"><i class="fas fa-file-pdf"></i> PDF</button>
 </div>
 </div>
 
@@ -137,12 +135,18 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
 <div class="meta-row">
 <div class="input-group" style="flex:2"><label data-i18n="image">Illustration (URL)</label><input id="itemImage" class="meta-input" placeholder="https://..." oninput="autoSave()"></div>
-<div class="input-group" style="flex:1"><label data-i18n="layout">Disposition</label>
+<div class="input-group" style="flex:1"><label data-i18n="layout">Disposition verticale</label>
 <div class="segment-group">
-<button class="segment-btn active" id="lay-top" onclick="setLayout('top')"><i class="fas fa-arrow-up"></i> <span data-i18n="layoutTop">Haut</span></button>
-<button class="segment-btn" id="lay-center" onclick="setLayout('center')"><i class="fas fa-align-center"></i> <span data-i18n="layoutCenter">Centre</span></button>
-<button class="segment-btn" id="lay-bottom" onclick="setLayout('bottom')"><i class="fas fa-arrow-down"></i> <span data-i18n="layoutBottom">Bas</span></button>
+<button class="segment-btn active" id="lay-top" onclick="setLayout('top')"><i class="fas fa-arrow-up"></i></button>
+<button class="segment-btn" id="lay-center" onclick="setLayout('center')"><i class="fas fa-align-center"></i></button>
+<button class="segment-btn" id="lay-bottom" onclick="setLayout('bottom')"><i class="fas fa-arrow-down"></i></button>
 <button class="segment-btn" id="lay-bg" onclick="setLayout('bg')"><i class="fas fa-image"></i></button>
+</div></div>
+<div class="input-group" style="flex:1"><label>Alignement Image</label>
+<div class="segment-group" id="alignGroup">
+<button class="segment-btn active" id="align-center" onclick="setImageAlign('center')"><i class="fas fa-align-center"></i></button>
+<button class="segment-btn" id="align-left" onclick="setImageAlign('left')"><i class="fas fa-align-left"></i></button>
+<button class="segment-btn" id="align-right" onclick="setImageAlign('right')"><i class="fas fa-align-right"></i></button>
 </div></div>
 </div>
 
@@ -158,21 +162,28 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 </div>
 </div>
 
-<button class="btn-preview" onclick="openPreview()"><i class="fas fa-eye"></i> <span data-i18n="preview">Aperçu</span></button>
+<button class="btn-preview" onclick="openPreview()"><i class="fas fa-eye"></i> <span data-i18n="preview">Aperçu & Export</span></button>
 </div>
 </div>
 
 <div class="overlay" id="previewModal" onclick="if(event.target===this)closePreview()">
 <div class="preview-shell" onclick="event.stopPropagation()">
 <div class="preview-top">
+<div class="preview-group">
 <button class="btn btn-outline" id="btnMobile" onclick="setPreviewDevice('mobile')"><i class="fas fa-mobile-alt"></i> <span data-i18n="mobile">Mobile</span></button>
 <button class="btn btn-outline" id="btnTablet" onclick="setPreviewDevice('tablet')"><i class="fas fa-tablet-alt"></i> <span data-i18n="tablet">Tablette</span></button>
 <button class="btn btn-outline" id="btnLarge" onclick="setPreviewDevice('large')"><i class="fas fa-desktop"></i> <span data-i18n="large">Ecran Large</span></button>
+</div>
 <div class="divider"></div>
-<button class="btn btn-primary" onclick="closePreview()"><i class="fas fa-times"></i> <span data-i18n="close">Fermer</span></button>
+<!-- BOUTONS EXPORT WYSIWYG PRO -->
+<div class="preview-group">
+<button class="btn btn-outline" style="border-color:rgba(255,255,255,0.2);color:#22d3ee;font-weight:600;" onclick="exportEPUB3()"><i class="fas fa-book-open"></i> EPUB3</button>
+<button class="btn btn-outline" style="border-color:rgba(255,255,255,0.2);color:#f59e0b;font-weight:600;" onclick="exportPDFBook()"><i class="fas fa-file-pdf"></i> PDF</button>
+</div>
+<div class="divider"></div>
+<button class="btn btn-primary" onclick="closePreview()"><i class="fas fa-times"></i></button>
 </div>
 <div class="preview-screen mobile" id="previewScreen">
-<button class="close-x" onclick="closePreview()"><i class="fas fa-times"></i></button>
 <div class="prv-content" id="prvContent"></div>
 </div>
 </div>
@@ -196,18 +207,18 @@ input[type=range]{width:100%;accent-color:var(--accent)}
 
 <script>
 const i18nDict={
-fr:{projects:"Mes Projets",newBook:"Nouveau Livre",newBookPlaceholder:"Titre du nouveau livre...",sync:"sync",saved:"Enregistré!",workTitle:"Titre de l'œuvre (Livre)",workTitlePh:"Ex: Mon Chef-d'œuvre",author:"Auteur",authorPh:"Ex: Victor Hugo",date:"Date",publisher:"Éditeur",publisherPh:"Ex: Gallimard, Seuil...",genre:"Genre du livre",genrePh:"Ex: Roman, Essai, Poésie...",chapterTitle:"Nom de la page *",chapterPh:"Book Cover, Page Auteur, Chapitre 1...",image:"Illustration (URL)",layout:"Disposition",layoutTop:"Haut",layoutCenter:"Centre",layoutBottom:"Bas",imageSize:"Taille image",bgOpacity:"Transparence du fond",body:"Corps du texte",bodyPh:"Commencez à écrire votre histoire ici...",preview:"Aperçu",mobile:"Mobile",tablet:"Tablette",large:"Ecran Large",close:"Fermer",settings:"Paramètres",language:"Langue",fonts:"Polices de livre",fontsHint:"Importer une police (.ttf,.otf,.woff,.woff2)",backup:"Sauvegarde",backupDesc:"Exporte / importe ton projet complet",btnBackup:"Backup complet",btnImport:"Importer.writerwork",save:"Save",currentProject:"Projet Actuel",reading:"Lecture",editions:"Éditions",book:"Livre (Poche)",comic:"Bande Dessinée",kids:"Livre Enfant",magazine:"Magazine",newspaper:"Journal",page:"Page",cover:"Couverture",authorPage:"Page Auteur",bookCover:"Book Cover",danger:"Zone Dangereuse",factoryReset:"Factory Reset",resetDesc:"Efface tous les projets, polices et réglages",limitBook:"Poche: 1500",limitBD:"BD: 500",limitKid:"Enfant: 700",limitMag:"Mag: 2000",noTitle:"Sans titre"},
-en:{projects:"My Projects",newBook:"New Book",newBookPlaceholder:"New book title...",sync:"sync",saved:"Saved!",workTitle:"Book Title",workTitlePh:"Ex: My Masterpiece",author:"Author",authorPh:"Ex: Victor Hugo",date:"Date",publisher:"Publisher",publisherPh:"Ex: Penguin, Gallimard...",genre:"Book Genre",genrePh:"Ex: Novel, Essay, Poetry...",chapterTitle:"Page Name *",chapterPh:"Book Cover, Author Page, Chapter 1...",image:"Illustration (URL)",layout:"Layout",layoutTop:"Top",layoutCenter:"Center",layoutBottom:"Bottom",imageSize:"Image Size",bgOpacity:"Background Opacity",body:"Body Text",bodyPh:"Start writing your story here...",preview:"Preview",mobile:"Mobile",tablet:"Tablet",large:"Large Screen",close:"Close",settings:"Settings",language:"Language",fonts:"Book Fonts",fontsHint:"Import a font (.ttf,.otf,.woff,.woff2)",backup:"Backup",backupDesc:"Export / import your full project",btnBackup:"Full Backup",btnImport:"Import.writerwork",save:"Save",currentProject:"Current Project",reading:"Reading",editions:"Editions",book:"Pocket Book",comic:"Comic Book",kids:"Children's Book",magazine:"Magazine",newspaper:"Newspaper",page:"Page",cover:"Cover",authorPage:"Author Page",bookCover:"Book Cover",danger:"Danger Zone",factoryReset:"Factory Reset",resetDesc:"Erase all projects, fonts and settings",limitBook:"Pocket: 1500",limitBD:"Comic: 500",limitKid:"Kids: 700",limitMag:"Mag: 2000",noTitle:"Untitled"}
+fr:{projects:"Mes Projets",newBook:"Nouveau Livre",newBookPlaceholder:"Titre du nouveau livre...",sync:"sync",saved:"Enregistré!",workTitle:"Titre de l'œuvre (Livre)",workTitlePh:"Ex: Mon Chef-d'œuvre",author:"Auteur",authorPh:"Ex: Victor Hugo",date:"Date",publisher:"Éditeur",publisherPh:"Ex: Gallimard, Seuil...",genre:"Genre du livre",genrePh:"Ex: Roman, Essai, Poésie...",chapterTitle:"Nom de la page *",chapterPh:"Book Cover, Page Auteur, Chapitre 1...",image:"Illustration (URL)",layout:"Disposition verticale",layoutTop:"Haut",layoutCenter:"Centre",layoutBottom:"Bas",imageSize:"Taille image",bgOpacity:"Transparence du fond",body:"Corps du texte",bodyPh:"Commencez à écrire votre histoire ici...",preview:"Aperçu & Export",mobile:"Mobile",tablet:"Tablette",large:"Ecran Large",close:"Fermer",settings:"Paramètres",language:"Langue",fonts:"Polices de livre",fontsHint:"Importer une police (.ttf,.otf,.woff,.woff2)",backup:"Sauvegarde",backupDesc:"Exporte / importe ton projet complet",btnBackup:"Backup complet",btnImport:"Importer.writerwork",save:"Save",currentProject:"Projet Actuel",reading:"Lecture",editions:"Éditions",book:"Livre (Poche)",comic:"Bande Dessinée",kids:"Livre Enfant",magazine:"Magazine",newspaper:"Journal",page:"Page",cover:"Couverture",authorPage:"Page Auteur",bookCover:"Book Cover",danger:"Zone Dangereuse",factoryReset:"Factory Reset",resetDesc:"Efface tous les projets, polices et réglages",limitBook:"Poche: 1500",limitBD:"BD: 500",limitKid:"Enfant: 700",limitMag:"Mag: 2000",noTitle:"Sans titre"},
+en:{projects:"My Projects",newBook:"New Book",newBookPlaceholder:"New book title...",sync:"sync",saved:"Saved!",workTitle:"Book Title",workTitlePh:"Ex: My Masterpiece",author:"Author",authorPh:"Ex: Victor Hugo",date:"Date",publisher:"Publisher",publisherPh:"Ex: Penguin, Gallimard...",genre:"Book Genre",genrePh:"Ex: Novel, Essay, Poetry...",chapterTitle:"Page Name *",chapterPh:"Book Cover, Author Page, Chapter 1...",image:"Illustration (URL)",layout:"Vertical Layout",layoutTop:"Top",layoutCenter:"Center",layoutBottom:"Bottom",imageSize:"Image Size",bgOpacity:"Background Opacity",body:"Body Text",bodyPh:"Start writing your story here...",preview:"Preview & Export",mobile:"Mobile",tablet:"Tablet",large:"Large Screen",close:"Close",settings:"Settings",language:"Language",fonts:"Book Fonts",fontsHint:"Import a font (.ttf,.otf,.woff,.woff2)",backup:"Backup",backupDesc:"Export / import your full project",btnBackup:"Full Backup",btnImport:"Import.writerwork",save:"Save",currentProject:"Current Project",reading:"Reading",editions:"Editions",book:"Pocket Book",comic:"Comic Book",kids:"Children's Book",magazine:"Magazine",newspaper:"Newspaper",page:"Page",cover:"Cover",authorPage:"Author Page",bookCover:"Book Cover",danger:"Danger Zone",factoryReset:"Factory Reset",resetDesc:"Erase all projects, fonts and settings",limitBook:"Pocket: 1500",limitBD:"Comic: 500",limitKid:"Kids: 700",limitMag:"Mag: 2000",noTitle:"Untitled"}
 };
 const baseFonts={'EB Garamond':"'EB Garamond', serif",'Crimson Pro':"'Crimson Pro', serif",'Libre Baskerville':"'Libre Baskerville', serif",'Cormorant Garamond':"'Cormorant Garamond', serif",'Lora':"'Lora', serif",'Merriweather':"'Merriweather', serif",'Playfair Display':"'Playfair Display', serif",'Newsreader':"'Newsreader', serif",'Inter':"'Inter', sans-serif"};
 let fontMapping={...baseFonts}; let customFonts=[]; let currentLang=localStorage.getItem('writer_lang')||'fr';
 let currentMode='book'; let currentPageId=null; let currentProjectId=null; let projects=[]; let appConfig={fontFamily:'Playfair Display'}; let saveTimeout=null; let previewDevice='mobile';
 const LIMITS={book:1500,bd:500,enfant:700,magazine:2000,journal:2000};
 const defaultDataTemplate=()=>({book:{title:"",items:[
-{id:'cover',type:'cover',title:'Book Cover',image:'',layout:'bg',imageSize:100,bgOpacity:18,text:''},
-{id:'author',type:'author',title:'Page Auteur',image:'',layout:'top',imageSize:60,bgOpacity:15,author:'',date:'',publisher:'',genre:'',text:''},
-{id:'ch1',type:'chapter',title:'Chapitre 1',image:'',layout:'top',imageSize:70,bgOpacity:15,text:''}
-]},bd:{title:"",items:[{id:'1',type:'chapter',title:'Planche 1',image:'',layout:'bg',imageSize:100,bgOpacity:20,text:''}]},magazine:{title:"",items:[{id:'1',type:'chapter',title:'Article 1',image:'',layout:'top',imageSize:70,bgOpacity:15,text:''}]},journal:{title:"",items:[{id:'1',type:'chapter',title:'News 1',image:'',layout:'top',imageSize:70,bgOpacity:15,text:''}]},enfant:{title:"",items:[{id:'1',type:'chapter',title:'Page 1',image:'',layout:'top',imageSize:80,bgOpacity:15,text:''}]}});
+{id:'cover',type:'cover',title:'Book Cover',image:'',layout:'bg',imageAlign:'center',imageSize:100,bgOpacity:18,text:''},
+{id:'author',type:'author',title:'Page Auteur',image:'',layout:'top',imageAlign:'center',imageSize:60,bgOpacity:15,author:'',date:'',publisher:'',genre:'',text:''},
+{id:'ch1',type:'chapter',title:'Chapitre 1',image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:''}
+]},bd:{title:"",items:[{id:'1',type:'chapter',title:'Planche 1',image:'',layout:'bg',imageAlign:'center',imageSize:100,bgOpacity:20,text:''}]},magazine:{title:"",items:[{id:'1',type:'chapter',title:'Article 1',image:'',layout:'top',imageAlign:'left',imageSize:40,bgOpacity:15,text:''}]},journal:{title:"",items:[{id:'1',type:'chapter',title:'News 1',image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:''}]},enfant:{title:"",items:[{id:'1',type:'chapter',title:'Page 1',image:'',layout:'top',imageAlign:'center',imageSize:80,bgOpacity:15,text:''}]}});
 const uid=()=> 'id_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
 function applyI18n(){ const d=i18nDict[currentLang]||i18nDict.fr; document.querySelectorAll('[data-i18n]').forEach(el=>{ const k=el.getAttribute('data-i18n'); if(d[k]) el.textContent=d[k]; }); document.querySelectorAll('[data-i18n-ph]').forEach(el=>{ const k=el.getAttribute('data-i18n-ph'); if(d[k]) el.placeholder=d[k]; }); }
 function setLang(l){ currentLang=l; localStorage.setItem('writer_lang',l); applyI18n(); highlightLang(); refreshSelector(); updateCharCounter(); updateNavArrows(); }
@@ -231,6 +242,7 @@ function setMode(mode,save=true){ currentMode=mode; document.querySelectorAll('.
 function getDisplayName(it,idx){ const d=i18nDict[currentLang]; if(it.type==='cover') return `📖 ${d.bookCover}${it.title&&it.title!==d.bookCover&&it.title!=='Book Cover'?' · '+it.title:''}`; if(it.type==='author') return `✍️ ${d.authorPage}${it.title&&it.title!==d.authorPage&&it.title!=='Page Auteur'?' · '+it.title:''}`; return it.title||`${d.page} ${idx+1}`; }
 function refreshSelector(keep=false){ const proj=getCurrentProject(); if(!proj) return; const sel=document.getElementById('pageSelector'); sel.innerHTML=''; const items=proj.data[currentMode]?.items||[]; items.forEach((it,idx)=>{ const o=document.createElement('option'); o.value=it.id; o.text=getDisplayName(it,idx); sel.appendChild(o); }); if(!keep||!items.find(i=>i.id===currentPageId)) currentPageId=items[0]?.id||null; if(currentPageId) sel.value=currentPageId; loadPageData(); updateNavArrows(); }
 function onPageChange(){ currentPageId=document.getElementById('pageSelector').value; loadPageData(); updateNavArrows(); }
+
 function loadPageData(){
  const proj=getCurrentProject(); if(!proj) return; const item=proj.data[currentMode]?.items.find(i=>i.id===currentPageId); if(!item) return;
  document.getElementById('itemTitle').value=item.title||''; document.getElementById('itemImage').value=item.image||''; document.getElementById('itemText').value=item.text||'';
@@ -240,12 +252,16 @@ function loadPageData(){
  document.getElementById('authorMetaSection').style.display=isAuthor?'flex':'none';
  if(isAuthor){ document.getElementById('globalAuthor').value=item.author||''; document.getElementById('globalDate').value=item.date||''; document.getElementById('globalPublisher').value=item.publisher||''; document.getElementById('globalGenre').value=item.genre||''; }
  document.getElementById('sheet').classList.toggle('is-cover', item.type==='cover');
- setLayout(item.layout||'top',false); updateCharCounter(); updateNavArrows();
+ setLayout(item.layout||'top',false); 
+ setImageAlign(item.imageAlign||'center', false);
+ updateCharCounter(); updateNavArrows();
 }
+
 function updateNavArrows(){ const proj=getCurrentProject(); if(!proj) return; const items=proj.data[currentMode]?.items||[]; const idx=items.findIndex(i=>i.id===currentPageId); document.getElementById('navLeft').classList.toggle('disabled', idx<=0); document.getElementById('navRight').classList.toggle('disabled', idx>=items.length-1); }
 function prevPage(){ const proj=getCurrentProject(); const items=proj.data[currentMode]?.items||[]; const idx=items.findIndex(i=>i.id===currentPageId); if(idx>0){ currentPageId=items[idx-1].id; document.getElementById('pageSelector').value=currentPageId; loadPageData(); } }
 function nextPage(){ const proj=getCurrentProject(); const items=proj.data[currentMode]?.items||[]; const idx=items.findIndex(i=>i.id===currentPageId); if(idx<items.length-1){ currentPageId=items[idx+1].id; document.getElementById('pageSelector').value=currentPageId; loadPageData(); } }
-function setLayout(l,save=true){ document.querySelectorAll('.segment-btn').forEach(b=>b.classList.remove('active')); document.getElementById('lay-'+l)?.classList.add('active'); document.getElementById('bgOpacityGroup').style.display=l==='bg'?'flex':'none'; if(save) autoSave(); }
+function setLayout(l,save=true){ document.querySelectorAll('#lay-top, #lay-center, #lay-bottom, #lay-bg').forEach(b=>b.classList.remove('active')); document.getElementById('lay-'+l)?.classList.add('active'); document.getElementById('bgOpacityGroup').style.display=l==='bg'?'flex':'none'; if(save) autoSave(); }
+function setImageAlign(a,save=true){ document.querySelectorAll('#align-left, #align-center, #align-right').forEach(b=>b.classList.remove('active')); document.getElementById('align-'+a)?.classList.add('active'); if(save) autoSave(); }
 function updateImageSize(v){ document.getElementById('imageSizeVal').textContent=v+'%'; autoSave(); }
 function updateBgOpacity(v){ document.getElementById('bgOpacityVal').textContent=v+'%'; autoSave(); }
 function updateCharCounter(){ const limit=LIMITS[currentMode]||1500; const len=document.getElementById('itemText').value.length; const c=document.getElementById('charCounter'); c.textContent=`${len} / ${limit}`; c.className='char-counter'+(len>limit?' over': len>limit*.8?' warn':''); const d=i18nDict[currentLang]; const key='limit'+(currentMode==='book'?'Book':currentMode==='bd'?'BD':currentMode==='enfant'?'Kid':'Mag'); document.getElementById('charCounterLabel').textContent='· '+(d[key]||limit); }
@@ -264,7 +280,8 @@ function autoSave(){
    const d=i18nDict[currentLang];
    item.title=document.getElementById('itemTitle').value.trim() || d.noTitle;
    item.image=document.getElementById('itemImage').value; item.text=nt;
-   item.layout=document.querySelector('.segment-btn.active')?.id.replace('lay-','')||'top';
+   item.layout=document.querySelector('#lay-top, #lay-center, #lay-bottom, #lay-bg.active')?.id.replace('lay-','')||'top';
+   item.imageAlign=document.querySelector('#align-left, #align-center, #align-right.active')?.id.replace('align-','')||'center';
    item.imageSize=parseInt(document.getElementById('imageSize').value)||70;
    item.bgOpacity=parseInt(document.getElementById('bgOpacity').value)||15;
    if(item.type==='author'){ item.author=document.getElementById('globalAuthor').value; item.date=document.getElementById('globalDate').value; item.publisher=document.getElementById('globalPublisher').value; item.genre=document.getElementById('globalGenre').value; }
@@ -274,12 +291,62 @@ function autoSave(){
   saveProjects(); showSavedGif(); updateCharCounter(); document.getElementById('currentProjectName').textContent=proj.title;
  },380);
 }
-function addPage(){ const proj=getCurrentProject(); if(!proj) return; const count=proj.data[currentMode].items.filter(i=>i.type==='chapter').length+1; const nid='ch_'+Date.now(); proj.data[currentMode].items.push({id:nid,type:'chapter',title:`Chapitre ${count}`,image:'',layout:'top',imageSize:70,bgOpacity:15,text:''}); currentPageId=nid; saveProjects(); refreshSelector(true); autoSave(); }
+function addPage(){ const proj=getCurrentProject(); if(!proj) return; const count=proj.data[currentMode].items.filter(i=>i.type==='chapter').length+1; const nid='ch_'+Date.now(); proj.data[currentMode].items.push({id:nid,type:'chapter',title:`Chapitre ${count}`,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:''}); currentPageId=nid; saveProjects(); refreshSelector(true); autoSave(); }
 function deletePage(){ const proj=getCurrentProject(); if(!proj) return; if(proj.data[currentMode].items.length<=1) return; const item=proj.data[currentMode].items.find(i=>i.id===currentPageId); if(item.type==='cover'||item.type==='author'){ alert(i18nDict[currentLang].cover+' / '+i18nDict[currentLang].authorPage+' cannot be deleted'); return; } if(!confirm('Delete?')) return; proj.data[currentMode].items=proj.data[currentMode].items.filter(i=>i.id!==currentPageId); currentPageId=proj.data[currentMode].items[0].id; saveProjects(); refreshSelector(true); }
 function changeFont(){ const n=document.getElementById('fontSelector').value; appConfig.fontFamily=n; applyFont(n); saveProjects(); }
 function applyFont(n){ const css=fontMapping[n]||fontMapping['Playfair Display']; document.getElementById('itemText').style.fontFamily=css; document.getElementById('itemTitle').style.fontFamily=css; document.getElementById('globalTitle').style.fontFamily=css; }
 function splitCenter(t){ if(!t||t.length<60) return [t,'']; const mid=Math.floor(t.length/2); let idx=t.indexOf('\n\n',mid-100); if(idx===-1) idx=t.lastIndexOf('. ',mid); if(idx===-1) idx=mid; return [t.slice(0,idx).trim(), t.slice(idx).trim()]; }
-function openPreview(){ autoSave(); const proj=getCurrentProject(); if(!proj) return; const item=proj.data[currentMode].items.find(i=>i.id===currentPageId); if(!item) return; const box=document.getElementById('prvContent'); box.style.fontFamily=fontMapping[appConfig.fontFamily]||fontMapping['Playfair Display']; const size=item.imageSize||70; const opacity=(item.bgOpacity||15)/100; const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); let title=''; if(item.type==='cover'){ title=`<div class="prv-title" style="text-align:center;font-family:'Playfair Display';font-size:2.2em;margin-top:40px">${esc(proj.title||item.title)}</div>`; }else{ title=item.title?`<div class="prv-title">${esc(item.title)}</div>`:''; if(item.type==='author'){ title+=`<div style="font-size:.85em;opacity:.7;margin-bottom:10px;line-height:1.6">${[item.author,item.date,item.publisher,item.genre].filter(Boolean).map(esc).join(' · ')}</div>`; } } const img=item.image?`<img src="${item.image}" class="prv-img ${item.layout==='bg'?'bg':''}" style="${item.layout!=='bg'?`width:${size}%`:`opacity:${opacity}`}" onerror="this.style.display='none'">`:''; let html=''; if(item.layout==='bg'){ html=img+`<div style="position:relative;z-index:1">${title}<div class="prv-text">${esc(item.text||'')}</div></div>`; }else if(item.layout==='center'){ const [a,b]=splitCenter(item.text||''); html=title+`<div style="display:flex;flex-direction:column;gap:16px"><div class="prv-text">${esc(a)}</div>${img}<div class="prv-text">${esc(b)}</div></div>`; }else if(item.layout==='top'){ html=img+title+`<div class="prv-text">${esc(item.text||'')}</div>`; }else{ html=title+`<div class="prv-text">${esc(item.text||'')}</div>`+img; } box.innerHTML=html; document.getElementById('previewModal').classList.add('active'); setPreviewDevice(previewDevice); }
+
+function escXml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'); }
+
+// Nouveau générateur d'image HTML partagé (Aperçu + PDF + EPUB)
+function generateImgHtml(item, isPreview=false) {
+    if(!item.image) return '';
+    const size = item.imageSize || 70;
+    const align = item.imageAlign || 'center';
+    const opacity = (item.bgOpacity || 15) / 100;
+    const escTitle = escXml(item.title||'');
+
+    if(item.layout === 'bg') {
+        return `<img src="${item.image}" alt="${escTitle}" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; margin:0; z-index:0; opacity:${opacity}; ${!isPreview ? 'display:block;' : ''}" class="${isPreview?'prv-img bg':''}"/>`;
+    }
+
+    let alignStyle = `width:${size}%; max-width:100%; height:auto; border-radius:8px; display:block;`;
+    if(align === 'left') alignStyle += ` float:left; margin: 10px 24px 10px 0;`;
+    else if(align === 'right') alignStyle += ` float:right; margin: 10px 0 10px 24px;`;
+    else alignStyle += ` margin: 20px auto;`;
+
+    return `<img src="${item.image}" alt="${escTitle}" style="${alignStyle}" class="${isPreview?'prv-img':''}"/>`;
+}
+
+function openPreview(){ 
+ autoSave(); const proj=getCurrentProject(); if(!proj) return; const item=proj.data[currentMode].items.find(i=>i.id===currentPageId); if(!item) return; 
+ const box=document.getElementById('prvContent'); box.style.fontFamily=fontMapping[appConfig.fontFamily]||fontMapping['Playfair Display']; 
+ 
+ let title=''; 
+ if(item.type==='cover'){ 
+    title=`<div class="prv-title" style="text-align:center;font-family:'Playfair Display';font-size:2.6em;margin-top:60px">${escXml(proj.title||item.title)}</div>`; 
+ }else{ 
+    title=item.title?`<div class="prv-title">${escXml(item.title)}</div>`:''; 
+    if(item.type==='author'){ title+=`<div style="font-size:.9em;opacity:.7;margin-bottom:14px;line-height:1.7">${[item.author,item.date,item.publisher,item.genre].filter(Boolean).map(escXml).join(' · ')}</div>`; } 
+ } 
+ 
+ const imgTag = generateImgHtml(item, true);
+ let html=''; 
+ 
+ if(item.layout==='bg'){ 
+    html=imgTag+`<div style="position:relative;z-index:1"><div class="clearfix">${title}<div class="prv-text">${escXml(item.text||'')}</div></div></div>`; 
+ }else if(item.layout==='center'){ 
+    const [a,b]=splitCenter(item.text||''); 
+    html=`<div class="clearfix">${title}<div class="prv-text">${escXml(a)}</div>${imgTag}<div class="prv-text" style="clear:both;padding-top:10px;">${escXml(b)}</div></div>`; 
+ }else if(item.layout==='top'){ 
+    html=`<div class="clearfix">${title}${imgTag}<div class="prv-text">${escXml(item.text||'')}</div></div>`; 
+ }else{ 
+    html=`<div class="clearfix">${title}<div class="prv-text">${escXml(item.text||'')}</div>${imgTag}</div>`; 
+ } 
+ box.innerHTML=html; document.getElementById('previewModal').classList.add('active'); setPreviewDevice(previewDevice); 
+}
+
 function closePreview(){ document.getElementById('previewModal').classList.remove('active'); }
 function setPreviewDevice(d){ previewDevice=d; const s=document.getElementById('previewScreen'); s.className='preview-screen '+d; document.getElementById('btnMobile')?.classList.toggle('btn-primary',d==='mobile'); document.getElementById('btnTablet')?.classList.toggle('btn-primary',d==='tablet'); document.getElementById('btnLarge')?.classList.toggle('btn-primary',d==='large'); }
 function openSettings(){ document.getElementById('settingsModal').classList.add('active'); renderFonts(); highlightLang(); }
@@ -288,43 +355,27 @@ function factoryReset(){ if(!confirm(i18nDict[currentLang].factoryReset+'?')) re
 function exportWorkflow(){ const proj=getCurrentProject(); const blob=new Blob([JSON.stringify({project:proj},null,2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=(proj.title||'projet')+'.writerwork'; a.click(); URL.revokeObjectURL(url); }
 function importWorkflow(e){ const file=e.target.files[0]; if(!file) return; const r=new FileReader(); r.onload=ev=>{ try{ const p=JSON.parse(ev.target.result); const proj=p.project||p; if(proj.data){ proj.id=uid(); proj.updatedAt=Date.now(); projects.unshift(proj); currentProjectId=proj.id; saveProjects(); loadProjectIntoUI(); } }catch(err){ alert('Invalid'); } }; r.readAsText(file); e.target.value=''; }
 
-// === EXPORTS V3 : pages.data + EPUB3 + PDF ===
 function exportPagesData(){
  autoSave();
  const proj=getCurrentProject(); if(!proj) return;
- const items=proj.data[currentMode].items.map(it=>({id:it.id,type:it.type,title:it.title,image:it.image,layout:it.layout,imageSize:it.imageSize,bgOpacity:it.bgOpacity,author:it.author||'',date:it.date||'',publisher:it.publisher||'',genre:it.genre||'',text:it.text}));
- const obj={
-   projectTitle:proj.title,
-   titre:proj.title,
-   format:currentMode,
-   lang:currentLang,
-   langue:currentLang,
-   config:{fontFamily:appConfig.fontFamily},
-   settings:{theme:'creme',showPageNumber:true,lang:currentLang},
-   items:items,
-   bookTitle:proj.title,
-   author:items.find(i=>i.type==='author')?.author||'',
-   version:3
- };
- const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement('a'); a.href=url; a.download='pages.data'; a.click(); URL.revokeObjectURL(url);
+ const items=proj.data[currentMode].items.map(it=>({id:it.id,type:it.type,title:it.title,image:it.image,layout:it.layout,imageAlign:it.imageAlign,imageSize:it.imageSize,bgOpacity:it.bgOpacity,author:it.author||'',date:it.date||'',publisher:it.publisher||'',genre:it.genre||'',text:it.text}));
+ const obj={ projectTitle:proj.title, titre:proj.title, format:currentMode, lang:currentLang, langue:currentLang, config:{fontFamily:appConfig.fontFamily}, settings:{theme:'creme',showPageNumber:true,lang:currentLang}, items:items, bookTitle:proj.title, author:items.find(i=>i.type==='author')?.author||'', version:3 };
+ const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='pages.data'; a.click(); URL.revokeObjectURL(url);
 }
 
-function escXml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;'); }
-
+// ==== EXPORT EPUB 3 PROFESSIONNEL WYSIWYG ====
 async function exportEPUB3(){
  autoSave();
  const proj=getCurrentProject(); if(!proj){ alert('Pas de projet'); return; }
  const btn = document.querySelector('[onclick="exportEPUB3()"]');
- const oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> EPUB...'; btn.disabled=true;
+ const oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Création...'; btn.disabled=true;
  try{
   const zip = new JSZip();
   const lang = currentLang||'fr';
   const title = proj.title || 'Sans titre';
   const authorItem = proj.data[currentMode]?.items.find(i=>i.type==='author');
   const author = authorItem?.author || 'Auteur inconnu';
-  const publisher = authorItem?.publisher || 'Base Essentielle';
+  const publisher = authorItem?.publisher || 'The Pages.';
   const pubDate = authorItem?.date || new Date().toISOString().split('T')[0];
   const uuid = (crypto.randomUUID ? crypto.randomUUID() : 'urn:uuid:'+Date.now()+'-'+Math.random().toString(36).slice(2,10));
   const items = proj.data[currentMode]?.items || [];
@@ -334,18 +385,18 @@ async function exportEPUB3(){
 
   const oebps = zip.folder("OEBPS");
   const cssFolder = oebps.folder("css");
+  const fontName = fontMapping[appConfig.fontFamily] || "Georgia, 'Times New Roman', serif";
+  
+  // INJECTION DES FONTS GOOGLE POUR RENDU PARFAIT
   const css = `
-body{font-family:Georgia,'Times New Roman',serif;line-height:1.75;color:#121212;margin:0;padding:0;font-size:1em;}
-h1{font-family:'Playfair Display',Georgia,serif;font-size:1.9em;margin:1.8em 0 0.6em;line-height:1.2;font-weight:700;letter-spacing:-0.02em;}
-h2{font-family:'Inter',sans-serif;font-size:0.85em;text-transform:uppercase;letter-spacing:2px;color:#6b7280;margin:1.5em 0 0.5em;}
-p{margin:0 0 1em 0;text-align:justify;orphans:2;widows:2;}
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:wght@400;600&family=Merriweather:wght@400;700&family=Newsreader:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+body{font-family:${fontName};line-height:1.75;color:#121212;margin:0;padding:1.5em;font-size:1em;}
+h1{font-family:${fontName};font-size:2.2em;margin:1.8em 0 1em;line-height:1.2;font-weight:700;letter-spacing:-0.02em;text-align:center;}
+p{margin:0 0 1em 0;text-align:justify;orphans:2;widows:2;white-space:pre-wrap;}
 .cover{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:90vh;text-align:center;padding:3em 1.5em;}
-.cover h1{font-size:2.6em;margin-bottom:0.3em;}
-.cover .subtitle{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2em;opacity:0.7;}
-.author-page{padding:2em 0;}
-.author-page p{margin:0.4em 0;}
-img{max-width:100%;height:auto;display:block;margin:1.2em auto;border-radius:4px;}
-blockquote{margin:1.5em 1em;padding-left:1em;border-left:3px solid #22d3ee;font-style:italic;opacity:0.85;}
+.cover h1{font-size:3em;margin-bottom:0.3em;}
+.author-page{padding:2em 0;text-align:center;}
+.clearfix::after{content:"";clear:both;display:table;}
 `;
   cssFolder.file("style.css", css);
 
@@ -361,31 +412,26 @@ blockquote{margin:1.5em 1em;padding-left:1em;border-left:3px solid #22d3ee;font-
     const fileName = `chapter-${i}.xhtml`;
     manifest += `\n<item id="${id}" href="${fileName}" media-type="application/xhtml+xml"/>`;
     spine += `\n<itemref idref="${id}"/>`;
-    const safeTitle = escXml(it.title||`Chapitre ${i+1}`);
-    let bodyInner = '';
-    const imgSrc = escXml(it.image||'');
-    const imgTag = it.image ? `<img src="${imgSrc}" alt="${safeTitle}" style="max-width:100%;"/>` : '';
     
+    const safeTitle = escXml(it.title||`Chapitre ${i+1}`);
+    const imgTag = generateImgHtml(it, false);
+    let bodyInner = '';
+
     if(it.type==='cover'){
-      bodyInner = `<div class="cover"><h1>${escXml(proj.title||it.title||'')}</h1><div class="subtitle">${escXml(it.text||'')}</div>${imgTag}</div>`;
+      bodyInner = `<div class="cover"><h1>${escXml(proj.title||it.title||'')}</h1>${imgTag}<div class="subtitle">${escXml(it.text||'')}</div></div>`;
     }else if(it.type==='author'){
-      bodyInner = `<div class="author-page"><h1>${safeTitle}</h1><p><strong>Auteur:</strong> ${escXml(it.author||'')}</p><p><strong>Date:</strong> ${escXml(it.date||'')}</p><p><strong>Éditeur:</strong> ${escXml(it.publisher||'')}</p><p><strong>Genre:</strong> ${escXml(it.genre||'')}</p><div>${escXml(it.text||'').replace(/\n/g,'<br/>')}</div></div>`;
+      bodyInner = `<div class="author-page"><h1>${safeTitle}</h1><p><strong>Auteur:</strong> ${escXml(it.author||'')}</p><p><strong>Date:</strong> ${escXml(it.date||'')}</p><p><strong>Éditeur:</strong> ${escXml(it.publisher||'')}</p><p><strong>Genre:</strong> ${escXml(it.genre||'')}</p><div>${escXml(it.text||'')}</div></div>`;
     }else{
       if(it.layout==='bg'){
-        bodyInner = `<div style="text-align:center"><h1>${safeTitle}</h1>${imgTag}<p>${escXml(it.text||'').replace(/\n/g,'<br/>')}</p></div>`;
+        bodyInner = `<div style="position:relative;">${imgTag}<div class="clearfix"><h1>${safeTitle}</h1><p>${escXml(it.text||'')}</p></div></div>`;
       }else if(it.layout==='top'){
-        bodyInner = `${imgTag}<h1>${safeTitle}</h1><p>${escXml(it.text||'').replace(/\n/g,'<br/>')}</p>`;
+        bodyInner = `<div class="clearfix">${imgTag}<h1>${safeTitle}</h1><p>${escXml(it.text||'')}</p></div>`;
       }else if(it.layout==='bottom'){
-        bodyInner = `<h1>${safeTitle}</h1><p>${escXml(it.text||'').replace(/\n/g,'<br/>')}</p>${imgTag}`;
-      }else{
+        bodyInner = `<div class="clearfix"><h1>${safeTitle}</h1><p>${escXml(it.text||'')}</p>${imgTag}</div>`;
+      }else{ // center
         const txt = it.text||'';
-        const mid = Math.floor(txt.length/2);
-        let splitIdx = txt.indexOf('\n\n', mid-80);
-        if(splitIdx===-1) splitIdx = txt.lastIndexOf('. ', mid);
-        if(splitIdx===-1) splitIdx = mid;
-        const a = escXml(txt.slice(0,splitIdx));
-        const b = escXml(txt.slice(splitIdx));
-        bodyInner = `<h1>${safeTitle}</h1><p>${a.replace(/\n/g,'<br/>')}</p>${imgTag}<p>${b.replace(/\n/g,'<br/>')}</p>`;
+        const [a, b] = splitCenter(txt);
+        bodyInner = `<div class="clearfix"><h1>${safeTitle}</h1><p>${escXml(a)}</p>${imgTag}<p style="clear:both;padding-top:10px;">${escXml(b)}</p></div>`;
       }
     }
     const xhtml = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="${lang}" lang="${lang}"><head><meta charset="utf-8"/><title>${safeTitle}</title><link rel="stylesheet" href="css/style.css" type="text/css"/></head><body>${bodyInner}</body></html>`;
@@ -396,10 +442,8 @@ blockquote{margin:1.5em 1em;padding-left:1em;border-left:3px solid #22d3ee;font-
 
   const opf = `<?xml version="1.0" encoding="UTF-8"?><package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="bookid" xml:lang="${lang}"><metadata xmlns:dc="http://purl.org/dc/elements/1.1/"><dc:identifier id="bookid">${escXml(uuid)}</dc:identifier><dc:title>${escXml(title)}</dc:title><dc:creator>${escXml(author)}</dc:creator><dc:language>${lang}</dc:language><dc:publisher>${escXml(publisher)}</dc:publisher><dc:date>${escXml(pubDate)}</dc:date><meta property="dcterms:modified">${new Date().toISOString().replace(/\.\d+Z/,'Z')}</meta></metadata><manifest>${manifest}\n</manifest><spine><itemref idref="nav"/>${spine}\n</spine></package>`;
   oebps.file("content.opf", opf);
-  
   const ncx = `<?xml version="1.0" encoding="UTF-8"?><ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1"><head><meta name="dtb:uid" content="${escXml(uuid)}"/><meta name="dtb:depth" content="1"/><meta name="dtb:totalPageCount" content="0"/><meta name="dtb:maxPageNumber" content="0"/></head><docTitle><text>${escXml(title)}</text></docTitle><navMap>${navPoints}\n</navMap></ncx>`;
   oebps.file("toc.ncx", ncx);
-  
   const nav = `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="${lang}"><head><meta charset="utf-8"/><title>Table des matières</title><link rel="stylesheet" href="css/style.css"/></head><body><nav epub:type="toc" id="toc"><h1>Table des matières</h1><ol>${navOl}\n</ol></nav></body></html>`;
   oebps.file("nav.xhtml", nav);
   
@@ -408,7 +452,6 @@ blockquote{margin:1.5em 1em;padding-left:1em;border-left:3px solid #22d3ee;font-
   const blob = await zip.generateAsync({type:"blob", mimeType:"application/epub+zip", compression:"DEFLATE"});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a'); a.href=url; a.download=(proj.title||'livre').replace(/[^a-z0-9_\- ]/gi,'_')+'.epub'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-  alert('EPUB3 généré ! Teste-le sur https://books.google.com/books/upload et sur https://epubcheck.w3.org/ - Il doit passer sans erreur.');
  }catch(err){
   console.error(err); alert('Erreur EPUB: '+err.message);
  }finally{
@@ -416,24 +459,60 @@ blockquote{margin:1.5em 1em;padding-left:1em;border-left:3px solid #22d3ee;font-
  }
 }
 
+// ==== EXPORT PDF PROFESSIONNEL WYSIWYG ====
 async function exportPDFBook(){
  autoSave();
  const proj = getCurrentProject(); if(!proj) return;
  const items = proj.data[currentMode]?.items || [];
+ 
  const container = document.createElement('div');
- container.style.padding='20px'; container.style.background='#fff'; container.style.color='#111'; container.style.fontFamily= "'"+(appConfig.fontFamily||'Playfair Display')+"', serif";
- container.innerHTML = `<div style="text-align:center;padding:80px 20px"><h1 style="font-size:42px;margin-bottom:10px">${proj.title}</h1><p style="opacity:0.6">${items.find(i=>i.type==='author')?.author||''} · ${items.find(i=>i.type==='author')?.date||''}</p></div>` + items.map(it=>`
-  <div style="page-break-after:always;margin:40px 0">
-    ${it.type!=='cover'?`<h2 style="font-size:26px;margin-bottom:12px">${it.title||''}</h2>`:''}
-    ${it.type==='author'?`<p><em>${it.author||''} - ${it.publisher||''} - ${it.genre||''}</em></p>`:''}
-    ${it.image?`<img src="${it.image}" style="width:${it.imageSize||70}%;display:block;margin:14px auto;border-radius:6px" crossorigin="anonymous"/>`:''}
-    <div style="white-space:pre-wrap;line-height:1.7;font-size:15px">${it.text||''}</div>
-  </div>
- `).join('');
+ container.style.padding='40px 60px'; 
+ container.style.background='#fff'; 
+ container.style.color='#111'; 
+ container.style.fontFamily = fontMapping[appConfig.fontFamily] || "'Playfair Display', serif";
+
+ let pdfContent = `<div style="text-align:center;padding:150px 20px;page-break-after:always;"><h1 style="font-size:46px;margin-bottom:20px;">${escXml(proj.title)}</h1><p style="opacity:0.6;font-size:20px;">${escXml(items.find(i=>i.type==='author')?.author||'')} · ${escXml(items.find(i=>i.type==='author')?.date||'')}</p></div>`;
+
+ items.forEach(it => {
+    if(it.type === 'cover' || it.type === 'author') return; 
+    const imgTag = generateImgHtml(it, false);
+    const safeTitle = escXml(it.title||'');
+    const safeText = escXml(it.text||'');
+    
+    let chapterHtml = `<div style="page-break-after:always; margin:40px 0; min-height:800px; position:relative;" class="clearfix">`;
+    const textStyle = `font-size:16px;line-height:1.8;white-space:pre-wrap;text-align:justify;`;
+    
+    if(it.layout === 'bg'){
+        chapterHtml += `${imgTag}<div style="position:relative; z-index:2; background:rgba(255,255,255,0.9); padding:40px; border-radius:12px; margin-top:40px;"><h2 style="font-size:32px;text-align:center;margin-bottom:30px;">${safeTitle}</h2><div style="${textStyle}">${safeText}</div></div>`;
+    }else if(it.layout === 'top'){
+        chapterHtml += `${imgTag}<h2 style="font-size:32px;text-align:center;margin-bottom:30px;">${safeTitle}</h2><div style="${textStyle}">${safeText}</div>`;
+    }else if(it.layout === 'bottom'){
+        chapterHtml += `<h2 style="font-size:32px;text-align:center;margin-bottom:30px;">${safeTitle}</h2><div style="${textStyle}">${safeText}</div>${imgTag}`;
+    }else{
+        const [a, b] = splitCenter(it.text||'');
+        chapterHtml += `<h2 style="font-size:32px;text-align:center;margin-bottom:30px;">${safeTitle}</h2><div style="${textStyle}">${escXml(a)}</div>${imgTag}<div style="${textStyle} clear:both; padding-top:15px;">${escXml(b)}</div>`;
+    }
+    
+    chapterHtml += `</div>`;
+    pdfContent += chapterHtml;
+ });
+
+ container.innerHTML = `<style>.clearfix::after{content:"";clear:both;display:table;} img{cross-origin:anonymous;}</style>` + pdfContent;
  document.body.appendChild(container);
- const opt = {margin:15, filename:(proj.title||'livre')+'.pdf', image:{type:'jpeg',quality:0.92}, html2canvas:{scale:2,useCORS:true}, jsPDF:{unit:'mm',format:'a5',orientation:'portrait'}};
- try{ await html2pdf().set(opt).from(container).save(); }catch(e){ alert('Erreur PDF: '+e.message); }
- container.remove();
+ 
+ const opt = {margin:15, filename:(proj.title||'livre')+'.pdf', image:{type:'jpeg',quality:0.95}, html2canvas:{scale:2,useCORS:true, letterRendering:true}, jsPDF:{unit:'mm',format:'a5',orientation:'portrait'}};
+ 
+ const btn = document.querySelector('[onclick="exportPDFBook()"]');
+ const oldText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PDF...'; btn.disabled=true;
+ 
+ try{ 
+    await html2pdf().set(opt).from(container).save(); 
+ }catch(e){ 
+    alert('Erreur PDF: '+e.message); 
+ }finally{
+    container.remove();
+    btn.innerHTML = oldText; btn.disabled=false;
+ }
 }
 
 function manualSave(){ autoSave(); }
