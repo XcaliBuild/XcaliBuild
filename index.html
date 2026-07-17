@@ -38,10 +38,9 @@ body {
 .glass { background:var(--glass-bg); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
 .ribbon { height:68px; display:flex; justify-content:space-between; align-items:center; padding:0 20px; z-index:30; }
 .ribbon-group { display:flex; align-items:center; gap:10px; min-width:0; }
-.logo-txt { line-height:1; margin-right:10px; display:flex; align-items:baseline; flex-shrink:0; white-space:nowrap; }
+.logo-txt { line-height:1; margin-right:15px; display:flex; align-items:baseline; flex-shrink:0; white-space:nowrap; }
 .logo-main { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; color:#fff; }
 .logo-sub { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:var(--accent); font-weight:600; margin-left:4px; }
-.top-book-title { font-size:12px; opacity:.6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-left:6px; flex-shrink:1; min-width:0; }
 .sync { font-size:10px; color:var(--muted); text-transform:uppercase; display:flex; gap:6px; align-items:center; letter-spacing:1px; flex-shrink:0; }
 
 .btn {
@@ -98,9 +97,14 @@ body {
 .segment-btn.active { background:rgba(255,255,255,0.1); color:#fff; font-weight:600; box-shadow:0 2px 5px rgba(0,0,0,0.2); }
 
 textarea.main { width:100%; min-height:280px; background:transparent; border:none; color:inherit; font-size:16px; line-height:1.8; resize:vertical; outline:none; }
-input[type=range] { width:100%; accent-color:var(--accent); }
-.char-counter { font-size:11px; text-align:right; color:var(--muted); }
 
+/* Custom Sliders Pro */
+input[type=range] { -webkit-appearance:none; width:100%; background:transparent; }
+input[type=range]:focus { outline:none; }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; height:14px; width:14px; border-radius:50%; background:var(--accent); cursor:pointer; margin-top:-5px; box-shadow:0 0 10px rgba(34,211,238,0.5); }
+input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; cursor:pointer; background:rgba(255,255,255,0.15); border-radius:2px; }
+
+.char-counter { font-size:11px; text-align:right; color:var(--muted); }
 .btn-preview { position:fixed; bottom:30px; right:30px; background:rgba(20,20,25,0.8); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.08); color:var(--text); padding:14px 24px; border-radius:30px; font-size:14px; font-weight:500; cursor:pointer; z-index:30; display:flex; gap:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); transition:.2s; }
 .btn-preview:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
 
@@ -121,13 +125,14 @@ input[type=range] { width:100%; accent-color:var(--accent); }
 .preview-screen { background:#faf8f5; border-radius:14px; overflow:auto; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.8); border:8px solid #222; transition:.3s ease; }
 .preview-screen.mobile { width:393px; height:852px; }
 .preview-screen.tablet { width:834px; height:1112px; }
-/* Fullscreen emulation pour PC / EPUB */
 .preview-screen.large, .preview-screen.epub, .preview-screen.pdf { width:100%; height:calc(100vh - 140px); max-width:1200px; border-width:2px; border-radius:6px; }
 
 .prv-content { padding:40px; color:#111; font-size:16px; line-height:1.7; position:relative; min-height:100%; word-wrap:break-word; }
 .clearfix::after { content:""; clear:both; display:table; }
-.sheet.img-wrapper.full-bleed { width:calc(100% + 90px)!important; margin-left:-45px!important; margin-right:-45px!important; }
-.prv-content.img-wrapper.full-bleed { width:calc(100% + 80px)!important; margin-left:-40px!important; margin-right:-40px!important; }
+
+/* FIX DU ESPACEMENT POUR FULL-BLEED (100%) */
+.sheet .img-wrapper.full-bleed { width:calc(100% + 90px)!important; margin-left:-45px!important; margin-right:-45px!important; }
+.prv-content .img-wrapper.full-bleed { width:calc(100% + 80px)!important; margin-left:-40px!important; margin-right:-40px!important; }
 
 /* Custom Dropdowns Pro */
 .gen-wrap { position:relative; width:100%; }
@@ -152,9 +157,8 @@ input[type=range] { width:100%; accent-color:var(--accent); }
 <div class="ribbon glass">
     <div class="ribbon-group">
         <div class="logo-txt"><div class="logo-main">The Pages.</div><div class="logo-sub">sources</div></div>
-        <div class="top-book-title" id="topBookTitle">Mon livre de poche</div>
         <div class="sync" id="syncIndicator"><i class="fas fa-check-circle"></i> sync</div>
-        <button class="btn" onclick="openProjects()"><i class="fas fa-folder"></i> Projets</button>
+        <button class="btn" id="btnProj" onclick="openProjects()"><i class="fas fa-folder"></i> Projets</button>
         <div class="gen-wrap" style="width:200px;">
             <button class="btn" onclick="toggleDropdown('pageDropdown')"><span id="pageSelectLabel">Book Cover</span> <i class="fas fa-chevron-down" style="font-size:10px;opacity:0.6"></i></button>
             <div id="pageDropdown" class="dropdown-menu"></div>
@@ -189,7 +193,7 @@ input[type=range] { width:100%; accent-color:var(--accent); }
             <div class="cat">Lecture</div>
             <div class="menu-item active" id="tab-book"><i class="fas fa-book"></i> Livre de poche</div>
             <div id="sidebarModules"></div>
-            <div class="cat">Projet Actuel</div>
+            <div class="cat" id="lblCurProj">Projet Actuel</div>
             <div style="padding:0 20px 10px;font-size:12px;color:var(--accent);font-weight:500;" id="currentProjectName">-</div>
         </div>
     </div>
@@ -393,7 +397,7 @@ input[type=range] { width:100%; accent-color:var(--accent); }
     </div>
 </div>
 
-<div id="savedToast" class="saved-toast"><i class="fas fa-check-circle" style="color:var(--accent)"></i> Enregistré!</div>
+<div id="savedToast" class="saved-toast"><i class="fas fa-check-circle" style="color:var(--accent)"></i> Enregistré !</div>
 
 <script>
 let currentPageId=null, currentProjectId=null, projects=[], appConfig={fontFamily:'Playfair Display',reference:{mode:'all',selected:[]}}, previewDevice='mobile';
@@ -413,6 +417,20 @@ let fontMapping={
     'PT Serif':"'PT Serif', serif",
     'Source Serif Pro':"'Source Serif Pro', serif",
     'Inter':"'Inter', sans-serif"
+};
+
+// Dictionnaire de langue simple pour la traduction d'interface
+const i18n = {
+    fr: {
+        proj: "<i class='fas fa-folder'></i> Projets",
+        read: "<i class='fas fa-book'></i> Livre de poche",
+        cur: "Projet Actuel"
+    },
+    en: {
+        proj: "<i class='fas fa-folder'></i> Projects",
+        read: "<i class='fas fa-book'></i> Paperback",
+        cur: "Current Project"
+    }
 };
 
 const titleSizes = [18,24,28,32,36,42,48,56,64,72];
@@ -611,7 +629,6 @@ function loadProjectIntoUI(){
     appConfig=proj.config; 
     document.getElementById('currentProjectName').textContent=proj.title; 
     document.getElementById('genCurrentProjectName').textContent=proj.title; 
-    document.getElementById('topBookTitle').textContent=proj.title; 
     document.getElementById('globalTitle').value=proj.data.book.title||proj.title; 
     refreshFontDropdown(); 
     refreshPageDropdown(); 
@@ -677,16 +694,29 @@ function setImageAlign(a,s=true){
     if(s) autoSave(); 
 } 
 
+// Mise à jour immédiate pour affichage live
 function updateImageSize(v){ 
     document.getElementById('imageSizeVal').textContent=v+'%'; 
     const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId);
-    if(item) { item.imageSize = parseInt(v); autoSave(); }
+    if(item) { item.imageSize = parseInt(v); }
+    updateLivePreviewFast();
+    autoSave();
 } 
+
 function updateBgOpacity(v){ 
     document.getElementById('bgOpacityVal').textContent=v+'%'; 
     const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId);
-    if(item) { item.bgOpacity = parseInt(v); autoSave(); }
+    if(item) { item.bgOpacity = parseInt(v); }
+    updateLivePreviewFast();
+    autoSave();
 } 
+
+function updateLivePreviewFast() {
+    const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId);
+    if(document.getElementById('previewModal').classList.contains('active')) {
+        document.getElementById('prvContent').innerHTML=buildPageHTML(item, proj.title); 
+    }
+}
 
 function renderRefBlock(){ 
     const cfg=appConfig.reference||{mode:'all',selected:[]}; 
@@ -741,7 +771,6 @@ function autoSave(){
             proj.title=nt; proj.data.book.title=nt; 
             document.getElementById('currentProjectName').textContent=nt; 
             document.getElementById('genCurrentProjectName').textContent=nt; 
-            document.getElementById('topBookTitle').textContent=nt; 
             item.showTitle=document.getElementById('showTitleOnCover').checked; 
         } 
         item.title=document.getElementById('itemTitle').value.trim()||'Chapitre 1'; 
@@ -766,9 +795,7 @@ function autoSave(){
         refreshPageDropdown(); 
         
         // Update active preview
-        if(document.getElementById('previewModal').classList.contains('active')) {
-            document.getElementById('prvContent').innerHTML=buildPageHTML(item, proj.title); 
-        }
+        updateLivePreviewFast();
     }, 500); 
 } 
 
@@ -794,13 +821,15 @@ function generateImgHtml(item){
     if(item.layout==='bg'){ return `<img src="${item.image}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:${(item.bgOpacity||20)/100};z-index:0" />`; } 
     let style=`width:${item.imageSize||70}%;`; 
     const isFull=(item.imageSize||70)>=100; 
-    if(isFull){ style=`width:100%;`; }
+    if(isFull){ 
+        return `<div class="img-wrapper full-bleed" style="width:calc(100% + 90px); margin-left:-45px; margin-right:-45px;"><img src="${item.image}" style="width:100%;height:auto;border-radius:0;display:block" /></div>`; 
+    }
     else{ 
         if(item.imageAlign==='left') style+=`float:left;margin:0 14px 8px 0;`; 
         else if(item.imageAlign==='right') style+=`float:right;margin:0 0 8px 14px;`; 
         else style+=`display:block;margin:12px auto;`; 
     } 
-    return `<div class="img-wrapper ${isFull?'full-bleed':''}" style="${style}"><img src="${item.image}" style="width:100%;height:auto;border-radius:${isFull?'0':'8px'};display:block" /></div>`; 
+    return `<div class="img-wrapper" style="${style}"><img src="${item.image}" style="width:100%;height:auto;border-radius:8px;display:block" /></div>`; 
 } 
 
 function buildRefLinks(){ 
@@ -861,9 +890,6 @@ function setPreviewDevice(d){
         } 
     }); 
 } 
-
-function openSettings(){ document.getElementById('settingsModal').classList.add('active'); closeMenus(); } 
-function closeSettings(){ document.getElementById('settingsModal').classList.remove('active'); } 
 
 // Modules and Plugins Logic
 function renderManagerLists() {
@@ -1004,6 +1030,13 @@ function updateLangUI(){
     const l = localStorage.getItem('writer_lang') || 'fr';
     document.getElementById('lang-fr').classList.toggle('lang-active', l==='fr');
     document.getElementById('lang-en').classList.toggle('lang-active', l==='en');
+    
+    // Application de la traduction basique
+    if(i18n[l]) {
+        document.getElementById('btnProj').innerHTML = i18n[l].proj;
+        document.getElementById('tab-book').innerHTML = i18n[l].read;
+        document.getElementById('lblCurProj').textContent = i18n[l].cur;
+    }
 }
 
 function setLang(l){ localStorage.setItem('writer_lang',l); updateLangUI(); } 
@@ -1018,7 +1051,6 @@ window.onload=()=>{
         if(!proj) return; 
         document.getElementById('currentProjectName').textContent=proj.title; 
         document.getElementById('genCurrentProjectName').textContent=proj.title; 
-        document.getElementById('topBookTitle').textContent=proj.title; 
         refreshFontDropdown(); 
         refreshPageDropdown(); 
         applyFont(); 
