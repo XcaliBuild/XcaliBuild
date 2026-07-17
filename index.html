@@ -37,12 +37,12 @@ body {
 }
 .glass { background:var(--glass-bg); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); }
 .ribbon { height:68px; display:flex; justify-content:space-between; align-items:center; padding:0 20px; z-index:30; }
-.ribbon-group { display:flex; align-items:center; gap:10px; }
-.logo-txt { line-height:1; margin-right:10px; }
+.ribbon-group { display:flex; align-items:center; gap:10px; min-width:0; }
+.logo-txt { line-height:1; margin-right:10px; display:flex; align-items:baseline; flex-shrink:0; white-space:nowrap; }
 .logo-main { font-family:'Playfair Display',serif; font-size:26px; font-weight:700; color:#fff; }
-.logo-sub { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:var(--accent); font-weight:600; }
-.top-book-title { font-size:12px; opacity:.6; max-width:180px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-left:6px; }
-.sync { font-size:10px; color:var(--muted); text-transform:uppercase; display:flex; gap:6px; align-items:center; letter-spacing:1px; }
+.logo-sub { font-size:9px; letter-spacing:4px; text-transform:uppercase; color:var(--accent); font-weight:600; margin-left:4px; }
+.top-book-title { font-size:12px; opacity:.6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-left:6px; flex-shrink:1; min-width:0; }
+.sync { font-size:10px; color:var(--muted); text-transform:uppercase; display:flex; gap:6px; align-items:center; letter-spacing:1px; flex-shrink:0; }
 
 .btn {
     background: rgba(20,20,25,0.6);
@@ -61,69 +61,91 @@ body {
     outline: none;
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.06), 0 4px 20px rgba(0,0,0,0.3);
     transition: all .25s ease;
+    flex-shrink:0;
 }
 .btn:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.14); transform:translateY(-1px); box-shadow:inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 24px rgba(0,0,0,0.4); }
 .btn-danger { color:#ef4444; border-color:rgba(239,68,68,0.2); }
+.btn.lang-active { background:rgba(34,211,238,0.15); color:var(--accent); border-color:var(--accent); }
+
 .main-body { display:flex; flex:1; overflow:hidden; }
-.sidebar { width:240px; background:rgba(10,10,12,0.4); border-right:1px solid var(--border); display:flex; flex-direction:column; }
+.sidebar { width:240px; background:rgba(10,10,12,0.4); border-right:1px solid var(--border); display:flex; flex-direction:column; flex-shrink:0; }
 .sidebar-scroll { flex:1; overflow-y:auto; padding-top:10px; }
 .cat { font-size:10px; text-transform:uppercase; color:var(--muted); padding:16px 20px 8px; letter-spacing:1px; font-weight:600; }
-.menu-item { padding:10px 20px; color:var(--muted); font-size:13px; border-left:2px solid transparent; }
+.menu-item { padding:10px 20px; color:var(--muted); font-size:13px; border-left:2px solid transparent; display:flex; align-items:center; gap:8px; cursor:pointer; transition:.2s; }
+.menu-item:hover { color:#fff; background:rgba(255,255,255,0.03); }
 .menu-item.active { color:#fff; background:rgba(255,255,255,0.06); border-left-color:var(--accent); }
+
 .workspace { flex:1; padding:25px; overflow-y:auto; display:flex; justify-content:center; align-items:flex-start; position:relative; }
-.page-nav { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(20,20,25,0.8); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:15; backdrop-filter:blur(10px); }
+.page-nav { position:absolute; top:50%; transform:translateY(-50%); width:44px; height:44px; border-radius:50%; background:rgba(20,20,25,0.8); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:15; backdrop-filter:blur(10px); transition:.2s; }
+.page-nav:hover { background:rgba(255,255,255,0.1); border-color:var(--accent); color:var(--accent); }
 .page-nav.left { left:20px; }
 .page-nav.right { right:20px; }
 .page-nav.disabled { opacity:.2; pointer-events:none; }
-.sheet { width:100%; max-width:840px; background:var(--glass-sheet); backdrop-filter:blur(25px); border:1px solid var(--border); border-radius:16px; padding:35px 45px; display:flex; flex-direction:column; gap:12px; min-height:65vh; box-shadow:0 30px 60px rgba(0,0,0,0.6); }
+.sheet { width:100%; max-width:840px; background:var(--glass-sheet); backdrop-filter:blur(25px); border:1px solid var(--border); border-radius:16px; padding:35px 45px; display:flex; flex-direction:column; gap:12px; min-height:65vh; box-shadow:0 30px 60px rgba(0,0,0,0.6); margin-bottom:50px; }
 .sheet.is-cover { justify-content:flex-end; padding-bottom:80px; text-align:center; }
+
 .input-group { display:flex; flex-direction:column; gap:6px; flex:1; min-width:140px; }
 .input-group label { font-size:10px; text-transform:uppercase; color:var(--muted); font-weight:600; display:flex; justify-content:space-between; }
 .text-input { background:transparent; border:none; border-bottom:1px solid rgba(255,255,255,0.15); color:inherit; font-size:24px; font-weight:600; padding:6px 0; outline:none; width:100%; transition:.2s; }
 .text-input:focus { border-bottom-color:var(--accent); }
 .meta-input { background:rgba(0,0,0,0.3); border:1px solid var(--border); color:inherit; font-size:13px; padding:10px 12px; border-radius:8px; outline:none; width:100%; transition:.2s; }
 .meta-input:focus { border-color:var(--accent); }
-.meta-row { display:flex; gap:12px; flex-wrap:wrap; }
+.meta-row { display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end; }
+
 .segment-group { display:flex; background:rgba(0,0,0,0.4); border-radius:10px; padding:4px; border:1px solid var(--border); }
 .segment-btn { flex:1; background:transparent; color:var(--muted); border:none; padding:7px; border-radius:8px; font-size:11px; cursor:pointer; display:flex; justify-content:center; align-items:center; transition:.2s; }
 .segment-btn:hover { background:rgba(255,255,255,0.05); color:#fff; }
-.segment-btn.active { background:rgba(255,255,255,0.1); color:#fff; font-weight:600; }
+.segment-btn.active { background:rgba(255,255,255,0.1); color:#fff; font-weight:600; box-shadow:0 2px 5px rgba(0,0,0,0.2); }
+
 textarea.main { width:100%; min-height:280px; background:transparent; border:none; color:inherit; font-size:16px; line-height:1.8; resize:vertical; outline:none; }
-input[type=range] { width:100%; accent-color:#fff; }
+input[type=range] { width:100%; accent-color:var(--accent); }
 .char-counter { font-size:11px; text-align:right; color:var(--muted); }
+
 .btn-preview { position:fixed; bottom:30px; right:30px; background:rgba(20,20,25,0.8); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.08); color:var(--text); padding:14px 24px; border-radius:30px; font-size:14px; font-weight:500; cursor:pointer; z-index:30; display:flex; gap:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); transition:.2s; }
-.btn-preview:hover { border-color:rgba(255,255,255,0.15); transform:translateY(-1px); }
+.btn-preview:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
 
 .overlay { position:fixed; inset:0; background:rgba(0,0,0,0.92); backdrop-filter:blur(15px); display:none; justify-content:center; align-items:center; z-index:1000; padding:20px; }
 .overlay.active { display:flex; }
-.modal { background:#111114; border:1px solid var(--border); border-radius:16px; width:100%; max-width:600px; max-height:90vh; display:flex; flex-direction:column; overflow:hidden; }
-.modal-head { padding:18px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.modal { background:#111114; border:1px solid var(--border); border-radius:16px; width:100%; max-width:600px; max-height:90vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 25px 50px rgba(0,0,0,0.8); }
+.modal-head { padding:18px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.02); }
 .modal-body { padding:24px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:20px; }
+
 .preview-shell { display:flex; flex-direction:column; align-items:center; gap:16px; width:100%; height:100%; justify-content:center; }
 .preview-top { display:flex; gap:8px; background:rgba(20,20,25,0.8); border:1px solid rgba(255,255,255,0.08); padding:10px 14px; border-radius:40px; align-items:center; flex-wrap:wrap; backdrop-filter:blur(12px); }
-.preview-top .btn.active { background:rgba(34,211,238,0.15); color:var(--accent); border-color:var(--accent); box-shadow:0 0 15px rgba(34,211,238,0.4); font-weight:600; }
-.btn-close-round { width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); color:var(--text); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:.25s; margin-left:6px; }
-.btn-close-round:hover { background:rgba(255,255,255,0.12); transform:rotate(90deg); }
-.preview-screen { background:#faf8f5; border-radius:14px; overflow:auto; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.8); border:8px solid #222; transition:.3s; }
+.preview-top .btn { border-radius:20px; background:transparent; border-color:transparent; box-shadow:none; padding:7px 14px; }
+.preview-top .btn:hover { background:rgba(255,255,255,0.05); }
+.preview-top .btn.active { background:rgba(34,211,238,0.15); color:var(--accent); border-color:var(--accent); box-shadow:0 0 15px rgba(34,211,238,0.2); font-weight:600; }
+.btn-close-round { width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.08); color:var(--text); display:flex; align-items:center; justify-content:center; cursor:pointer; transition:.25s; margin-left:6px; flex-shrink:0; }
+.btn-close-round:hover { background:rgba(255,255,255,0.12); border-color:var(--accent); color:var(--accent); transform:rotate(90deg); }
+
+.preview-screen { background:#faf8f5; border-radius:14px; overflow:auto; position:relative; box-shadow:0 20px 60px rgba(0,0,0,0.8); border:8px solid #222; transition:.3s ease; }
 .preview-screen.mobile { width:393px; height:852px; }
 .preview-screen.tablet { width:834px; height:1112px; }
-.preview-screen.large { width:1280px; height:800px; }
-.preview-screen.epub { width:600px; height:760px; }
-.preview-screen.pdf { width:600px; height:840px; }
-.prv-content { padding:40px; color:#111; font-size:16px; line-height:1.7; position:relative; min-height:100%; }
+/* Fullscreen emulation pour PC / EPUB */
+.preview-screen.large, .preview-screen.epub, .preview-screen.pdf { width:100%; height:calc(100vh - 140px); max-width:1200px; border-width:2px; border-radius:6px; }
+
+.prv-content { padding:40px; color:#111; font-size:16px; line-height:1.7; position:relative; min-height:100%; word-wrap:break-word; }
 .clearfix::after { content:""; clear:both; display:table; }
 .sheet.img-wrapper.full-bleed { width:calc(100% + 90px)!important; margin-left:-45px!important; margin-right:-45px!important; }
 .prv-content.img-wrapper.full-bleed { width:calc(100% + 80px)!important; margin-left:-40px!important; margin-right:-40px!important; }
-.gen-wrap { position:relative; }
-.dropdown-menu { position:absolute; top:calc(100% + 10px); left:0; min-width:280px; background:rgba(18,18,22,0.98); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:8px; z-index:100; display:none; flex-direction:column; gap:4px; box-shadow:0 20px 40px rgba(0,0,0,0.6); max-height:320px; overflow-y:auto; }
-.dropdown-menu.right { left:auto; right:0; }
+
+/* Custom Dropdowns Pro */
+.gen-wrap { position:relative; width:100%; }
+.gen-wrap .btn, .gen-wrap .meta-input { width:100%; justify-content:space-between; cursor:pointer; }
+.dropdown-menu { position:absolute; top:calc(100% + 8px); left:0; min-width:100%; background:rgba(18,18,22,0.98); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:8px; z-index:100; display:none; flex-direction:column; gap:4px; box-shadow:0 20px 40px rgba(0,0,0,0.6); max-height:320px; overflow-y:auto; }
+.dropdown-menu.right { left:auto; right:0; min-width:280px; }
 .dropdown-item { width:100%; justify-content:flex-start; background:transparent; border:none; padding:11px 14px; border-radius:8px; font-size:13px; color:var(--text); display:flex; gap:10px; cursor:pointer; align-items:center; text-align:left; transition:.2s; }
-.dropdown-item:hover { background:rgba(255,255,255,0.08); color:#fff; }
-.project-item { display:flex; justify-content:space-between; align-items:center; padding:14px; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,0.02); transition:.2s; }
-.project-item.active { border-color:rgba(255,255,255,0.15); background:rgba(255,255,255,0.06); }
-.saved-toast { position:fixed; bottom:40px; left:50%; transform:translateX(-50%) translateY(100px); background:rgba(20,20,25,0.9); border:1px solid rgba(255,255,255,0.12); color:#fff; padding:10px 24px; border-radius:30px; z-index:3000; opacity:0; transition:.4s; display:flex; gap:10px; align-items:center; }
+.dropdown-item:hover { background:rgba(255,255,255,0.08); color:var(--accent); }
+
+.project-item, .module-item { display:flex; justify-content:space-between; align-items:center; padding:14px; border:1px solid var(--border); border-radius:10px; background:rgba(255,255,255,0.02); transition:.2s; }
+.project-item.active { border-color:var(--accent); background:rgba(34,211,238,0.05); }
+
+.upload-box { margin-top:10px; border:1px dashed var(--border); padding:12px; border-radius:8px; text-align:center; cursor:pointer; font-size:12px; opacity:0.8; transition:.2s; background:rgba(0,0,0,0.2); }
+.upload-box:hover { opacity:1; border-color:var(--accent); color:var(--accent); background:rgba(34,211,238,0.05); }
+
+.saved-toast { position:fixed; bottom:40px; left:50%; transform:translateX(-50%) translateY(100px); background:rgba(20,20,25,0.95); border:1px solid var(--accent); color:#fff; padding:10px 24px; border-radius:30px; z-index:3000; opacity:0; transition:.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display:flex; gap:10px; align-items:center; font-weight:500; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
 .saved-toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
-.footer-copyright { position:fixed; bottom:15px; left:50%; transform:translateX(-50%); font-size:10px; color:var(--muted); z-index:100; pointer-events:none; opacity:.6; text-align:center; }
+.footer-copyright { position:fixed; bottom:15px; left:50%; transform:translateX(-50%); font-size:10px; color:var(--muted); z-index:100; pointer-events:none; opacity:.6; text-align:center; letter-spacing:0.5px; }
 </style>
 </head>
 <body>
@@ -133,28 +155,28 @@ input[type=range] { width:100%; accent-color:#fff; }
         <div class="top-book-title" id="topBookTitle">Mon livre de poche</div>
         <div class="sync" id="syncIndicator"><i class="fas fa-check-circle"></i> sync</div>
         <button class="btn" onclick="openProjects()"><i class="fas fa-folder"></i> Projets</button>
-        <div class="gen-wrap">
-            <button class="btn" onclick="togglePageMenu()"><span id="pageSelectLabel">Book Cover</span></button>
+        <div class="gen-wrap" style="width:200px;">
+            <button class="btn" onclick="toggleDropdown('pageDropdown')"><span id="pageSelectLabel">Book Cover</span> <i class="fas fa-chevron-down" style="font-size:10px;opacity:0.6"></i></button>
             <div id="pageDropdown" class="dropdown-menu"></div>
         </div>
         <button class="btn" onclick="addPage()"><i class="fas fa-plus"></i></button>
         <button class="btn btn-danger" onclick="deletePage()"><i class="fas fa-trash"></i></button>
     </div>
     <div class="ribbon-group">
-        <div class="gen-wrap">
-            <button class="btn" onclick="toggleFontMenu()"><span style="font-weight:900;font-family:'Times New Roman',serif;font-size:13px">Tt</span> <span id="fontSelectLabel">Playfair Display</span></button>
+        <div class="gen-wrap" style="width:220px;">
+            <button class="btn" onclick="toggleDropdown('fontDropdown')"><span style="font-weight:900;font-family:'Times New Roman',serif;font-size:13px">Tt</span> <span id="fontSelectLabel">Playfair Display</span> <i class="fas fa-chevron-down" style="font-size:10px;opacity:0.6"></i></button>
             <div id="fontDropdown" class="dropdown-menu right"></div>
         </div>
         <button class="btn" onclick="openSettings()"><i class="fas fa-cog"></i></button>
-        <div class="gen-wrap">
-            <button class="btn" onclick="toggleGenerateMenu()"><i class="fas fa-layer-group"></i> Create</button>
+        <div class="gen-wrap" style="width:auto;">
+            <button class="btn" onclick="toggleDropdown('generateDropdown')"><i class="fas fa-layer-group"></i> Create</button>
             <div id="generateDropdown" class="dropdown-menu right">
-                <div id="genCurrentProjectName" style="font-weight:700;color:#fff;padding:6px 8px">-</div>
+                <div id="genCurrentProjectName" style="font-weight:700;color:#fff;padding:6px 8px;font-size:14px;">-</div>
                 <div style="height:1px;background:var(--border);margin:8px 0"></div>
-                <button class="dropdown-item" onclick="openProjects();closeGenerateMenu()"><i class="fas fa-folder-open"></i> Choisir autre projet</button>
-                <button class="dropdown-item" onclick="exportPagesData();closeGenerateMenu()"><i class="fas fa-code"></i> Fichier pages.data</button>
-                <button class="dropdown-item" onclick="exportEPUB3();closeGenerateMenu()"><i class="fas fa-book-open"></i> Livre EPUB3</button>
-                <button class="dropdown-item" onclick="exportPDFBook();closeGenerateMenu()"><i class="fas fa-file-pdf"></i> Document PDF</button>
+                <button class="dropdown-item" onclick="openProjects();closeMenus()"><i class="fas fa-folder-open"></i> Choisir autre projet</button>
+                <button class="dropdown-item" onclick="exportPagesData();closeMenus()"><i class="fas fa-code"></i> Fichier pages.data</button>
+                <button class="dropdown-item" onclick="exportEPUB3();closeMenus()"><i class="fas fa-book-open"></i> Livre EPUB3</button>
+                <button class="dropdown-item" onclick="exportPDFBook();closeMenus()"><i class="fas fa-file-pdf"></i> Document PDF</button>
             </div>
         </div>
         <button class="btn" onclick="manualSave()"><i class="fas fa-save"></i> Save</button>
@@ -165,9 +187,10 @@ input[type=range] { width:100%; accent-color:#fff; }
     <div class="sidebar">
         <div class="sidebar-scroll">
             <div class="cat">Lecture</div>
-            <div class="menu-item active" id="tab-book">Livre de poche</div>
+            <div class="menu-item active" id="tab-book"><i class="fas fa-book"></i> Livre de poche</div>
+            <div id="sidebarModules"></div>
             <div class="cat">Projet Actuel</div>
-            <div style="padding:0 20px 10px;font-size:12px;color:var(--accent)" id="currentProjectName">-</div>
+            <div style="padding:0 20px 10px;font-size:12px;color:var(--accent);font-weight:500;" id="currentProjectName">-</div>
         </div>
     </div>
     
@@ -247,15 +270,21 @@ input[type=range] { width:100%; accent-color:#fff; }
             <div class="meta-row">
                 <div class="input-group">
                     <label>Taille Chapitre</label>
-                    <select id="titleFontSize" class="meta-input" onchange="autoSave()">
-                        <option value="18">18px</option><option value="24">24px</option><option value="28">28px</option><option value="32" selected>32px</option><option value="36">36px</option><option value="42">42px</option><option value="48">48px</option><option value="56">56px</option><option value="64">64px</option><option value="72">72px</option>
-                    </select>
+                    <div class="gen-wrap">
+                        <button class="meta-input" onclick="toggleDropdown('titleSizeDropdown')">
+                            <span id="titleSizeLabel" data-value="32">32px</span> <i class="fas fa-chevron-down" style="font-size:10px;opacity:0.6"></i>
+                        </button>
+                        <div id="titleSizeDropdown" class="dropdown-menu"></div>
+                    </div>
                 </div>
                 <div class="input-group">
                     <label>Taille Corps</label>
-                    <select id="bodyFontSize" class="meta-input" onchange="autoSave()">
-                        <option value="12">12px</option><option value="13">13px</option><option value="14">14px</option><option value="15">15px</option><option value="16">16px</option><option value="17" selected>17px</option><option value="18">18px</option><option value="20">20px</option><option value="22">22px</option><option value="24">24px</option><option value="28">28px</option><option value="32">32px</option>
-                    </select>
+                    <div class="gen-wrap">
+                        <button class="meta-input" onclick="toggleDropdown('bodySizeDropdown')">
+                            <span id="bodySizeLabel" data-value="17">17px</span> <i class="fas fa-chevron-down" style="font-size:10px;opacity:0.6"></i>
+                        </button>
+                        <div id="bodySizeDropdown" class="dropdown-menu"></div>
+                    </div>
                 </div>
             </div>
             
@@ -275,11 +304,11 @@ input[type=range] { width:100%; accent-color:#fff; }
 <div class="overlay" id="previewModal" onclick="if(event.target===this)closePreview()">
     <div class="preview-shell" onclick="event.stopPropagation()">
         <div class="preview-top">
-            <button class="btn" id="btnMobile" onclick="setPreviewDevice('mobile')">Mobile</button>
-            <button class="btn" id="btnTablet" onclick="setPreviewDevice('tablet')">Tablet</button>
-            <button class="btn" id="btnLarge" onclick="setPreviewDevice('large')">Large</button>
-            <button class="btn" id="btnEpub" onclick="setPreviewDevice('epub')">EPUB</button>
-            <button class="btn" id="btnPdf" onclick="setPreviewDevice('pdf')">PDF</button>
+            <button class="btn" id="btnMobile" onclick="setPreviewDevice('mobile')"><i class="fas fa-mobile-alt"></i> Mobile</button>
+            <button class="btn" id="btnTablet" onclick="setPreviewDevice('tablet')"><i class="fas fa-tablet-alt"></i> Tablet</button>
+            <button class="btn" id="btnLarge" onclick="setPreviewDevice('large')"><i class="fas fa-desktop"></i> Large Screen</button>
+            <button class="btn" id="btnEpub" onclick="setPreviewDevice('epub')"><i class="fas fa-book"></i> EPUB PC</button>
+            <button class="btn" id="btnPdf" onclick="setPreviewDevice('pdf')"><i class="fas fa-file-pdf"></i> PDF</button>
             <button class="btn-close-round" onclick="closePreview()"><i class="fas fa-times"></i></button>
         </div>
         <div class="preview-screen mobile" id="previewScreen">
@@ -291,13 +320,13 @@ input[type=range] { width:100%; accent-color:#fff; }
 <div class="overlay" id="projectsModal">
     <div class="modal">
         <div class="modal-head">
-            <h3>Projects</h3>
-            <button class="btn" onclick="closeProjects()">Fermer</button>
+            <h3><i class="fas fa-folder-open"></i> Projects</h3>
+            <button class="btn-close-round" onclick="closeProjects()"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
             <div style="display:flex;gap:10px">
                 <input id="newProjectTitle" class="meta-input" placeholder="Titre..." style="flex:1">
-                <button class="btn" onclick="createNewProject()">Nouveau</button>
+                <button class="btn btn-primary" onclick="createNewProject()">Nouveau</button>
             </div>
             <div id="projectsList" style="display:flex;flex-direction:column;gap:10px;margin-top:10px"></div>
         </div>
@@ -308,7 +337,7 @@ input[type=range] { width:100%; accent-color:#fff; }
     <div class="modal">
         <div class="modal-head">
             <h3><i class="fas fa-cog"></i> Paramètres</h3>
-            <button class="btn" onclick="closeSettings()">Fermer</button>
+            <button class="btn-close-round" onclick="closeSettings()"><i class="fas fa-times"></i></button>
         </div>
         <div class="modal-body">
             <div>
@@ -320,16 +349,33 @@ input[type=range] { width:100%; accent-color:#fff; }
             </div>
             
             <div>
+                <label style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:600;display:block;margin-top:10px">Gestionnaire de Modules (.ipm)</label>
+                <div id="modulesList" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div>
+                <div class="upload-box" onclick="document.getElementById('moduleFileInput').click()">
+                    <i class="fas fa-puzzle-piece"></i> Installer un module (.ipm)
+                    <input type="file" id="moduleFileInput" accept=".ipm" style="display:none" onchange="handleModuleUpload(event)">
+                </div>
+            </div>
+            
+            <div>
+                <label style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:600;display:block;margin-top:10px">Gestionnaire de Plug-ins (.plug)</label>
+                <div id="pluginsList" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div>
+                <div class="upload-box" onclick="document.getElementById('pluginFileInput').click()">
+                    <i class="fas fa-plug"></i> Installer un plug-in (.plug)
+                    <input type="file" id="pluginFileInput" accept=".plug" style="display:none" onchange="handlePluginUpload(event)">
+                </div>
+            </div>
+            
+            <div>
                 <label style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:600;display:block;margin-top:10px">Polices Personnalisées</label>
-                <div id="fontsList" style="display:flex;flex-direction:column;gap:6px;margin-top:8px"></div>
-                <div style="margin-top:10px;border:1px dashed var(--border);padding:10px;border-radius:8px;text-align:center;cursor:pointer;font-size:12px;opacity:0.8" onclick="document.getElementById('fontFileInput').click()">
-                    <i class="fas fa-upload"></i> Importer un fichier Font (.ttf, .otf, .woff)
+                <div class="upload-box" onclick="document.getElementById('fontFileInput').click()">
+                    <i class="fas fa-font"></i> Importer un fichier Font (.ttf, .otf, .woff)
                     <input type="file" id="fontFileInput" accept=".ttf,.otf,.woff,.woff2" style="display:none" onchange="handleFontUpload(event)">
                 </div>
             </div>
 
-            <div style="margin-top: 10px;">
-                <label style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:600">Sauvegarde</label>
+            <div>
+                <label style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:600;display:block;margin-top:10px">Sauvegarde</label>
                 <p style="font-size:11px;opacity:.6;margin:6px 0">Sauvegarde complète + polices incluses.</p>
                 <div style="display:flex;gap:10px">
                     <button class="btn" onclick="exportWorkflow()"><i class="fas fa-download"></i> Backup complet</button>
@@ -338,7 +384,7 @@ input[type=range] { width:100%; accent-color:#fff; }
                 </div>
             </div>
             
-            <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:10px">
+            <div style="border-top:1px solid var(--border);padding-top:15px;margin-top:10px">
                 <label style="font-size:11px;color:#ef4444;text-transform:uppercase;font-weight:600">Zone Dangereuse</label>
                 <p style="font-size:11px;opacity:.6;margin:6px 0">Efface tout pour repartir à zéro si bug.</p>
                 <button class="btn btn-danger" style="width:100%;justify-content:center" onclick="factoryReset()">Factory Reset</button>
@@ -347,7 +393,7 @@ input[type=range] { width:100%; accent-color:#fff; }
     </div>
 </div>
 
-<div id="savedToast" class="saved-toast"><i class="fas fa-check-circle" style="color:#fff"></i> Enregistré!</div>
+<div id="savedToast" class="saved-toast"><i class="fas fa-check-circle" style="color:var(--accent)"></i> Enregistré!</div>
 
 <script>
 let currentPageId=null, currentProjectId=null, projects=[], appConfig={fontFamily:'Playfair Display',reference:{mode:'all',selected:[]}}, previewDevice='mobile';
@@ -368,6 +414,9 @@ let fontMapping={
     'Source Serif Pro':"'Source Serif Pro', serif",
     'Inter':"'Inter', sans-serif"
 };
+
+const titleSizes = [18,24,28,32,36,42,48,56,64,72];
+const bodySizes = [12,13,14,15,16,17,18,20,22,24,28,32];
 
 function initIDB(cb){ 
     const req=indexedDB.open("WriterFontsDB",1); 
@@ -418,12 +467,25 @@ function handleFontUpload(e){
 
 function applyFont(){ 
     const fam=fontMapping[appConfig.fontFamily]||"'Playfair Display', serif"; 
-    // ONLY apply font to chapter title and body text
     const ta=document.getElementById('itemText'); 
     if(ta) ta.style.fontFamily=fam; 
     const it=document.getElementById('itemTitle'); 
     if(it) it.style.fontFamily=fam; 
 } 
+
+function toggleDropdown(id) {
+    const el = document.getElementById(id);
+    const isVis = el.style.display === 'flex';
+    closeMenus();
+    if(!isVis) el.style.display = 'flex';
+}
+function closeMenus() { 
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display='none'); 
+}
+
+document.addEventListener('click',e=>{ 
+    if(!e.target.closest('.gen-wrap')) closeMenus(); 
+}); 
 
 function refreshFontDropdown(){ 
     const dd=document.getElementById('fontDropdown'); 
@@ -434,7 +496,7 @@ function refreshFontDropdown(){
         b.className='dropdown-item'+(name===appConfig.fontFamily?' active':''); 
         b.style.fontFamily=fontMapping[name]; 
         b.innerHTML=`<span style="font-weight:900;font-size:12px;opacity:.6">Tt</span> ${name}`; 
-        b.onclick=()=>selectFont(name); 
+        b.onclick=()=>{ selectFont(name); closeMenus(); }; 
         dd.appendChild(b); 
     }); 
     const label=document.getElementById('fontSelectLabel'); 
@@ -444,26 +506,41 @@ function refreshFontDropdown(){
     } 
 } 
 
-function toggleFontMenu(){ 
-    const dd=document.getElementById('fontDropdown'); 
-    dd.style.display=dd.style.display==='flex'?'none':'flex'; 
-    closePageMenu(); 
-    closeGenerateMenu(); 
-} 
-
-function closeFontMenu(){ 
-    const dd=document.getElementById('fontDropdown'); 
-    if(dd) dd.style.display='none'; 
-} 
-
 function selectFont(name){ 
     appConfig.fontFamily=name; 
     saveProjects(); 
     refreshFontDropdown(); 
     applyFont(); 
-    closeFontMenu(); 
     autoSave(); 
 } 
+
+function initSizeDropdowns() {
+    const tMenu = document.getElementById('titleSizeDropdown');
+    const bMenu = document.getElementById('bodySizeDropdown');
+    tMenu.innerHTML = ''; bMenu.innerHTML = '';
+    
+    titleSizes.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = 'dropdown-item'; btn.textContent = s + 'px';
+        btn.onclick = () => {
+            document.getElementById('titleSizeLabel').dataset.value = s;
+            document.getElementById('titleSizeLabel').textContent = s + 'px';
+            closeMenus(); autoSave();
+        };
+        tMenu.appendChild(btn);
+    });
+    
+    bodySizes.forEach(s => {
+        const btn = document.createElement('button');
+        btn.className = 'dropdown-item'; btn.textContent = s + 'px';
+        btn.onclick = () => {
+            document.getElementById('bodySizeLabel').dataset.value = s;
+            document.getElementById('bodySizeLabel').textContent = s + 'px';
+            closeMenus(); autoSave();
+        };
+        bMenu.appendChild(btn);
+    });
+}
 
 function refreshPageDropdown(){ 
     const dd=document.getElementById('pageDropdown'); 
@@ -475,7 +552,7 @@ function refreshPageDropdown(){
         const b=document.createElement('button'); 
         b.className='dropdown-item'+(it.id===currentPageId?' active':''); 
         b.innerHTML=`${getDisplayName(it)}${it.type==='chapter'?' · '+esc(it.title):''}`; 
-        b.onclick=()=>selectPage(it.id); 
+        b.onclick=()=>{ selectPage(it.id); closeMenus(); }; 
         dd.appendChild(b); 
     }); 
     const label=document.getElementById('pageSelectLabel'); 
@@ -483,21 +560,8 @@ function refreshPageDropdown(){
     if(label&&cur) label.textContent=getDisplayName(cur)+(cur.type==='chapter'?' · '+cur.title:''); 
 } 
 
-function togglePageMenu(){ 
-    const dd=document.getElementById('pageDropdown'); 
-    dd.style.display=dd.style.display==='flex'?'none':'flex'; 
-    closeFontMenu(); 
-    closeGenerateMenu(); 
-} 
-
-function closePageMenu(){ 
-    const dd=document.getElementById('pageDropdown'); 
-    if(dd) dd.style.display='none'; 
-} 
-
 function selectPage(id){ 
     currentPageId=id; 
-    closePageMenu(); 
     loadPageData(); 
 } 
 
@@ -521,7 +585,7 @@ function saveProjects(){
 
 function getCurrentProject(){ return projects.find(p=>p.id===currentProjectId); } 
 
-function openProjects(){ renderProjectsList(); document.getElementById('projectsModal').classList.add('active'); closeFontMenu(); closePageMenu(); closeGenerateMenu(); } 
+function openProjects(){ renderProjectsList(); document.getElementById('projectsModal').classList.add('active'); closeMenus(); } 
 function closeProjects(){ document.getElementById('projectsModal').classList.remove('active'); } 
 function renderProjectsList(){ 
     const l=document.getElementById('projectsList'); l.innerHTML=''; 
@@ -573,8 +637,11 @@ function loadPageData(){
     document.getElementById('itemText').placeholder=item.type==='reference'?'Sommaire ici ou autres...':'Commencez à écrire...'; 
     document.getElementById('imageSize').value=item.imageSize||70; document.getElementById('imageSizeVal').textContent=(item.imageSize||70)+'%'; 
     document.getElementById('bgOpacity').value=item.bgOpacity||15; document.getElementById('bgOpacityVal').textContent=(item.bgOpacity||15)+'%'; 
-    document.getElementById('titleFontSize').value=item.titleSize||32; 
-    document.getElementById('bodyFontSize').value=item.bodySize||17; 
+    
+    document.getElementById('titleSizeLabel').dataset.value = item.titleSize||32;
+    document.getElementById('titleSizeLabel').textContent = (item.titleSize||32)+'px';
+    document.getElementById('bodySizeLabel').dataset.value = item.bodySize||17;
+    document.getElementById('bodySizeLabel').textContent = (item.bodySize||17)+'px';
     
     const isCover=item.type==='cover', isAuthor=item.type==='author', isRef=item.type==='reference'; 
     document.getElementById('globalTitleGroup').style.display=isCover?'flex':'none'; 
@@ -610,8 +677,16 @@ function setImageAlign(a,s=true){
     if(s) autoSave(); 
 } 
 
-function updateImageSize(v){ document.getElementById('imageSizeVal').textContent=v+'%'; autoSave(); } 
-function updateBgOpacity(v){ document.getElementById('bgOpacityVal').textContent=v+'%'; autoSave(); } 
+function updateImageSize(v){ 
+    document.getElementById('imageSizeVal').textContent=v+'%'; 
+    const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId);
+    if(item) { item.imageSize = parseInt(v); autoSave(); }
+} 
+function updateBgOpacity(v){ 
+    document.getElementById('bgOpacityVal').textContent=v+'%'; 
+    const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId);
+    if(item) { item.bgOpacity = parseInt(v); autoSave(); }
+} 
 
 function renderRefBlock(){ 
     const cfg=appConfig.reference||{mode:'all',selected:[]}; 
@@ -676,8 +751,8 @@ function autoSave(){
         item.imageAlign=document.querySelector('[id^="align-"].active')?.id.replace('align-','')||'center'; 
         item.imageSize=parseInt(document.getElementById('imageSize').value)||70; 
         item.bgOpacity=parseInt(document.getElementById('bgOpacity').value)||15; 
-        item.titleSize=parseInt(document.getElementById('titleFontSize').value)||32; 
-        item.bodySize=parseInt(document.getElementById('bodyFontSize').value)||17; 
+        item.titleSize=parseInt(document.getElementById('titleSizeLabel').dataset.value)||32; 
+        item.bodySize=parseInt(document.getElementById('bodySizeLabel').dataset.value)||17; 
         if(item.type==='author'){ 
             item.author=document.getElementById('globalAuthor').value; 
             item.date=document.getElementById('globalDate').value; 
@@ -689,6 +764,11 @@ function autoSave(){
         document.getElementById('savedToast').classList.add('show'); 
         setTimeout(()=>document.getElementById('savedToast').classList.remove('show'),1500); 
         refreshPageDropdown(); 
+        
+        // Update active preview
+        if(document.getElementById('previewModal').classList.contains('active')) {
+            document.getElementById('prvContent').innerHTML=buildPageHTML(item, proj.title); 
+        }
     }, 500); 
 } 
 
@@ -782,16 +862,63 @@ function setPreviewDevice(d){
     }); 
 } 
 
-function openSettings(){ document.getElementById('settingsModal').classList.add('active'); closeFontMenu(); closePageMenu(); closeGenerateMenu(); } 
+function openSettings(){ document.getElementById('settingsModal').classList.add('active'); closeMenus(); } 
 function closeSettings(){ document.getElementById('settingsModal').classList.remove('active'); } 
-function toggleGenerateMenu(){ const dd=document.getElementById('generateDropdown'); dd.style.display=dd.style.display==='flex'?'none':'flex'; closePageMenu(); closeFontMenu(); } 
-function closeGenerateMenu(){ const dd=document.getElementById('generateDropdown'); if(dd) dd.style.display='none'; } 
 
-document.addEventListener('click',e=>{ 
-    if(!e.target.closest('#pageDropdown')&&!e.target.closest('[onclick="togglePageMenu()"]')) closePageMenu(); 
-    if(!e.target.closest('#fontDropdown')&&!e.target.closest('[onclick="toggleFontMenu()"]')) closeFontMenu(); 
-    if(!e.target.closest('#generateDropdown')&&!e.target.closest('[onclick="toggleGenerateMenu()"]')) closeGenerateMenu(); 
-}); 
+// Modules and Plugins Logic
+function renderManagerLists() {
+    const ml = document.getElementById('modulesList');
+    const pl = document.getElementById('pluginsList');
+    const sMod = document.getElementById('sidebarModules');
+    ml.innerHTML = ''; pl.innerHTML = ''; sMod.innerHTML = '';
+    
+    const mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
+    mods.forEach(m => {
+        const d = document.createElement('div'); d.className = 'module-item';
+        d.innerHTML = `<span><i class="fas fa-puzzle-piece" style="margin-right:8px;color:var(--accent)"></i>${m.name}</span><button class="btn btn-danger" style="padding:4px 8px;font-size:10px" onclick="deleteModule('${m.id}')"><i class="fas fa-trash"></i></button>`;
+        ml.appendChild(d);
+        
+        const sm = document.createElement('div'); sm.className = 'menu-item';
+        sm.innerHTML = `<i class="fas fa-book-open"></i> ${m.name}`;
+        sMod.appendChild(sm);
+    });
+    
+    const plugs = JSON.parse(localStorage.getItem('writer_plugins')||'[]');
+    plugs.forEach(p => {
+        const d = document.createElement('div'); d.className = 'module-item';
+        d.innerHTML = `<span><i class="fas fa-plug" style="margin-right:8px;color:var(--accent)"></i>${p.name}</span><button class="btn btn-danger" style="padding:4px 8px;font-size:10px" onclick="deletePlugin('${p.id}')"><i class="fas fa-trash"></i></button>`;
+        pl.appendChild(d);
+    });
+}
+
+function handleModuleUpload(e) {
+    const file = e.target.files[0]; if(!file) return;
+    const name = file.name.replace('.ipm','');
+    const mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
+    mods.push({ id: uid(), name });
+    localStorage.setItem('writer_modules', JSON.stringify(mods));
+    renderManagerLists(); e.target.value = '';
+}
+function deleteModule(id) {
+    let mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
+    mods = mods.filter(m => m.id !== id);
+    localStorage.setItem('writer_modules', JSON.stringify(mods));
+    renderManagerLists();
+}
+function handlePluginUpload(e) {
+    const file = e.target.files[0]; if(!file) return;
+    const name = file.name.replace('.plug','');
+    const plugs = JSON.parse(localStorage.getItem('writer_plugins')||'[]');
+    plugs.push({ id: uid(), name });
+    localStorage.setItem('writer_plugins', JSON.stringify(plugs));
+    renderManagerLists(); e.target.value = '';
+}
+function deletePlugin(id) {
+    let plugs = JSON.parse(localStorage.getItem('writer_plugins')||'[]');
+    plugs = plugs.filter(p => p.id !== id);
+    localStorage.setItem('writer_plugins', JSON.stringify(plugs));
+    renderManagerLists();
+}
 
 async function exportWorkflow(){ 
     const fonts=await new Promise(res=>{ if(!db) return res([]); const tx=db.transaction("fonts","readonly"); const r=tx.objectStore("fonts").getAll(); r.onsuccess=e=>res(e.target.result||[]); }); 
@@ -873,9 +1000,31 @@ async function exportPDFBook(){
     }catch(e){ alert(e.message); }finally{ container.remove(); } 
 } 
 
-function manualSave(){ autoSave(); } 
-function setLang(l){ localStorage.setItem('writer_lang',l); location.reload(); } 
-window.onload=()=>{ initIDB(()=>{ loadProjects(); const proj=getCurrentProject(); if(!proj) return; document.getElementById('currentProjectName').textContent=proj.title; document.getElementById('genCurrentProjectName').textContent=proj.title; document.getElementById('topBookTitle').textContent=proj.title; refreshFontDropdown(); refreshPageDropdown(); applyFont(); loadPageData(); }); }; 
+function updateLangUI(){
+    const l = localStorage.getItem('writer_lang') || 'fr';
+    document.getElementById('lang-fr').classList.toggle('lang-active', l==='fr');
+    document.getElementById('lang-en').classList.toggle('lang-active', l==='en');
+}
+
+function setLang(l){ localStorage.setItem('writer_lang',l); updateLangUI(); } 
+
+window.onload=()=>{ 
+    initIDB(()=>{ 
+        initSizeDropdowns();
+        renderManagerLists();
+        updateLangUI();
+        loadProjects(); 
+        const proj=getCurrentProject(); 
+        if(!proj) return; 
+        document.getElementById('currentProjectName').textContent=proj.title; 
+        document.getElementById('genCurrentProjectName').textContent=proj.title; 
+        document.getElementById('topBookTitle').textContent=proj.title; 
+        refreshFontDropdown(); 
+        refreshPageDropdown(); 
+        applyFont(); 
+        loadPageData(); 
+    }); 
+}; 
 </script>
 </body>
 </html>
