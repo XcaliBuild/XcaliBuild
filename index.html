@@ -130,7 +130,6 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
 .prv-content { padding:40px; color:#111; font-size:16px; line-height:1.7; position:relative; min-height:100%; word-wrap:break-word; }
 .clearfix::after { content:""; clear:both; display:table; }
 
-/* FIX DU ESPACEMENT POUR FULL-BLEED (100%) */
 .sheet .img-wrapper.full-bleed { width:calc(100% + 90px)!important; margin-left:-45px!important; margin-right:-45px!important; }
 .prv-content .img-wrapper.full-bleed { width:calc(100% + 80px)!important; margin-left:-40px!important; margin-right:-40px!important; }
 
@@ -222,7 +221,7 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
                 </div>
             </div>
             
-            <div class="input-group" id="itemTitleGroup">
+            <div class="input-group" id="itemTitleGroup" style="display:none;">
                 <label>Nom de la page</label>
                 <input id="itemTitle" class="meta-input" style="font-weight:700" placeholder="Chapitre 1 - Ex: Mon premier chapitre" oninput="autoSave()">
             </div>
@@ -295,7 +294,6 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
             <div class="input-group" style="flex:1">
                 <label>Corps du texte</label>
                 <textarea id="itemText" class="main" placeholder="Sommaire ici ou autres..." oninput="autoSave()"></textarea>
-                <div id="charCounter" class="char-counter">0 / 1500</div>
             </div>
         </div>
         
@@ -419,47 +417,50 @@ let fontMapping={
     'Inter':"'Inter', sans-serif"
 };
 
-// Dictionnaire de langue simple pour la traduction d'interface
 const i18n = {
-    fr: {
-        proj: "<i class='fas fa-folder'></i> Projets",
-        read: "<i class='fas fa-book'></i> Livre de poche",
-        cur: "Projet Actuel"
-    },
-    en: {
-        proj: "<i class='fas fa-folder'></i> Projects",
-        read: "<i class='fas fa-book'></i> Paperback",
-        cur: "Current Project"
-    }
+    fr: { proj: "<i class='fas fa-folder'></i> Projets", read: "<i class='fas fa-book'></i> Livre de poche", cur: "Projet Actuel" },
+    en: { proj: "<i class='fas fa-folder'></i> Projects", read: "<i class='fas fa-book'></i> Paperback", cur: "Current Project" }
 };
 
 const titleSizes = [18,24,28,32,36,42,48,56,64,72];
 const bodySizes = [12,13,14,15,16,17,18,20,22,24,28,32];
 
 function initIDB(cb){ 
-    const req=indexedDB.open("WriterFontsDB",1); 
-    req.onupgradeneeded=e=>{ 
-        const d=e.target.result; 
-        if(!d.objectStoreNames.contains("fonts")) d.createObjectStore("fonts",{keyPath:"name"}); 
-    }; 
-    req.onsuccess=e=>{ 
-        db=e.target.result; 
-        loadFontsFromIDB(cb); 
-    }; 
+    try {
+        const req=indexedDB.open("WriterFontsDB",1); 
+        req.onupgradeneeded=e=>{ 
+            const d=e.target.result; 
+            if(!d.objectStoreNames.contains("fonts")) d.createObjectStore("fonts",{keyPath:"name"}); 
+        }; 
+        req.onsuccess=e=>{ 
+            db=e.target.result; 
+            loadFontsFromIDB(cb); 
+        }; 
+        req.onerror=e=>{
+            console.warn("IndexedDB blocked or disabled.");
+            if(cb) cb();
+        };
+    } catch(err) {
+        console.warn("IndexedDB access prevented.", err);
+        if(cb) cb();
+    }
 }
 
 function loadFontsFromIDB(cb){ 
     if(!db) return cb&&cb(); 
-    const tx=db.transaction("fonts","readonly"); 
-    const r=tx.objectStore("fonts").getAll(); 
-    r.onsuccess=e=>{ 
-        customFonts=e.target.result||[];
-        customFonts.forEach(f=>{ fontMapping[f.name]=`'${f.name}'`; }); 
-        const css=customFonts.map(f=>`@font-face{font-family:'${f.name}';src:url('${f.dataUrl}');}`).join('\n'); 
-        document.getElementById('customFontsStyle').textContent=css; 
-        refreshFontDropdown(); 
-        if(cb) cb(); 
-    }; 
+    try {
+        const tx=db.transaction("fonts","readonly"); 
+        const r=tx.objectStore("fonts").getAll(); 
+        r.onsuccess=e=>{ 
+            customFonts=e.target.result||[];
+            customFonts.forEach(f=>{ fontMapping[f.name]=`'${f.name}'`; }); 
+            const css=customFonts.map(f=>`@font-face{font-family:'${f.name}';src:url('${f.dataUrl}');}`).join('\n'); 
+            document.getElementById('customFontsStyle').textContent=css; 
+            refreshFontDropdown(); 
+            if(cb) cb(); 
+        };
+        r.onerror=()=> { if(cb) cb(); };
+    } catch(e) { if(cb) cb(); }
 }
 
 function handleFontUpload(e){ 
@@ -470,10 +471,15 @@ function handleFontUpload(e){
         const dataUrl=ev.target.result; 
         const name=file.name.replace(/\.[^/.]+$/,"").replace(/[^a-z0-9 _-]/g,'').trim()||'Custom'; 
         if(fontMapping[name]) return alert('Cette police existe déjà'); 
-        const obj={name,dataUrl}; 
-        const tx=db.transaction("fonts","readwrite"); 
-        tx.objectStore("fonts").put(obj); 
-        customFonts.push(obj); 
+        
+        try {
+            if(db) {
+                const tx=db.transaction("fonts","readwrite"); 
+                tx.objectStore("fonts").put({name,dataUrl}); 
+            }
+        } catch(err) { console.warn("Cannot save font to DB"); }
+        
+        customFonts.push({name,dataUrl}); 
         document.getElementById('customFontsStyle').textContent+=`@font-face{font-family:'${name}';src:url('${dataUrl}');}\n`; 
         fontMapping[name]=`'${name}'`; 
         refreshFontDropdown(); 
@@ -489,6 +495,8 @@ function applyFont(){
     if(ta) ta.style.fontFamily=fam; 
     const it=document.getElementById('itemTitle'); 
     if(it) it.style.fontFamily=fam; 
+    const gt=document.getElementById('globalTitle');
+    if(gt) gt.style.fontFamily=fam;
 } 
 
 function toggleDropdown(id) {
@@ -593,12 +601,16 @@ function loadProjects(){
         } 
         if(!projects.find(p=>p.id===currentProjectId)) currentProjectId=projects[0].id; 
         appConfig=projects.find(p=>p.id===currentProjectId).config; 
-    }catch(e){} 
+    }catch(e){
+        console.error("Erreur chargement projets", e);
+    } 
 } 
 
 function saveProjects(){ 
-    localStorage.setItem('writer_projects_v2',JSON.stringify(projects)); 
-    localStorage.setItem('writer_current_project_id',currentProjectId); 
+    try {
+        localStorage.setItem('writer_projects_v2',JSON.stringify(projects)); 
+        localStorage.setItem('writer_current_project_id',currentProjectId); 
+    } catch(e) { console.warn("Erreur sauvegarde locale", e); }
 } 
 
 function getCurrentProject(){ return projects.find(p=>p.id===currentProjectId); } 
@@ -610,7 +622,7 @@ function renderProjectsList(){
     projects.forEach(p=>{ 
         const d=document.createElement('div'); 
         d.className='project-item'+(p.id===currentProjectId?' active':''); 
-        d.innerHTML=`<div style="font-weight:500">${p.title}</div><div style="display:flex;gap:6px"><button class="btn" onclick="switchProject('${p.id}')">OK</button><button class="btn btn-danger" onclick="deleteProject('${p.id}')"><i class="fas fa-times"></i></button></div>`; 
+        d.innerHTML=`<div style="font-weight:500">${esc(p.title)}</div><div style="display:flex;gap:6px"><button class="btn" onclick="switchProject('${p.id}')">OK</button><button class="btn btn-danger" onclick="deleteProject('${p.id}')"><i class="fas fa-times"></i></button></div>`; 
         l.appendChild(d); 
     }); 
 } 
@@ -618,7 +630,7 @@ function renderProjectsList(){
 function createNewProject(){ 
     const t=document.getElementById('newProjectTitle').value.trim()||'Mon livre de poche'; 
     const p={id:uid(),title:t,data:{book:{title:t,items:[{id:'cover',type:'cover',title:'Book Cover',showTitle:true,titleSize:48,bodySize:17,image:'',layout:'bg',imageAlign:'center',imageSize:100,bgOpacity:20,text:''},{id:'author',type:'author',title:'Page Auteur',titleSize:28,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:60,bgOpacity:15,author:'',date:'',publisher:'',genre:'',text:''},{id:'ref',type:'reference',title:'Summary',titleSize:28,bodySize:16,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:'Sommaire ici ou autres...'},{id:'ch1',type:'chapter',title:'Chapitre 1',titleSize:32,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:''}]}},config:{fontFamily:'Playfair Display',reference:{mode:'all',selected:[]}},mode:'book',pageId:'cover',updatedAt:Date.now()}; 
-    projects.unshift(p); currentProjectId=p.id; saveProjects(); loadProjectIntoUI(); 
+    projects.unshift(p); currentProjectId=p.id; saveProjects(); loadProjectIntoUI(); document.getElementById('newProjectTitle').value='';
 } 
 
 function switchProject(id){ currentProjectId=id; saveProjects(); loadProjectIntoUI(); closeProjects(); } 
@@ -633,6 +645,9 @@ function loadProjectIntoUI(){
     refreshFontDropdown(); 
     refreshPageDropdown(); 
     applyFont(); 
+    
+    // Reset currentPageId to force finding the first page if missing
+    currentPageId = null;
     loadPageData(); 
 } 
 
@@ -643,10 +658,16 @@ function getDisplayName(it){
     return it.title||'Page'; 
 } 
 
+// LA FONCTION CORRIGÉE POUR ÉVITER LE BUG DES DEUX TITRES SIMULTANÉS
 function loadPageData(){ 
-    const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId); 
+    const proj=getCurrentProject(); 
+    if(!proj || !proj.data.book.items.length) return;
+    
+    // Sécurité maximale : Si on n'a pas de page active, on prend la première (cover)
+    if(!currentPageId) currentPageId = proj.data.book.items[0].id; 
+    
+    const item=proj.data.book.items.find(i=>i.id===currentPageId); 
     if(!item) return; 
-    if(!currentPageId) currentPageId=proj.data.book.items[0].id; 
     
     document.getElementById('itemTitle').value=item.title||''; 
     document.getElementById('itemImage').value=item.image||''; 
@@ -694,7 +715,6 @@ function setImageAlign(a,s=true){
     if(s) autoSave(); 
 } 
 
-// Mise à jour immédiate pour affichage live
 function updateImageSize(v){ 
     document.getElementById('imageSizeVal').textContent=v+'%'; 
     const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId);
@@ -793,8 +813,6 @@ function autoSave(){
         document.getElementById('savedToast').classList.add('show'); 
         setTimeout(()=>document.getElementById('savedToast').classList.remove('show'),1500); 
         refreshPageDropdown(); 
-        
-        // Update active preview
         updateLivePreviewFast();
     }, 500); 
 } 
@@ -891,63 +909,78 @@ function setPreviewDevice(d){
     }); 
 } 
 
-// Modules and Plugins Logic
+// AJOUT DE BLINDAGES TRY/CATCH POUR ÉVITER TOUT CRASH
 function renderManagerLists() {
     const ml = document.getElementById('modulesList');
     const pl = document.getElementById('pluginsList');
     const sMod = document.getElementById('sidebarModules');
     ml.innerHTML = ''; pl.innerHTML = ''; sMod.innerHTML = '';
     
-    const mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
-    mods.forEach(m => {
-        const d = document.createElement('div'); d.className = 'module-item';
-        d.innerHTML = `<span><i class="fas fa-puzzle-piece" style="margin-right:8px;color:var(--accent)"></i>${m.name}</span><button class="btn btn-danger" style="padding:4px 8px;font-size:10px" onclick="deleteModule('${m.id}')"><i class="fas fa-trash"></i></button>`;
-        ml.appendChild(d);
-        
-        const sm = document.createElement('div'); sm.className = 'menu-item';
-        sm.innerHTML = `<i class="fas fa-book-open"></i> ${m.name}`;
-        sMod.appendChild(sm);
-    });
+    try {
+        const mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
+        mods.forEach(m => {
+            const d = document.createElement('div'); d.className = 'module-item';
+            d.innerHTML = `<span><i class="fas fa-puzzle-piece" style="margin-right:8px;color:var(--accent)"></i>${esc(m.name)}</span><button class="btn btn-danger" style="padding:4px 8px;font-size:10px" onclick="deleteModule('${m.id}')"><i class="fas fa-trash"></i></button>`;
+            ml.appendChild(d);
+            
+            const sm = document.createElement('div'); sm.className = 'menu-item';
+            sm.innerHTML = `<i class="fas fa-book-open"></i> ${esc(m.name)}`;
+            sMod.appendChild(sm);
+        });
+    } catch(e) { console.warn("Erreur chargement modules", e); }
     
-    const plugs = JSON.parse(localStorage.getItem('writer_plugins')||'[]');
-    plugs.forEach(p => {
-        const d = document.createElement('div'); d.className = 'module-item';
-        d.innerHTML = `<span><i class="fas fa-plug" style="margin-right:8px;color:var(--accent)"></i>${p.name}</span><button class="btn btn-danger" style="padding:4px 8px;font-size:10px" onclick="deletePlugin('${p.id}')"><i class="fas fa-trash"></i></button>`;
-        pl.appendChild(d);
-    });
+    try {
+        const plugs = JSON.parse(localStorage.getItem('writer_plugins')||'[]');
+        plugs.forEach(p => {
+            const d = document.createElement('div'); d.className = 'module-item';
+            d.innerHTML = `<span><i class="fas fa-plug" style="margin-right:8px;color:var(--accent)"></i>${esc(p.name)}</span><button class="btn btn-danger" style="padding:4px 8px;font-size:10px" onclick="deletePlugin('${p.id}')"><i class="fas fa-trash"></i></button>`;
+            pl.appendChild(d);
+        });
+    } catch(e) { console.warn("Erreur chargement plugins", e); }
 }
 
 function handleModuleUpload(e) {
     const file = e.target.files[0]; if(!file) return;
     const name = file.name.replace('.ipm','');
-    const mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
-    mods.push({ id: uid(), name });
-    localStorage.setItem('writer_modules', JSON.stringify(mods));
+    try {
+        const mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
+        mods.push({ id: uid(), name });
+        localStorage.setItem('writer_modules', JSON.stringify(mods));
+    } catch(err) { console.error("Erreur save module", err); }
     renderManagerLists(); e.target.value = '';
 }
+
 function deleteModule(id) {
-    let mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
-    mods = mods.filter(m => m.id !== id);
-    localStorage.setItem('writer_modules', JSON.stringify(mods));
+    try {
+        let mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
+        mods = mods.filter(m => m.id !== id);
+        localStorage.setItem('writer_modules', JSON.stringify(mods));
+    } catch(err){}
     renderManagerLists();
 }
+
 function handlePluginUpload(e) {
     const file = e.target.files[0]; if(!file) return;
     const name = file.name.replace('.plug','');
-    const plugs = JSON.parse(localStorage.getItem('writer_plugins')||'[]');
-    plugs.push({ id: uid(), name });
-    localStorage.setItem('writer_plugins', JSON.stringify(plugs));
+    try {
+        const plugs = JSON.parse(localStorage.getItem('writer_plugins')||'[]');
+        plugs.push({ id: uid(), name });
+        localStorage.setItem('writer_plugins', JSON.stringify(plugs));
+    } catch(err) {}
     renderManagerLists(); e.target.value = '';
 }
+
 function deletePlugin(id) {
-    let plugs = JSON.parse(localStorage.getItem('writer_plugins')||'[]');
-    plugs = plugs.filter(p => p.id !== id);
-    localStorage.setItem('writer_plugins', JSON.stringify(plugs));
+    try {
+        let plugs = JSON.parse(localStorage.getItem('writer_plugins')||'[]');
+        plugs = plugs.filter(p => p.id !== id);
+        localStorage.setItem('writer_plugins', JSON.stringify(plugs));
+    } catch(err){}
     renderManagerLists();
 }
 
 async function exportWorkflow(){ 
-    const fonts=await new Promise(res=>{ if(!db) return res([]); const tx=db.transaction("fonts","readonly"); const r=tx.objectStore("fonts").getAll(); r.onsuccess=e=>res(e.target.result||[]); }); 
+    const fonts=await new Promise(res=>{ if(!db) return res([]); try { const tx=db.transaction("fonts","readonly"); const r=tx.objectStore("fonts").getAll(); r.onsuccess=e=>res(e.target.result||[]); r.onerror=()=>res([]); } catch(e){ res([]); } }); 
     const blob=new Blob([JSON.stringify({project:getCurrentProject(),fonts},null,2)],{type:"application/json"}); 
     const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download=(getCurrentProject().title||'Mon livre de poche')+'.writerwork'; a.click(); URL.revokeObjectURL(url); 
 } 
@@ -966,7 +999,7 @@ function importWorkflow(e){
     r.readAsText(file); e.target.value=''; 
 } 
 
-function factoryReset(){ if(!confirm('Êtes-vous sûr de vouloir tout effacer et repartir à zéro ?')) return; localStorage.clear(); indexedDB.deleteDatabase("WriterFontsDB"); location.reload(); } 
+function factoryReset(){ if(!confirm('Êtes-vous sûr de vouloir tout effacer et repartir à zéro ?')) return; localStorage.clear(); try { indexedDB.deleteDatabase("WriterFontsDB"); } catch(e){} location.reload(); } 
 function jumpToPage(id){ selectPage(id); closePreview(); } 
 
 async function exportPagesData(){ 
@@ -978,7 +1011,7 @@ async function exportPagesData(){
         if(cfg.mode==='select'&&cfg.selected.length>0) linked=linked.filter(i=>cfg.selected.includes(i.id)); 
         ref.links=linked; 
     } 
-    const fonts=await new Promise(res=>{ if(!db) return res([]); const tx=db.transaction("fonts","readonly"); const r=tx.objectStore("fonts").getAll(); r.onsuccess=e=>res(e.target.result||[]); }); 
+    const fonts=await new Promise(res=>{ if(!db) return res([]); try { const tx=db.transaction("fonts","readonly"); const r=tx.objectStore("fonts").getAll(); r.onsuccess=e=>res(e.target.result||[]); r.onerror=()=>res([]); } catch(e) { res([]); } }); 
     const obj={projectTitle:proj.title,format:'book',config:{fontFamily:appConfig.fontFamily,reference:cfg},items,customFonts:fonts,copyright:"created by Base Essentielle (BE Studio, Paris - France)"}; 
     const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='pages.data'; a.click(); URL.revokeObjectURL(url); 
 } 
@@ -1027,25 +1060,24 @@ async function exportPDFBook(){
 } 
 
 function updateLangUI(){
-    const l = localStorage.getItem('writer_lang') || 'fr';
-    document.getElementById('lang-fr').classList.toggle('lang-active', l==='fr');
-    document.getElementById('lang-en').classList.toggle('lang-active', l==='en');
-    
-    // Application de la traduction basique
-    if(i18n[l]) {
-        document.getElementById('btnProj').innerHTML = i18n[l].proj;
-        document.getElementById('tab-book').innerHTML = i18n[l].read;
-        document.getElementById('lblCurProj').textContent = i18n[l].cur;
-    }
+    try {
+        const l = localStorage.getItem('writer_lang') || 'fr';
+        document.getElementById('lang-fr').classList.toggle('lang-active', l==='fr');
+        document.getElementById('lang-en').classList.toggle('lang-active', l==='en');
+        
+        if(i18n[l]) {
+            document.getElementById('btnProj').innerHTML = i18n[l].proj;
+            document.getElementById('tab-book').innerHTML = i18n[l].read;
+            document.getElementById('lblCurProj').textContent = i18n[l].cur;
+        }
+    } catch(e) {}
 }
 
 function setLang(l){ localStorage.setItem('writer_lang',l); updateLangUI(); } 
 
-window.onload=()=>{ 
-    initIDB(()=>{ 
-        initSizeDropdowns();
-        renderManagerLists();
-        updateLangUI();
+// BOOTSTRAP SECURISÉ POUR LANCER L'APP À COUP SÛR
+function bootstrapApp() {
+    try {
         loadProjects(); 
         const proj=getCurrentProject(); 
         if(!proj) return; 
@@ -1054,8 +1086,28 @@ window.onload=()=>{
         refreshFontDropdown(); 
         refreshPageDropdown(); 
         applyFont(); 
-        loadPageData(); 
-    }); 
+        loadPageData();
+    } catch(e) {
+        console.error("Erreur fatale au lancement", e);
+    }
+}
+
+function openSettings(){ 
+    document.getElementById('settingsModal').classList.add('active'); 
+    closeMenus(); 
+} 
+function closeSettings(){ 
+    document.getElementById('settingsModal').classList.remove('active'); 
+}
+
+window.onload=()=>{ 
+    try {
+        initSizeDropdowns();
+        renderManagerLists();
+        updateLangUI();
+    } catch(e) { console.error("Erreur de setup interface", e); }
+    
+    initIDB(bootstrapApp); 
 }; 
 </script>
 </body>
