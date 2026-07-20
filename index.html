@@ -64,7 +64,6 @@ body {
 }
 .btn:hover { background:rgba(255,255,255,0.08); border-color:rgba(255,255,255,0.14); transform:translateY(-1px); box-shadow:inset 0 1px 0 rgba(255,255,255,0.08), 0 6px 24px rgba(0,0,0,0.4); }
 .btn-danger { color:#ef4444; border-color:rgba(239,68,68,0.2); }
-.btn.lang-active { background:rgba(34,211,238,0.15); color:var(--accent); border-color:var(--accent); }
 
 .main-body { display:flex; flex:1; overflow:hidden; }
 .sidebar { width:240px; background:rgba(10,10,12,0.4); border-right:1px solid var(--border); display:flex; flex-direction:column; flex-shrink:0; }
@@ -103,7 +102,6 @@ input[type=range]:focus { outline:none; }
 input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; height:14px; width:14px; border-radius:50%; background:var(--accent); cursor:pointer; margin-top:-5px; box-shadow:0 0 10px rgba(var(--accent),0.5); }
 input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; cursor:pointer; background:rgba(255,255,255,0.15); border-radius:2px; }
 
-.char-counter { font-size:11px; text-align:right; color:var(--muted); }
 .btn-preview { position:fixed; bottom:30px; right:30px; background:rgba(20,20,25,0.8); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.08); color:var(--text); padding:14px 24px; border-radius:30px; font-size:14px; font-weight:500; cursor:pointer; z-index:30; display:flex; gap:10px; box-shadow:0 10px 30px rgba(0,0,0,0.5); transition:.2s; }
 .btn-preview:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
 
@@ -126,14 +124,13 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
 .preview-screen.mobile { width:393px; height:852px; }
 .preview-screen.tablet { width:834px; height:1112px; }
 .preview-screen.large, .preview-screen.epub, .preview-screen.pdf { width:100%; height:calc(100vh - 140px); max-width:1200px; border-width:2px; border-radius:6px; }
-
 .prv-content { padding:40px; color:#111; font-size:16px; line-height:1.7; position:relative; min-height:100%; word-wrap:break-word; }
 .clearfix::after { content:""; clear:both; display:table; }
 
 .sheet .img-wrapper.full-bleed { width:calc(100% + 90px)!important; margin-left:-45px!important; margin-right:-45px!important; }
 .prv-content .img-wrapper.full-bleed { width:calc(100% + 80px)!important; margin-left:-40px!important; margin-right:-40px!important; }
 
-/* Custom Dropdowns Pro */
+/* Custom Dropdowns */
 .gen-wrap { position:relative; width:100%; }
 .gen-wrap .btn, .gen-wrap .meta-input { width:100%; justify-content:space-between; cursor:pointer; }
 .dropdown-menu { position:absolute; top:calc(100% + 8px); left:0; min-width:100%; background:rgba(18,18,22,0.98); backdrop-filter:blur(20px); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:8px; z-index:100; display:none; flex-direction:column; gap:4px; box-shadow:0 20px 40px rgba(0,0,0,0.6); max-height:320px; overflow-y:auto; }
@@ -203,7 +200,7 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
     <div class="sidebar">
         <div class="sidebar-scroll">
             <div class="cat">Lecture</div>
-            <div class="menu-item active" id="tab-book" onclick="activateModule(null)"><i class="fas fa-book"></i> Livre de poche</div>
+            <div class="menu-item active" id="tab-book" onclick="applyModuleTheme(null, null)"><i class="fas fa-book"></i> Livre de poche</div>
             <div id="sidebarModules"></div>
             <div class="cat" id="lblCurProj">Projet Actuel</div>
             <div style="padding:0 20px 10px;font-size:12px;color:var(--accent);font-weight:500;" id="currentProjectName">-</div>
@@ -250,7 +247,7 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
             
             <div class="meta-row" id="mediaUrlGroup">
                 <div class="input-group" style="flex:2">
-                    <label>Illustration (URL)</label>
+                    <label>Illustration (URL ou Fichier Local)</label>
                     <div style="display:flex;gap:8px">
                         <input id="itemImage" class="meta-input" style="flex:1" placeholder="https://..." oninput="autoSave()">
                         <button class="btn" onclick="document.getElementById('localImgUpload').click()" title="Uploader depuis le PC"><i class="fas fa-upload"></i> Local</button>
@@ -318,10 +315,10 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
                 <div class="input-group">
                     <label><i class="fas fa-th-large"></i> Configurations des Casiers (Grilles) <span style="margin-left:auto;color:var(--accent);font-weight:700">Page Transparente Actuelle</span></label>
                     <div class="grid-select-container">
-                        <div class="grid-box active" onclick="setBDGrid('1x1')"><div class="grid-cell"></div></div>
-                        <div class="grid-box" onclick="setBDGrid('2x2')"><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div></div>
-                        <div class="grid-box grid-box-rect" onclick="setBDGrid('rect')"><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div></div>
-                        <div class="grid-box" style="border:none" onclick="setBDGrid('bolt')"><div class="grid-box-bolt" style="width:100%;height:100%"></div></div>
+                        <div class="grid-box active" onclick="setBDGrid('1x1')" id="grid-1x1"><div class="grid-cell"></div></div>
+                        <div class="grid-box" onclick="setBDGrid('2x2')" id="grid-2x2"><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div></div>
+                        <div class="grid-box grid-box-rect" onclick="setBDGrid('rect')" id="grid-rect"><div class="grid-cell"></div><div class="grid-cell"></div><div class="grid-cell"></div></div>
+                        <div class="grid-box" style="border:none" onclick="setBDGrid('bolt')" id="grid-bolt"><div class="grid-box-bolt" style="width:100%;height:100%"></div></div>
                     </div>
                 </div>
                 <div class="input-group">
@@ -388,13 +385,6 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
             <button class="btn-close-round" onclick="closeSettings()"><i class="fas fa-times-circle"></i></button>
         </div>
         <div class="modal-body">
-            <div>
-                <label style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:600">Langue</label>
-                <div style="display:flex;gap:10px;margin-top:8px">
-                    <button class="btn" id="lang-fr" onclick="setLang('fr')" style="flex:1;justify-content:center">🇫🇷 Français</button>
-                    <button class="btn" id="lang-en" onclick="setLang('en')" style="flex:1;justify-content:center">🇬🇧 English</button>
-                </div>
-            </div>
             
             <div>
                 <label style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:600;display:block;margin-top:10px">Gestionnaire de Modules (.ipm)</label>
@@ -414,8 +404,8 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
             </div>
 
             <div>
-                <label style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:600;display:block;margin-top:10px">Sauvegarde</label>
-                <p style="font-size:11px;opacity:.6;margin:6px 0">Sauvegarde complète + polices incluses.</p>
+                <label style="font-size:11px;opacity:.6;text-transform:uppercase;font-weight:600;display:block;margin-top:10px">Sauvegarde Globale</label>
+                <p style="font-size:11px;opacity:.6;margin:6px 0">Sauvegarde du projet actuel.</p>
                 <div style="display:flex;gap:10px">
                     <button class="btn" onclick="exportWorkflow()"><i class="fas fa-download"></i> Backup complet</button>
                     <button class="btn" onclick="document.getElementById('importWorkInput').click()"><i class="fas fa-upload"></i> Importer</button>
@@ -425,7 +415,6 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
             
             <div style="border-top:1px solid var(--border);padding-top:15px;margin-top:10px">
                 <label style="font-size:11px;color:#ef4444;text-transform:uppercase;font-weight:600">Zone Dangereuse</label>
-                <p style="font-size:11px;opacity:.6;margin:6px 0">Efface tout pour repartir à zéro si bug.</p>
                 <button class="btn btn-danger" style="width:100%;justify-content:center" onclick="factoryReset()">Factory Reset</button>
             </div>
         </div>
@@ -436,7 +425,8 @@ input[type=range]::-webkit-slider-runnable-track { width:100%; height:4px; curso
 
 <script>
 let currentPageId=null, currentProjectId=null, projects=[], appConfig={fontFamily:'Playfair Display',reference:{mode:'all',selected:[]}}, previewDevice='mobile';
-let currentActiveModule = null; // Gère le module actif (null = Livre)
+let currentActiveModule = null; 
+let currentActiveModuleId = null;
 
 const uid=()=> 'id_'+Date.now()+'_'+Math.random().toString(36).slice(2,5);
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -456,11 +446,6 @@ let fontMapping={
     'Inter':"'Inter', sans-serif"
 };
 
-const i18n = {
-    fr: { proj: "<i class='fas fa-folder'></i> Projets", read: "<i class='fas fa-book'></i> Livre de poche", cur: "Projet Actuel" },
-    en: { proj: "<i class='fas fa-folder'></i> Projects", read: "<i class='fas fa-book'></i> Paperback", cur: "Current Project" }
-};
-
 const titleSizes = [18,24,28,32,36,42,48,56,64,72];
 const bodySizes = [12,13,14,15,16,17,18,20,22,24,28,32];
 
@@ -472,10 +457,7 @@ function initIDB(cb){
             if(!d.objectStoreNames.contains("fonts")) d.createObjectStore("fonts",{keyPath:"name"}); 
             if(!d.objectStoreNames.contains("images")) d.createObjectStore("images",{keyPath:"id"}); 
         }; 
-        req.onsuccess=e=>{ 
-            db=e.target.result; 
-            loadFontsFromIDB(cb); 
-        }; 
+        req.onsuccess=e=>{ db=e.target.result; loadFontsFromIDB(cb); }; 
         req.onerror=e=>{ if(cb) cb(); };
     } catch(err) { if(cb) cb(); }
 }
@@ -483,26 +465,22 @@ function initIDB(cb){
 function loadFontsFromIDB(cb){ 
     if(!db) return cb&&cb(); 
     try {
-        const tx=db.transaction("fonts","readonly"); 
-        const r=tx.objectStore("fonts").getAll(); 
+        const tx=db.transaction("fonts","readonly"); const r=tx.objectStore("fonts").getAll(); 
         r.onsuccess=e=>{ 
             customFonts=e.target.result||[];
             customFonts.forEach(f=>{ fontMapping[f.name]=`'${f.name}'`; }); 
             const css=customFonts.map(f=>`@font-face{font-family:'${f.name}';src:url('${f.dataUrl}');}`).join('\n'); 
             document.getElementById('customFontsStyle').textContent=css; 
-            refreshFontDropdown(); 
-            if(cb) cb(); 
+            refreshFontDropdown(); if(cb) cb(); 
         };
         r.onerror=()=> { if(cb) cb(); };
     } catch(e) { if(cb) cb(); }
 }
 
 function handleFontUpload(e){ 
-    const file=e.target.files[0]; if(!file) return; 
-    const r=new FileReader(); 
+    const file=e.target.files[0]; if(!file) return; const r=new FileReader(); 
     r.onload=ev=>{ 
-        const dataUrl=ev.target.result; 
-        const name=file.name.replace(/\.[^/.]+$/,"").replace(/[^a-z0-9 _-]/g,'').trim()||'Custom'; 
+        const dataUrl=ev.target.result; const name=file.name.replace(/\.[^/.]+$/,"").replace(/[^a-z0-9 _-]/g,'').trim()||'Custom'; 
         if(fontMapping[name]) return alert('Cette police existe déjà'); 
         try { if(db) { const tx=db.transaction("fonts","readwrite"); tx.objectStore("fonts").put({name,dataUrl}); } } catch(err) {}
         customFonts.push({name,dataUrl}); 
@@ -513,18 +491,13 @@ function handleFontUpload(e){
 }
 
 function uploadLocalImage(e) {
-    const file = e.target.files[0]; if(!file) return;
-    const r = new FileReader();
+    const file = e.target.files[0]; if(!file) return; const r = new FileReader();
     r.onload = ev => {
         const b64 = ev.target.result;
-        try {
-            if(db) { const tx = db.transaction("images","readwrite"); tx.objectStore("images").put({id: uid(), data: b64}); }
-        } catch(err) {}
-        document.getElementById('itemImage').value = b64;
-        autoSave();
+        try { if(db) { const tx = db.transaction("images","readwrite"); tx.objectStore("images").put({id: uid(), data: b64}); } } catch(err) {}
+        document.getElementById('itemImage').value = b64; autoSave();
     };
-    r.readAsDataURL(file);
-    e.target.value = '';
+    r.readAsDataURL(file); e.target.value = '';
 }
 
 function applyFont(){ 
@@ -534,39 +507,30 @@ function applyFont(){
     const gt=document.getElementById('globalTitle'); if(gt) gt.style.fontFamily=fam;
 } 
 
-function toggleDropdown(id) {
-    const el = document.getElementById(id); const isVis = el.style.display === 'flex';
-    closeMenus(); if(!isVis) el.style.display = 'flex';
-}
+function toggleDropdown(id) { const el = document.getElementById(id); const isVis = el.style.display === 'flex'; closeMenus(); if(!isVis) el.style.display = 'flex'; }
 function closeMenus() { document.querySelectorAll('.dropdown-menu').forEach(m => m.style.display='none'); }
 document.addEventListener('click',e=>{ if(!e.target.closest('.gen-wrap')) closeMenus(); }); 
 
 function refreshFontDropdown(){ 
-    const dd=document.getElementById('fontDropdown'); if(!dd) return; 
-    dd.innerHTML=''; 
+    const dd=document.getElementById('fontDropdown'); if(!dd) return; dd.innerHTML=''; 
     Object.keys(fontMapping).forEach(name=>{ 
         const b=document.createElement('button'); b.className='dropdown-item'+(name===appConfig.fontFamily?' active':''); 
         b.style.fontFamily=fontMapping[name]; b.innerHTML=`<span style="font-weight:900;font-size:12px;opacity:.6">Tt</span> ${name}`; 
         b.onclick=()=>{ selectFont(name); closeMenus(); }; dd.appendChild(b); 
     }); 
-    const label=document.getElementById('fontSelectLabel'); 
-    if(label){ label.textContent=appConfig.fontFamily; label.style.fontFamily=fontMapping[appConfig.fontFamily]; } 
+    const label=document.getElementById('fontSelectLabel'); if(label){ label.textContent=appConfig.fontFamily; label.style.fontFamily=fontMapping[appConfig.fontFamily]; } 
 } 
-
 function selectFont(name){ appConfig.fontFamily=name; saveProjects(); refreshFontDropdown(); applyFont(); autoSave(); } 
 
 function initSizeDropdowns() {
-    const tMenu = document.getElementById('titleSizeDropdown'); const bMenu = document.getElementById('bodySizeDropdown');
-    tMenu.innerHTML = ''; bMenu.innerHTML = '';
+    const tMenu = document.getElementById('titleSizeDropdown'); const bMenu = document.getElementById('bodySizeDropdown'); tMenu.innerHTML = ''; bMenu.innerHTML = '';
     titleSizes.forEach(s => {
         const btn = document.createElement('button'); btn.className = 'dropdown-item'; btn.textContent = s + 'px';
-        btn.onclick = () => { document.getElementById('titleSizeLabel').dataset.value = s; document.getElementById('titleSizeLabel').textContent = s + 'px'; closeMenus(); autoSave(); };
-        tMenu.appendChild(btn);
+        btn.onclick = () => { document.getElementById('titleSizeLabel').dataset.value = s; document.getElementById('titleSizeLabel').textContent = s + 'px'; closeMenus(); autoSave(); }; tMenu.appendChild(btn);
     });
     bodySizes.forEach(s => {
         const btn = document.createElement('button'); btn.className = 'dropdown-item'; btn.textContent = s + 'px';
-        btn.onclick = () => { document.getElementById('bodySizeLabel').dataset.value = s; document.getElementById('bodySizeLabel').textContent = s + 'px'; closeMenus(); autoSave(); };
-        bMenu.appendChild(btn);
+        btn.onclick = () => { document.getElementById('bodySizeLabel').dataset.value = s; document.getElementById('bodySizeLabel').textContent = s + 'px'; closeMenus(); autoSave(); }; bMenu.appendChild(btn);
     });
 }
 
@@ -578,30 +542,23 @@ function refreshPageDropdown(){
         b.innerHTML=`${getDisplayName(it)}${it.type==='chapter'?' · '+esc(it.title):''}`; 
         b.onclick=()=>{ selectPage(it.id); closeMenus(); }; dd.appendChild(b); 
     }); 
-    const label=document.getElementById('pageSelectLabel'); 
-    const cur=proj.data.book.items.find(i=>i.id===currentPageId); 
+    const label=document.getElementById('pageSelectLabel'); const cur=proj.data.book.items.find(i=>i.id===currentPageId); 
     if(label&&cur) label.textContent=getDisplayName(cur)+(cur.type==='chapter'?' · '+cur.title:''); 
 } 
-
 function selectPage(id){ currentPageId=id; loadPageData(); } 
 
 function loadProjects(){ 
     try{ 
-        projects=JSON.parse(localStorage.getItem('writer_projects_v2')||'[]'); 
-        currentProjectId=localStorage.getItem('writer_current_project_id'); 
+        projects=JSON.parse(localStorage.getItem('writer_projects_v2')||'[]'); currentProjectId=localStorage.getItem('writer_current_project_id'); 
         if(projects.length===0){ 
-            const p={id:uid(),title:'Mon livre de poche',data:{book:{title:'Mon livre de poche',items:[{id:'cover',type:'cover',title:'Book Cover',showTitle:true,titleSize:48,bodySize:17,image:'',layout:'bg',imageAlign:'center',imageSize:100,bgOpacity:20,text:''},{id:'author',type:'author',title:'Page Auteur',titleSize:28,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:60,bgOpacity:15,author:'',date:'',publisher:'',genre:'',text:''},{id:'ref',type:'reference',title:'Summary',titleSize:28,bodySize:16,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:'Sommaire ici ou autres...'},{id:'ch1',type:'chapter',title:'Chapitre 1',titleSize:32,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:''}]}},config:{fontFamily:'Playfair Display',reference:{mode:'all',selected:[]}},mode:'book',pageId:'cover',updatedAt:Date.now()}; 
+            const p={id:uid(),title:'Mon projet',data:{book:{title:'Mon projet',items:[{id:'cover',type:'cover',title:'Couverture',showTitle:true,titleSize:48,bodySize:17,image:'',layout:'bg',imageAlign:'center',imageSize:100,bgOpacity:20,text:''},{id:'author',type:'author',title:'Page Auteur',titleSize:28,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:60,bgOpacity:15,author:'',date:'',publisher:'',genre:'',text:''},{id:'ref',type:'reference',title:'Summary',titleSize:28,bodySize:16,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:'Sommaire...'},{id:'ch1',type:'chapter',title:'Page 1',titleSize:32,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:'', bdGrid:'1x1'}]}},config:{fontFamily:'Playfair Display',reference:{mode:'all',selected:[]}},mode:'book',pageId:'cover',updatedAt:Date.now()}; 
             projects=[p]; currentProjectId=p.id; saveProjects(); 
         } 
         if(!projects.find(p=>p.id===currentProjectId)) currentProjectId=projects[0].id; 
         appConfig=projects.find(p=>p.id===currentProjectId).config; 
     }catch(e){} 
 } 
-
-function saveProjects(){ 
-    try { localStorage.setItem('writer_projects_v2',JSON.stringify(projects)); localStorage.setItem('writer_current_project_id',currentProjectId); } catch(e) {}
-} 
-
+function saveProjects(){ try { localStorage.setItem('writer_projects_v2',JSON.stringify(projects)); localStorage.setItem('writer_current_project_id',currentProjectId); localStorage.setItem('writer_active_module_id', currentActiveModuleId || ''); } catch(e) {} } 
 function getCurrentProject(){ return projects.find(p=>p.id===currentProjectId); } 
 
 function openProjects(){ renderProjectsList(); document.getElementById('projectsModal').classList.add('active'); closeMenus(); } 
@@ -617,7 +574,7 @@ function renderProjectsList(){
 
 function createNewProject(){ 
     const t=document.getElementById('newProjectTitle').value.trim()||'Mon projet'; 
-    const p={id:uid(),title:t,data:{book:{title:t,items:[{id:'cover',type:'cover',title:'Couverture',showTitle:true,titleSize:48,bodySize:17,image:'',layout:'bg',imageAlign:'center',imageSize:100,bgOpacity:20,text:''},{id:'author',type:'author',title:'Page Auteur',titleSize:28,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:60,bgOpacity:15,author:'',date:'',publisher:'',genre:'',text:''},{id:'ref',type:'reference',title:'Summary',titleSize:28,bodySize:16,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:'Sommaire...'},{id:'ch1',type:'chapter',title:'Page 1',titleSize:32,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:''}]}},config:{fontFamily:'Playfair Display',reference:{mode:'all',selected:[]}},mode:'book',pageId:'cover',updatedAt:Date.now()}; 
+    const p={id:uid(),title:t,data:{book:{title:t,items:[{id:'cover',type:'cover',title:'Couverture',showTitle:true,titleSize:48,bodySize:17,image:'',layout:'bg',imageAlign:'center',imageSize:100,bgOpacity:20,text:''},{id:'author',type:'author',title:'Page Auteur',titleSize:28,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:60,bgOpacity:15,author:'',date:'',publisher:'',genre:'',text:''},{id:'ref',type:'reference',title:'Summary',titleSize:28,bodySize:16,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:'Sommaire...'},{id:'ch1',type:'chapter',title:'Page 1',titleSize:32,bodySize:17,image:'',layout:'top',imageAlign:'center',imageSize:70,bgOpacity:15,text:'',bdGrid:'1x1'}]}},config:{fontFamily:'Playfair Display',reference:{mode:'all',selected:[]}},mode:'book',pageId:'cover',updatedAt:Date.now()}; 
     projects.unshift(p); currentProjectId=p.id; saveProjects(); loadProjectIntoUI(); document.getElementById('newProjectTitle').value='';
 } 
 
@@ -627,9 +584,7 @@ function deleteProject(id){ if(projects.length<=1) return; if(!confirm('Supprime
 function loadProjectIntoUI(){ 
     const proj=getCurrentProject(); if(!proj) return; 
     appConfig=proj.config; 
-    document.getElementById('currentProjectName').textContent=proj.title; 
-    document.getElementById('genCurrentProjectName').textContent=proj.title; 
-    document.getElementById('globalTitle').value=proj.data.book.title||proj.title; 
+    document.getElementById('currentProjectName').textContent=proj.title; document.getElementById('genCurrentProjectName').textContent=proj.title; document.getElementById('globalTitle').value=proj.data.book.title||proj.title; 
     refreshFontDropdown(); refreshPageDropdown(); applyFont(); 
     currentPageId = null; loadPageData(); 
 } 
@@ -641,22 +596,35 @@ function getDisplayName(it){
     return it.title||'Page'; 
 } 
 
-function applyModuleTheme(moduleData) {
+// LA FONCTION CLEF : Elle s'occupe du passage propre d'un module à un autre
+function applyModuleTheme(moduleData, modId) {
     currentActiveModule = moduleData;
+    currentActiveModuleId = modId;
+    saveProjects(); // Sauvegarde le module actif en mémoire
+    
     document.querySelectorAll('.sidebar .menu-item').forEach(e => e.classList.remove('active'));
     
     const root = document.documentElement;
     const logoSub = document.getElementById('appLogoSub');
     
     if(!moduleData) {
-        // Mode normal
+        // Retour au mode Livre normal
         document.getElementById('tab-book').classList.add('active');
         root.style.setProperty('--accent', '#22d3ee');
         logoSub.textContent = 'sources';
     } else {
-        document.getElementById('mod-tab-'+moduleData.id).classList.add('active');
+        // Activation du module BD ou Mag
+        const tab = document.getElementById('mod-tab-'+modId);
+        if(tab) tab.classList.add('active');
         root.style.setProperty('--accent', moduleData.theme?.color || '#22d3ee');
         logoSub.textContent = moduleData.name;
+        
+        // AUTO-JUMP VERS LE CHAPITRE POUR VOIR LES OUTILS
+        const proj = getCurrentProject();
+        if(proj && (moduleData.type === 'comic' || moduleData.type === 'magazine')) {
+            const firstChap = proj.data.book.items.find(i => i.type === 'chapter');
+            if (firstChap) currentPageId = firstChap.id;
+        }
     }
     
     refreshPageDropdown();
@@ -668,9 +636,7 @@ function loadPageData(){
     if(!currentPageId) currentPageId = proj.data.book.items[0].id; 
     const item=proj.data.book.items.find(i=>i.id===currentPageId); if(!item) return; 
     
-    document.getElementById('itemTitle').value=item.title||''; 
-    document.getElementById('itemImage').value=item.image||''; 
-    document.getElementById('itemText').value=item.text||''; 
+    document.getElementById('itemTitle').value=item.title||''; document.getElementById('itemImage').value=item.image||''; document.getElementById('itemText').value=item.text||''; 
     document.getElementById('imageSize').value=item.imageSize||70; document.getElementById('imageSizeVal').textContent=(item.imageSize||70)+'%'; 
     document.getElementById('bgOpacity').value=item.bgOpacity||15; document.getElementById('bgOpacityVal').textContent=(item.bgOpacity||15)+'%'; 
     document.getElementById('titleSizeLabel').dataset.value = item.titleSize||32; document.getElementById('titleSizeLabel').textContent = (item.titleSize||32)+'px';
@@ -678,109 +644,76 @@ function loadPageData(){
     
     const isCover=item.type==='cover', isAuthor=item.type==='author', isRef=item.type==='reference', isChapter=item.type==='chapter'; 
     
-    // Visibilité standard
-    document.getElementById('globalTitleGroup').style.display=isCover?'flex':'none'; 
-    document.getElementById('coverOptions').style.display=isCover?'flex':'none'; 
-    document.getElementById('itemTitleGroup').style.display=isCover?'none':'flex'; 
-    document.getElementById('authorMetaSection').style.display=isAuthor?'flex':'none'; 
-    document.getElementById('referenceConfigBlock').style.display=isRef?'flex':'none'; 
+    document.getElementById('globalTitleGroup').style.display=isCover?'flex':'none'; document.getElementById('coverOptions').style.display=isCover?'flex':'none'; document.getElementById('itemTitleGroup').style.display=isCover?'none':'flex'; document.getElementById('authorMetaSection').style.display=isAuthor?'flex':'none'; document.getElementById('referenceConfigBlock').style.display=isRef?'flex':'none'; 
     if(isCover) document.getElementById('showTitleOnCover').checked=item.showTitle!==false; 
     if(isAuthor){ document.getElementById('globalAuthor').value=item.author||''; document.getElementById('globalDate').value=item.date||''; document.getElementById('globalPublisher').value=item.publisher||''; document.getElementById('globalGenre').value=item.genre||''; } 
     if(isRef) renderRefBlock(); 
     
-    // GESTION DES MODULES SUR LE WORKSPACE
-    const txtGroup = document.getElementById('textEditorGroup');
-    const layoutGroup = document.getElementById('layoutGroup');
-    const bdTools = document.getElementById('bdToolsGroup');
-    const magTools = document.getElementById('magToolsGroup');
-    
-    txtGroup.style.display = 'flex';
-    layoutGroup.style.display = 'flex';
-    bdTools.style.display = 'none';
-    magTools.style.display = 'none';
+    // GESTION D'AFFICHAGE DES PANNEAUX DE MODULES
+    const txtGroup = document.getElementById('textEditorGroup'); const layoutGroup = document.getElementById('layoutGroup'); const bdTools = document.getElementById('bdToolsGroup'); const magTools = document.getElementById('magToolsGroup');
+    txtGroup.style.display = 'flex'; layoutGroup.style.display = 'flex'; bdTools.style.display = 'none'; magTools.style.display = 'none';
     
     if (currentActiveModule && currentActiveModule.type === 'comic' && isChapter) {
-        // Mode BD Page
-        txtGroup.style.display = 'none';
-        layoutGroup.style.display = 'none';
-        bdTools.style.display = 'flex';
-        // Force l'arrière plan ou centré
-        setLayout(item.layout||'bg', false); 
+        txtGroup.style.display = 'none'; layoutGroup.style.display = 'none'; bdTools.style.display = 'flex';
+        // Active le bon bouton de grille dans l'UI
+        document.querySelectorAll('.grid-box').forEach(el => el.classList.remove('active'));
+        const activeGrid = document.getElementById('grid-' + (item.bdGrid || '1x1'));
+        if(activeGrid) activeGrid.classList.add('active');
+        setLayout('bg', false); 
     } 
     else if (currentActiveModule && currentActiveModule.type === 'magazine' && isChapter) {
-        // Mode Magazine Page
-        txtGroup.style.display = 'flex';
-        layoutGroup.style.display = 'none';
-        magTools.style.display = 'flex';
-        // Force Layout
+        txtGroup.style.display = 'flex'; layoutGroup.style.display = 'none'; magTools.style.display = 'flex';
         setLayout('top', false);
     }
     
     document.getElementById('sheet').classList.toggle('is-cover', isCover); 
     setLayout(item.layout||'top',false); setImageAlign(item.imageAlign||'center',false); 
-    const items=proj.data.book.items; 
-    document.getElementById('navLeft').classList.toggle('disabled', items.findIndex(i=>i.id===currentPageId)<=0); 
-    document.getElementById('navRight').classList.toggle('disabled', items.findIndex(i=>i.id===currentPageId)>=items.length-1); 
+    const items=proj.data.book.items; document.getElementById('navLeft').classList.toggle('disabled', items.findIndex(i=>i.id===currentPageId)<=0); document.getElementById('navRight').classList.toggle('disabled', items.findIndex(i=>i.id===currentPageId)>=items.length-1); 
     refreshPageDropdown(); applyFont(); 
 } 
 
 function setBDGrid(type) {
     document.querySelectorAll('.grid-box').forEach(el => el.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    document.getElementById('grid-'+type).classList.add('active');
     const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId);
-    if(item) { item.bdGrid = type; autoSave(); }
+    if(item) { item.bdGrid = type; autoSave(); updateLivePreviewFast(); }
 }
 function addBDBubble(type) { alert("Outil Bulle (" + type + ") sélectionné - Prêt pour placement sur la Preview."); }
 
 function setLayout(l,s=true){ 
-    document.querySelectorAll('[id^="lay-"]').forEach(b=>b.classList.remove('active')); 
-    const btn = document.getElementById('lay-'+l); if(btn) btn.classList.add('active'); 
-    document.getElementById('bgOpacityGroup').style.display=l==='bg'?'flex':'none'; 
-    document.getElementById('alignContainer').style.display=l==='bg'?'none':'flex'; 
+    document.querySelectorAll('[id^="lay-"]').forEach(b=>b.classList.remove('active')); const btn = document.getElementById('lay-'+l); if(btn) btn.classList.add('active'); 
+    document.getElementById('bgOpacityGroup').style.display=l==='bg'?'flex':'none'; document.getElementById('alignContainer').style.display=l==='bg'?'none':'flex'; 
     if(s) autoSave(); 
 } 
-
-function setImageAlign(a,s=true){ 
-    document.querySelectorAll('[id^="align-"]').forEach(b=>b.classList.remove('active')); 
-    const btn = document.getElementById('align-'+a); if(btn) btn.classList.add('active'); 
-    if(s) autoSave(); 
-} 
-
+function setImageAlign(a,s=true){ document.querySelectorAll('[id^="align-"]').forEach(b=>b.classList.remove('active')); const btn = document.getElementById('align-'+a); if(btn) btn.classList.add('active'); if(s) autoSave(); } 
 function updateImageSize(v){ document.getElementById('imageSizeVal').textContent=v+'%'; const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId); if(item) { item.imageSize = parseInt(v); } updateLivePreviewFast(); autoSave(); } 
 function updateBgOpacity(v){ document.getElementById('bgOpacityVal').textContent=v+'%'; const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId); if(item) { item.bgOpacity = parseInt(v); } updateLivePreviewFast(); autoSave(); } 
 function updateLivePreviewFast() { const proj=getCurrentProject(); const item=proj.data.book.items.find(i=>i.id===currentPageId); if(document.getElementById('previewModal').classList.contains('active')) { document.getElementById('prvContent').innerHTML=buildPageHTML(item, proj.title); } }
 
 function renderRefBlock(){ 
-    const cfg=appConfig.reference||{mode:'all',selected:[]}; 
-    document.querySelectorAll('input[name="refModePage"]').forEach(r=>r.checked=r.value===cfg.mode); 
+    const cfg=appConfig.reference||{mode:'all',selected:[]}; document.querySelectorAll('input[name="refModePage"]').forEach(r=>r.checked=r.value===cfg.mode); 
     const list=document.getElementById('refPageListInPage'); 
     if(cfg.mode==='select'){ 
         list.style.display='flex'; list.innerHTML=''; 
         getCurrentProject().data.book.items.filter(i=>i.type==='chapter').forEach(it=>{ 
-            const checked=cfg.selected.includes(it.id); 
-            const label=document.createElement('label'); label.style.cssText='display:flex;gap:8px;font-size:12px;align-items:center'; 
+            const checked=cfg.selected.includes(it.id); const label=document.createElement('label'); label.style.cssText='display:flex;gap:8px;font-size:12px;align-items:center'; 
             label.innerHTML=`<input type="checkbox" value="${it.id}" ${checked?'checked':''} onchange="updateRefSelectionPage()"> ${esc(it.title)}`; list.appendChild(label); 
         }); 
     } else { list.style.display='none'; } 
 } 
 function updateRefConfigPage(){ const mode=document.querySelector('input[name="refModePage"]:checked')?.value||'all'; appConfig.reference.mode=mode; if(mode==='all') appConfig.reference.selected=[]; saveProjects(); renderRefBlock(); } 
 function updateRefSelectionPage(){ const sel=Array.from(document.querySelectorAll('#refPageListInPage input:checked')).map(i=>i.value); appConfig.reference.selected=sel; saveProjects(); } 
-
 function prevPage(){ const items=getCurrentProject().data.book.items; const idx=items.findIndex(i=>i.id===currentPageId); if(idx>0){ selectPage(items[idx-1].id); } } 
 function nextPage(){ const items=getCurrentProject().data.book.items; const idx=items.findIndex(i=>i.id===currentPageId); if(idx<items.length-1){ selectPage(items[idx+1].id); } } 
 
 function _doSaveCore() {
     const proj=getCurrentProject(); if(!proj) return; const item=proj.data.book.items.find(i=>i.id===currentPageId); if(!item) return; 
     if(item.type==='cover'){ 
-        const nt=document.getElementById('globalTitle').value.trim()||'Mon projet'; 
-        proj.title=nt; proj.data.book.title=nt; 
-        document.getElementById('currentProjectName').textContent=nt; document.getElementById('genCurrentProjectName').textContent=nt; 
-        item.showTitle=document.getElementById('showTitleOnCover').checked; 
+        const nt=document.getElementById('globalTitle').value.trim()||'Mon projet'; proj.title=nt; proj.data.book.title=nt; 
+        document.getElementById('currentProjectName').textContent=nt; document.getElementById('genCurrentProjectName').textContent=nt; item.showTitle=document.getElementById('showTitleOnCover').checked; 
     } 
-    item.title=document.getElementById('itemTitle').value.trim()||'Page'; 
-    item.image=document.getElementById('itemImage').value; item.text=document.getElementById('itemText').value; 
-    item.layout=document.querySelector('[id^="lay-"].active')?.id.replace('lay-','')||'top'; 
-    item.imageAlign=document.querySelector('[id^="align-"].active')?.id.replace('align-','')||'center'; 
+    item.title=document.getElementById('itemTitle').value.trim()||'Page'; item.image=document.getElementById('itemImage').value; item.text=document.getElementById('itemText').value; 
+    item.layout=document.querySelector('[id^="lay-"].active')?.id.replace('lay-','')||'top'; item.imageAlign=document.querySelector('[id^="align-"].active')?.id.replace('align-','')||'center'; 
     item.imageSize=parseInt(document.getElementById('imageSize').value)||70; item.bgOpacity=parseInt(document.getElementById('bgOpacity').value)||15; 
     item.titleSize=parseInt(document.getElementById('titleSizeLabel').dataset.value)||32; item.bodySize=parseInt(document.getElementById('bodySizeLabel').dataset.value)||17; 
     if(item.type==='author'){ item.author=document.getElementById('globalAuthor').value; item.date=document.getElementById('globalDate').value; item.publisher=document.getElementById('globalPublisher').value; item.genre=document.getElementById('globalGenre').value; } 
@@ -800,25 +733,24 @@ function addPage(){
 } 
 function deletePage(){ const it=getCurrentProject().data.book.items.find(i=>i.id===currentPageId); if(it.type==='cover'||it.type==='author'||it.type==='reference') return alert('Page système non supprimable'); if(!confirm('Supprimer cette page ?')) return; getCurrentProject().data.book.items=getCurrentProject().data.book.items.filter(i=>i.id!==currentPageId); currentPageId=getCurrentProject().data.book.items[0].id; saveProjects(); loadProjectIntoUI(); } 
 
-function generateImgHtml(item){ 
+function generateImgHtml(item, customStyle=''){ 
     if(!item.image) return ''; 
-    if(item.layout==='bg'){ return `<img src="${item.image}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:${(item.bgOpacity||20)/100};z-index:0" />`; } 
-    let style=`width:${item.imageSize||70}%;`; const isFull=(item.imageSize||70)>=100; 
-    if(isFull){ return `<div class="img-wrapper full-bleed" style="width:calc(100% + 90px); margin-left:-45px; margin-right:-45px;"><img src="${item.image}" style="width:100%;height:auto;border-radius:0;display:block" /></div>`; }
-    else{ if(item.imageAlign==='left') style+=`float:left;margin:0 14px 8px 0;`; else if(item.imageAlign==='right') style+=`float:right;margin:0 0 8px 14px;`; else style+=`display:block;margin:12px auto;`; } 
-    return `<div class="img-wrapper" style="${style}"><img src="${item.image}" style="width:100%;height:auto;border-radius:8px;display:block" /></div>`; 
+    if(item.layout==='bg' && !customStyle){ return `<img src="${item.image}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:${(item.bgOpacity||20)/100};z-index:0" />`; } 
+    let style=`width:${item.imageSize||70}%;${customStyle}`; const isFull=(item.imageSize||70)>=100; 
+    if(isFull && !customStyle){ return `<div class="img-wrapper full-bleed" style="width:calc(100% + 90px); margin-left:-45px; margin-right:-45px;"><img src="${item.image}" style="width:100%;height:auto;border-radius:0;display:block" /></div>`; }
+    else if(!customStyle){ if(item.imageAlign==='left') style+=`float:left;margin:0 14px 8px 0;`; else if(item.imageAlign==='right') style+=`float:right;margin:0 0 8px 14px;`; else style+=`display:block;margin:12px auto;`; } 
+    return `<div class="img-wrapper" style="${style}"><img src="${item.image}" style="width:100%;height:100%;object-fit:cover;border-radius:${customStyle?'0':'8px'};display:block" /></div>`; 
 } 
 
 function buildPageHTML(item, projectTitle){ 
     const fontSty = fontMapping[appConfig.fontFamily]||'serif';
     
-    // Rendu spécifique BD (Comic)
     if(currentActiveModule && currentActiveModule.type === 'comic' && item.type === 'chapter') {
         let gridHtml = '';
-        if(item.bdGrid === '1x1' || !item.bdGrid) gridHtml = `<div style="border:4px solid #111;width:100%;height:600px;border-radius:4px;overflow:hidden">${generateImgHtml(item)}</div>`;
-        else if(item.bdGrid === '2x2') gridHtml = `<div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:300px 300px;gap:10px;"><div style="border:4px solid #111">${generateImgHtml(item)}</div><div style="border:4px solid #111"></div><div style="border:4px solid #111"></div><div style="border:4px solid #111"></div></div>`;
-        else if(item.bdGrid === 'rect') gridHtml = `<div style="display:grid;grid-template-rows:200px 200px 200px;gap:10px;"><div style="border:4px solid #111">${generateImgHtml(item)}</div><div style="border:4px solid #111"></div><div style="border:4px solid #111"></div></div>`;
-        else if(item.bdGrid === 'bolt') gridHtml = `<div style="width:100%;height:600px;background:#eee;clip-path:polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);border:4px solid #111">${generateImgHtml(item)}</div>`;
+        if(item.bdGrid === '1x1' || !item.bdGrid) gridHtml = `<div style="border:4px solid #111;width:100%;height:600px;border-radius:4px;overflow:hidden">${generateImgHtml(item, 'width:100%;height:100%')}</div>`;
+        else if(item.bdGrid === '2x2') gridHtml = `<div style="display:grid;grid-template-columns:1fr 1fr;grid-template-rows:300px 300px;gap:10px;"><div style="border:4px solid #111;overflow:hidden">${generateImgHtml(item, 'width:100%;height:100%')}</div><div style="border:4px solid #111"></div><div style="border:4px solid #111"></div><div style="border:4px solid #111"></div></div>`;
+        else if(item.bdGrid === 'rect') gridHtml = `<div style="display:grid;grid-template-rows:200px 200px 200px;gap:10px;"><div style="border:4px solid #111;overflow:hidden">${generateImgHtml(item, 'width:100%;height:100%')}</div><div style="border:4px solid #111"></div><div style="border:4px solid #111"></div></div>`;
+        else if(item.bdGrid === 'bolt') gridHtml = `<div style="width:100%;height:600px;background:#eee;clip-path:polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);border:4px solid #111;overflow:hidden">${generateImgHtml(item, 'width:100%;height:100%')}</div>`;
         return `<div class="clearfix" style="padding:10px;background:#fff">${gridHtml}</div>`;
     }
 
@@ -835,7 +767,6 @@ function buildPageHTML(item, projectTitle){
     let meta=''; if(item.type==='author'){ const m=[item.author,item.date,item.publisher,item.genre].filter(Boolean).map(esc).join(' · '); if(m) meta=`<div style="text-align:center;opacity:.6;font-size:.9em;margin-bottom:12px">${m}</div>`; } 
     const img=generateImgHtml(item); const bodyStyle=`font-size:${item.bodySize||17}px;white-space:pre-wrap;text-align:justify;font-family:${fontSty}`; 
     
-    // Magazine ou Book
     if(item.layout==='bg'){ return `<div style="position:relative;min-height:360px;overflow:hidden;border-radius:10px;padding:20px">${img}<div style="position:relative;z-index:1" class="clearfix">${titleHTML}${meta}<div style="${bodyStyle}">${esc(item.text||'')}</div></div></div>`; } 
     if(item.layout==='top'){ return `<div class="clearfix">${img}${titleHTML}${meta}<div style="${bodyStyle}">${esc(item.text||'')}</div></div>`; } 
     if(item.layout==='bottom'){ return `<div class="clearfix">${titleHTML}${meta}<div style="${bodyStyle}">${esc(item.text||'')}</div>${img}<div style="clear:both"></div></div>`; } 
@@ -846,7 +777,6 @@ function openPreview(){ autoSave(); const proj=getCurrentProject(); const item=p
 function closePreview(){ document.getElementById('previewModal').classList.remove('active'); } 
 function setPreviewDevice(d){ previewDevice=d; const s=document.getElementById('previewScreen'); s.className='preview-screen '+d; ['mobile','tablet','large','epub','pdf'].forEach(x=>{ const el=document.getElementById('btn'+x.charAt(0).toUpperCase()+x.slice(1)); if(el){ el.classList.remove('active'); if(d===x) el.classList.add('active'); } }); } 
 
-// LE MOTEUR DE LECTURE DE MODULE (.ipm JSON Parser)
 function handleModuleUpload(e) {
     const file = e.target.files[0]; if(!file) return;
     const reader = new FileReader();
@@ -855,16 +785,17 @@ function handleModuleUpload(e) {
             const modData = JSON.parse(ev.target.result);
             const mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
             if(mods.find(m => m.name === modData.name)) return alert('Module déjà installé');
-            mods.push({ id: uid(), name: modData.name, data: modData });
+            const newId = uid();
+            mods.push({ id: newId, name: modData.name, data: modData });
             localStorage.setItem('writer_modules', JSON.stringify(mods));
             renderManagerLists();
-            alert("Module " + modData.name + " installé avec succès ! Cliquez dessus dans la barre latérale pour l'activer.");
-        } catch(err) {
-            alert('Fichier .ipm invalide ou corrompu.');
-        }
+            
+            // Activation Automatique pour le confort
+            applyModuleTheme(modData, newId);
+            closeSettings();
+        } catch(err) { alert('Fichier .ipm invalide ou corrompu.'); }
     };
-    reader.readAsText(file);
-    e.target.value = '';
+    reader.readAsText(file); e.target.value = '';
 }
 
 function renderManagerLists() {
@@ -878,22 +809,37 @@ function renderManagerLists() {
             
             const sm = document.createElement('div'); sm.className = 'menu-item'; sm.id = 'mod-tab-'+m.id;
             sm.innerHTML = `<i class="fas fa-layer-group"></i> ${esc(m.name)}`;
-            sm.onclick = () => applyModuleTheme(m.data);
+            sm.onclick = () => applyModuleTheme(m.data, m.id);
             sMod.appendChild(sm);
         });
     } catch(e) {}
 }
 
-function deleteModule(id) { try { let mods = JSON.parse(localStorage.getItem('writer_modules')||'[]'); mods = mods.filter(m => m.id !== id); localStorage.setItem('writer_modules', JSON.stringify(mods)); } catch(err){} renderManagerLists(); } 
-function exportWorkflow(){} function importWorkflow(e){} function factoryReset(){ if(!confirm('Tout effacer ?')) return; localStorage.clear(); try { indexedDB.deleteDatabase("WriterFontsDB"); } catch(e){} location.reload(); } 
-function exportPagesData(){} function exportEPUB3(){} function exportPDFBook(){}
+function deleteModule(id) { try { let mods = JSON.parse(localStorage.getItem('writer_modules')||'[]'); mods = mods.filter(m => m.id !== id); localStorage.setItem('writer_modules', JSON.stringify(mods)); if(currentActiveModuleId === id) applyModuleTheme(null, null); } catch(err){} renderManagerLists(); } 
+function factoryReset(){ if(!confirm('Tout effacer ?')) return; localStorage.clear(); try { indexedDB.deleteDatabase("WriterFontsDB"); } catch(e){} location.reload(); } 
+function exportWorkflow(){} function importWorkflow(e){} function exportPagesData(){} function exportEPUB3(){} function exportPDFBook(){}
 
-function bootstrapApp() { try { loadProjects(); const proj=getCurrentProject(); if(!proj) return; document.getElementById('currentProjectName').textContent=proj.title; document.getElementById('genCurrentProjectName').textContent=proj.title; refreshFontDropdown(); refreshPageDropdown(); applyFont(); loadPageData(); } catch(e) {} }
+function bootstrapApp() { 
+    try { 
+        loadProjects(); const proj=getCurrentProject(); if(!proj) return; 
+        document.getElementById('currentProjectName').textContent=proj.title; document.getElementById('genCurrentProjectName').textContent=proj.title; 
+        
+        // Relancer le module actif si existant
+        const activeModId = localStorage.getItem('writer_active_module_id');
+        if (activeModId) {
+            const mods = JSON.parse(localStorage.getItem('writer_modules')||'[]');
+            const activeMod = mods.find(m => m.id === activeModId);
+            if (activeMod) { applyModuleTheme(activeMod.data, activeMod.id); return; }
+        }
+
+        refreshFontDropdown(); refreshPageDropdown(); applyFont(); loadPageData(); 
+    } catch(e) {} 
+}
+
 function openSettings(){ document.getElementById('settingsModal').classList.add('active'); closeMenus(); } 
 function closeSettings(){ document.getElementById('settingsModal').classList.remove('active'); }
-function updateLangUI(){} function setLang(l){}
 
-window.onload=()=>{ try { initSizeDropdowns(); renderManagerLists(); updateLangUI(); } catch(e) {} initIDB(bootstrapApp); }; 
+window.onload=()=>{ try { initSizeDropdowns(); renderManagerLists(); } catch(e) {} initIDB(bootstrapApp); }; 
 </script>
 </body>
 </html>
